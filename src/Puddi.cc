@@ -31,6 +31,7 @@ namespace puddi
 	Camera* Puddi::MainCamera;
 
 	RenderGraph* Puddi::MainRenderGraph = new RenderGraph();
+	RenderGraph* Puddi::SecondaryRenderGraph = new RenderGraph();
 
 	std::string Puddi::WindowTitleMessage = "";
 
@@ -93,6 +94,8 @@ namespace puddi
 
         glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		//glBlendFunc(GL_ZERO, GL_SRC_COLOR);
+		//glBlendFunc(GL_ONE, GL_ONE);
 
 		glEnable(GL_PRIMITIVE_RESTART);
 		glPrimitiveRestartIndex(UINT_MAX);
@@ -216,6 +219,8 @@ namespace puddi
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		MainRenderGraph->Render();
+
+		SecondaryRenderGraph->Render();
 
 		// call additional draw functions
         for (auto it = drawFunctions.begin(); it != drawFunctions.end(); ++it)

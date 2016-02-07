@@ -133,6 +133,7 @@ void init(void)
         object->RotateX(M_PI / 2.0f);
         object->SetPosition(posCursor);
         object->SetEmissive(true);
+        object->MoveToSecondaryRenderGraph();
 
         posCursor += vec4(normalSpace, 0.0f, 0.0f, 0.0f);
     }

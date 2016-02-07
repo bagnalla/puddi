@@ -20,7 +20,7 @@ namespace puddi
 	class Camera;
 	struct UpdateNode;
 	struct ModelNode;
-	
+
 	typedef int (*update_function)(void);
 	typedef void (*draw_function)(void);
 
@@ -39,10 +39,14 @@ namespace puddi
 
 		static RenderGraph *MainRenderGraph;
 
+		// secondary is mainly for objects with transparency
+		// to be rendered after everything else
+		static RenderGraph *SecondaryRenderGraph;
+
 		static std::string WindowTitleMessage;
 
 		static int Init(float worldSize);
-		
+
 		static int Run();
 
 		static void UpdateProjectionMatrixAndViewport();
@@ -51,11 +55,11 @@ namespace puddi
 
 		// only enables full screen atm
 		static void ToggleFullScreen();
-		
+
 		static void RegisterUpdateFunction(update_function f);
 		static void RegisterPreDrawFunction(draw_function f);
 		static void RegisterDrawFunction(draw_function f);
-		
+
 	private:
 		static SDL_Window *window;
 		static SDL_GLContext glcontext;
@@ -63,18 +67,18 @@ namespace puddi
 		static Object *rootObject;
 		static UpdateNode *rootUpdateNode;
 		static ModelNode *rootModelNode;
-		
+
 		static std::vector<update_function> updateFunctions;
 		static std::vector<draw_function> preDrawFunctions;
 		static std::vector<draw_function> drawFunctions;
-		
+
 		static int update();
 
 		static void draw();
-		
+
 		// do this after all vertex data is loaded
 		static void sendVertexDataToGPU();
-		
+
 		static int cleanup(int status_code);
 	};
 }

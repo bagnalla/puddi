@@ -52,6 +52,8 @@ namespace puddi
 
 		void DisableShadowCasting();
 
+		void MoveToSecondaryRenderGraph();
+
 	private:
 		bool renderEnabled;
 

@@ -27,6 +27,7 @@ namespace puddi
 		indexCount = iCount;
 		triangleStrip = tStrip;
 		texture = 0;
+		secondaryRender = false;
 	}
 
 	VertexMesh::~VertexMesh()
@@ -85,7 +86,12 @@ namespace puddi
             else
                 std::cerr << "in VerteshMesh::UpdateRenderNode(): attempted to remove self from rendernode that didnt know about me. this should never happen\n";
         }
-		renderNode = Puddi::MainRenderGraph->AddVertexMesh(this);
+
+        if (!secondaryRender)
+            renderNode = Puddi::MainRenderGraph->AddVertexMesh(this);
+        else
+            renderNode = Puddi::SecondaryRenderGraph->AddVertexMesh(this);
+
 		Shadow::AddToDepthRenderList(this);
 	}
 
@@ -194,6 +200,15 @@ namespace puddi
 	void VertexMesh::SetRenderEnabled(bool b)
 	{
 		renderEnabled = b;
+	}
+
+	bool VertexMesh::GetSecondaryRender()
+	{
+		return secondaryRender;
+	}
+	void VertexMesh::SetSecondaryRender(bool b)
+	{
+		secondaryRender = b;
 	}
 
 	// PRIVATE
