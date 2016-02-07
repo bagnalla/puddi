@@ -44,7 +44,7 @@ void main()
 
 	//float d = (2.0 * shadowZRange.x) / (shadowZRange.y + shadowZRange.x - texColor * (shadowZRange.y - shadowZRange.x));
 	//texColor *= d;
-	
+
 	vec4 ambientProduct, diffuseProduct, specularProduct;
 	float shininess;
 	if (textureBlend)
@@ -104,16 +104,16 @@ void main()
 	else if (shadowMode == 2)
 	{
 		vec3 lightDir = -L;
-		
+
 		float bias = 0.005*tan(acos(dot(NN, LL)));
 		bias = clamp(bias, 0, 0.01);
 		//float bias = 0.002;
-		
+
 		float d = vecToDepth(lightDir) - bias;
 		float shadowVal = shadowCube(shadowCubeMap, vec4(lightDir, d)).x;
 		diffuse = diffuse * shadowVal;
 		specular = specular * shadowVal;
 	}
 
-	gl_FragColor = vec4((ambient + diffuse + specular).xyz, 1.0);
+	gl_FragColor = vec4((ambient + diffuse + specular).xyz, texColor.w);
 }

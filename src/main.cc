@@ -23,7 +23,7 @@ DrawableObject *rect;
 
 void init(void)
 {
-	GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda.jpg");
+	GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda.jpg", "bumpmaps/Shrek-and-Yoda-NRM.jpg");
 	Texture::LoadCubeMap("skybox_2", "textures/skybox2.jpg");
 	//GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda (copy).jpg");
 	//GLuint texture = Texture::CreateTextureFromString("bakow", "bakow_string", "fonts/Bitstream/VeraMono-Bold.ttf", 24, vec3(1.0f, 0.0f, 0.0f));
@@ -54,8 +54,8 @@ void init(void)
     //rect->RotateX(M_PI / 2.0f);
 
 	// MIDDLE CUBE
-	//cube = new Cube(objectContainer);
-	//cube->SetTexture(texture);
+	cube = new Cube(objectContainer);
+	cube->SetTexture(texture);
 	//cube->Scale(00000.1f);
 
 	//DrawableObject *object = new DrawableObject(objectContainer, VertexMesh::GetVertexMeshPrototypeByName("a"));
