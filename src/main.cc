@@ -9,6 +9,10 @@
 #include "Skybox.h"
 #include "Font.h"
 #include "Util.h"
+#include "TerrainVertexMesh.h"
+#include "HeightMapTerrain.h"
+#include "Shadow.h"
+#include "RenderGraph.h"
 #include <vector>
 #include <iostream>
 #include <string>
@@ -23,7 +27,7 @@ DrawableObject *rect;
 
 void init(void)
 {
-	GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda.jpg", "bumpmaps/Shrek-and-Yoda-NRM.jpg");
+	GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda.jpg", "bumpmaps/Shrek-and-Yoda_NRM.jpg");
 	Texture::LoadCubeMap("skybox_2", "textures/skybox2.jpg");
 	//GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda (copy).jpg");
 	//GLuint texture = Texture::CreateTextureFromString("bakow", "bakow_string", "fonts/Bitstream/VeraMono-Bold.ttf", 24, vec3(1.0f, 0.0f, 0.0f));
@@ -39,6 +43,29 @@ void init(void)
 	lightSource->position = vec4(-1.0f, -1.0f, 1.0f, 0.0f);
 	lightSource->UpdateMatrix();
 	LightSource::UpdateLightSourceMatricesInShaders();
+
+	auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("heightmaps/terrain1_height.jpg", 25.0f, 25.0f, 0.25f));
+	//terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("heightmaps/west_norway.png", 50.0f, 50.0f, 0.25f));
+	//terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/bill.png", 25.0f, 25.0f, 0.1f));
+	Texture::LoadTexture("sand1", "textures/sand1.jpg", "bumpmaps/sand1_NRM.jpg");
+	Texture::LoadTexture("grass1", "textures/grass1.jpg", "bumpmaps/grass1_NRM.jpg");
+	Texture::LoadTexture("stone1", "textures/stone1.jpg", "bumpmaps/stone1_NRM.jpg");
+	Texture::LoadTexture("snow1", "textures/snow1.jpg", "bumpmaps/snow1_NRM.jpg");
+	terrainMesh->SetTexture1(Texture::GetTextureByName("sand1"));
+	terrainMesh->SetTexture2(Texture::GetTextureByName("grass1"));
+	terrainMesh->SetTexture3(Texture::GetTextureByName("stone1"));
+	terrainMesh->SetTexture4(Texture::GetTextureByName("snow1"));
+	terrainMesh->SetTextureHeights(vec4(0.0f, 0.3f, 0.5f, 0.9f));
+
+	auto terrain = new DrawableObject(Puddi::GetRootObject());
+	terrain->AddVertexMesh(terrainMesh);
+	terrain->SetScale(10.0f);
+	terrain->Translate(vec4(-1000.0f, -1000.0f, -1000.0f, 0.0f));
+
+	// ENABLE SHADOWS
+	Shadow::RenderShadowOrthoMap(vec3(lightSource->position));
+	Shadow::SetMode(SHADOW_MODE_UNI);
+	Shadow::SetResolution(SHADOW_RESOLUTION_EXTRA_HIGH);
 
 	// CONTAINERS
 	objectContainer = new Object(Puddi::GetRootObject());
@@ -96,13 +123,12 @@ void init(void)
 //		}
 //	}
 
-    vector<char> fileChars = Util::ReadAllBytes("helloworld.c");
+    vector<char> fileChars = Util::ReadAllBytes("sourcefile.cc");
 
     vec4 initialPos = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     vec4 posCursor = initialPos;
-    float tabSpace = 4.0f;
-    float lineSpace = 1.0f;
-    float normalSpace = 1.0f;
+    float charSize = 10.0f;
+    float tabSpace = 4.0f * charSize;
     for (int i = 0; i < fileChars.size(); ++i)
     {
         char c = fileChars[i];
@@ -119,7 +145,7 @@ void init(void)
         // carriage return
         if (c == 13 || c == 10)
         {
-            posCursor += vec4(0.0f, 0.0f, -lineSpace, 0.0f);
+            posCursor += vec4(0.0f, 0.0f, -charSize, 0.0f);
             posCursor.x = initialPos.x;
             continue;
         }
@@ -134,8 +160,9 @@ void init(void)
         object->SetPosition(posCursor);
         object->SetEmissive(true);
         object->MoveToSecondaryRenderGraph();
+        object->Scale(charSize);
 
-        posCursor += vec4(normalSpace, 0.0f, 0.0f, 0.0f);
+        posCursor += vec4(charSize, 0.0f, 0.0f, 0.0f);
     }
 }
 
@@ -221,11 +248,12 @@ int update()
 
 void draw()
 {
+    Shadow::RenderShadowOrthoMap(vec3(lightSource->position));
 }
 
 int main(int argc, char **argv)
 {
-	if (int initStatus = Puddi::Init(100.0f) != 0)
+	if (int initStatus = Puddi::Init(3000.0f) != 0)
 		return initStatus;
 
 	init();
