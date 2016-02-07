@@ -12,9 +12,7 @@
 #include "Shader.h"
 #include "Util.h"
 #include "FpsTracker.h"
-#include "Text.h"
 #include "Font.h"
-#include "TextString.h"
 //#include <SDL2/SDL_ttf.h>
 #include <iostream>
 
@@ -82,7 +80,6 @@ namespace puddi
 		Shadow::Init();
 		EnvironmentMap::Init();
 		Schematic::Init();
-		Text::Init();
 		Font::Init();
 
 		rootUpdateNode = rootObject->GetUpdateNode();

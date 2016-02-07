@@ -14,12 +14,7 @@ namespace puddi
 		createPrototypeVertices();
 	}
 
-	Cube::Cube(Object *par) : DrawableObject(par)
-	{
-		auto mesh = VertexMesh::GetVertexMeshPrototypeByName("cube");
-		mesh.SetOwner(this);
-		vertexMeshes.push_back(new VertexMesh(mesh));
-	}
+	Cube::Cube(Object *par) : DrawableObject(par, VertexMesh::GetVertexMeshPrototypeByName("cube")) {}
 
 	//void Cube::Draw() const
 	//{

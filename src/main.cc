@@ -5,10 +5,8 @@
 #include "Texture.h"
 #include "Cube.h"
 #include "GlmHeaders.h"
-#include "Text.h"
 #include "Rectangle.h"
 #include "Font.h"
-#include "TextString.h"
 #include <vector>
 #include <iostream>
 
@@ -18,7 +16,6 @@ LightSource *lightSource;
 Object *objectContainer;
 DrawableObject *cube;
 DrawableObject *rect;
-TextString *textString;
 
 void init(void)
 {
@@ -38,45 +35,18 @@ void init(void)
 	lightSource->UpdateMatrix();
 	LightSource::UpdateLightSourceMatricesInShaders();
 
-	// FONTS
-	Font *font = Font::LoadFont("default", "fonts/Bitstream/VeraMono-Bold.ttf");
-	font = Font::LoadFont("default", "fonts/SourceCodePro/SourceCodePro-Medium.otf");
-
-	textString = new TextString("bakow", font->monochrome_face);
-
 	// CONTAINERS
 	objectContainer = new Object(Puddi::GetRootObject());
 
 	// OBJECTS
-	rect = new Rectangle(objectContainer);
-	//rect->SetTexture(texture);
-	rect->SetTexture(Text::createTextureFromCharacter('1'));
-	//rect->SetScaleX(0.5f);
-	rect->SetEmissionColor(vec4(0.0f, 0.0f, 0.0f, 0.0f));
-	rect->SetEmissive(true);
-	//rect->RotateX(M_PI / 2.0f);
-
-	//for (int i = 0; i < 65; ++i)
-	//{
-		//Rectangle *rect2 = new Rectangle(objectContainer);
-		//rect2->SetTexture(Text::createTextureFromCharacter('A' + i));
-		//rect2->RotateX(M_PI / 2.0f);
-		//rect2->Translate(vec4(i, 0.0f, 0.0f, 0.0f));
-	//}
-
-	std::string msg = "int main() { cout << \"hello\" << endl; }";
-	for (int i = 0; i < msg.length(); ++i)
-	{
-		Rectangle *rect2 = new Rectangle(objectContainer);
-		rect2->SetTexture(Text::createTextureFromCharacter(msg[i]));
-		rect2->RotateX(M_PI / 2.0f);
-		rect2->Translate(vec4(i, 0.0f, 0.0f, 0.0f));
-	}
+    rect = new Rectangle(objectContainer);
+    rect->SetTexture(texture);
+    rect->RotateX(M_PI / 2.0f);
 
 	// MIDDLE CUBE
 	cube = new Cube(objectContainer);
 	//cube->SetPosition(vec4(0.0f, 0.0f, -Puddi::WorldSize * 0.25f, 1.0));
-	//cube->SetTexture(texture);
+	cube->SetTexture(texture);
 	//cube->SetBumpMapEnabled(false);
 	cube->Scale(00000.1f);
 	//cube->RotateX(-M_PI / 2.0f);
@@ -166,7 +136,6 @@ int update()
 
 void draw()
 {
-    textString->Draw();
 }
 
 int main(int argc, char **argv)

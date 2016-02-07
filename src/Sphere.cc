@@ -12,12 +12,7 @@ namespace puddi
 		createPrototypeVertices();
 	}
 
-	Sphere::Sphere(const Object *par) : DrawableObject(par)
-	{
-		auto mesh = VertexMesh::GetVertexMeshPrototypeByName("sphere");
-		mesh.SetOwner(this);
-		vertexMeshes.push_back(new VertexMesh(mesh));
-	}
+	Sphere::Sphere(const Object *par) : DrawableObject(par, VertexMesh::GetVertexMeshPrototypeByName("sphere")) {}
 
 	//void Sphere::Draw() const
 	//{

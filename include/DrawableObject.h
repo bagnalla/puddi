@@ -14,6 +14,8 @@ namespace puddi
 	public:
 		DrawableObject(const Object *par);
 
+		DrawableObject(const Object *par, const VertexMesh &mesh);
+
 		DrawableObject(const Object *par, SchematicNode *schematic);
 
 		virtual void Draw() const;

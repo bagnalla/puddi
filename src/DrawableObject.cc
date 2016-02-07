@@ -17,6 +17,13 @@ namespace puddi
 		init();
 	}
 
+	DrawableObject::DrawableObject(const Object *par, const VertexMesh &mesh) : DrawableObject(par)
+	{
+        VertexMesh *vertexMesh = new VertexMesh(mesh);
+		vertexMesh->SetOwner(this);
+		vertexMeshes.push_back(vertexMesh);
+	}
+
 	DrawableObject::DrawableObject(const Object *par, SchematicNode *schematic) : DrawableObject(par)
 	{
 		for (auto it = schematic->vertexMeshes.begin(); it != schematic->vertexMeshes.end(); ++it)
@@ -146,7 +153,7 @@ namespace puddi
 		for (auto it = children.begin(); it != children.end(); ++it)
 			static_cast<DrawableObject*>(*it)->SetBumpMapEnabled(b);
 	}
-	
+
 	void DrawableObject::SetReflectiveCubeMap(bool b)
 	{
 		for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)

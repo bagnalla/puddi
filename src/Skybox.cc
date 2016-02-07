@@ -12,12 +12,8 @@ namespace puddi
 		createPrototypeVertices();
 	}
 
-	Skybox::Skybox(Object *par) : DrawableObject(par)
+	Skybox::Skybox(Object *par) : DrawableObject(par, VertexMesh::GetVertexMeshPrototypeByName("skybox"))
 	{
-		auto mesh = VertexMesh::GetVertexMeshPrototypeByName("skybox");
-		mesh.SetOwner(this);
-		vertexMeshes.push_back(new VertexMesh(mesh));
-		
 		RotateX(-M_PI / 2.0f);
 		RotateZ(M_PI);
 		DisableShadowCasting();
