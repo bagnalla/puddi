@@ -35,7 +35,7 @@ void main()
 	vec3 EE = normalize(E);
 
 	vec4 texColor = texture2D(tex, fTextureCoord);
-	
+
 	vec4 ambientProduct, diffuseProduct, specularProduct;
 	if (textureBlend)
 	{
@@ -93,5 +93,5 @@ void main()
 		specular = specular * shadowVal;
 	}
 
-	gl_FragColor = vec4((ambient + diffuse + specular).xyz, 1.0);
+	gl_FragColor = vec4((ambient + diffuse + specular).xyz, texColor.w);
 }

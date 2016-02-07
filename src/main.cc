@@ -8,6 +8,7 @@
 #include "Rectangle.h"
 #include "Skybox.h"
 #include "Font.h"
+#include "Util.h"
 #include <vector>
 #include <iostream>
 #include <string>
@@ -56,13 +57,13 @@ void init(void)
 	//cube = new Cube(objectContainer);
 	//cube->SetTexture(texture);
 	//cube->Scale(00000.1f);
-	
+
 	//DrawableObject *object = new DrawableObject(objectContainer, VertexMesh::GetVertexMeshPrototypeByName("a"));
 	////DrawableObject *object = new Rectangle(objectContainer);
 	//object->SetTexture(Texture::GetTextureByName("myfont"));
 	//object->SetBumpMapEnabled(false);
 	//object->RotateX(M_PI / 2.0f);
-	
+
 	//int rows = 10;
 	//int cols = 10;
 	//for (int i = 0; i < rows; ++i)
@@ -75,25 +76,66 @@ void init(void)
 			//object->Translate(vec4(j, 0.0f, -i, 0.0f));
 		//}
 	//}
-	
+
 	//string msg = "int main() { cout << \"hello\" << endl; }";
-	vector<string> lines;
-	lines.push_back("int main()");
-	lines.push_back("{");
-	lines.push_back("  cout << \"hello\" << endl;");
-	lines.push_back("}");
-	for (int j = 0; j < lines.size(); j++)
-	{
-		string msg = lines[j];
-		for (int i = 0; i < msg.length(); ++i)
-		{
-			DrawableObject *object = new DrawableObject(objectContainer, VertexMesh::GetVertexMeshPrototypeByName(std::string(1, msg[i])));
-			object->SetTexture(Texture::GetTextureByName("myfont"));
-			object->RotateX(M_PI / 2.0f);
-			object->Translate(vec4(i, 0.0f, -j, 0.0f));
-			object->SetEmissive(true);
-		}
-	}
+//	vector<string> lines;
+//	lines.push_back("int main()");
+//	lines.push_back("{");
+//	lines.push_back("  cout << \"hello\" << endl;");
+//	lines.push_back("}");
+//	for (int j = 0; j < lines.size(); j++)
+//	{
+//		string msg = lines[j];
+//		for (int i = 0; i < msg.length(); ++i)
+//		{
+//			DrawableObject *object = new DrawableObject(objectContainer, VertexMesh::GetVertexMeshPrototypeByName(std::string(1, msg[i])));
+//			object->SetTexture(Texture::GetTextureByName("myfont"));
+//			object->RotateX(M_PI / 2.0f);
+//			object->Translate(vec4(i, 0.0f, -j, 0.0f));
+//			object->SetEmissive(true);
+//		}
+//	}
+
+    vector<char> fileChars = Util::ReadAllBytes("helloworld.c");
+
+    vec4 initialPos = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    vec4 posCursor = initialPos;
+    float tabSpace = 4.0f;
+    float lineSpace = 1.0f;
+    float normalSpace = 1.0f;
+    for (int i = 0; i < fileChars.size(); ++i)
+    {
+        char c = fileChars[i];
+
+        cout << c << endl;
+
+        // tab
+        if (c == 9)
+        {
+            posCursor += vec4(tabSpace, 0.0f, 0.0f, 0.0f);
+            continue;
+        }
+
+        // carriage return
+        if (c == 13 || c == 10)
+        {
+            posCursor += vec4(0.0f, 0.0f, -lineSpace, 0.0f);
+            posCursor.x = initialPos.x;
+            continue;
+        }
+
+        // ignore weird characters
+        if (c < 32 || c > 126)
+            continue;
+
+        DrawableObject *object = new DrawableObject(objectContainer, VertexMesh::GetVertexMeshPrototypeByName(std::string(1, c)));
+        object->SetTexture(Texture::GetTextureByName("myfont"));
+        object->RotateX(M_PI / 2.0f);
+        object->SetPosition(posCursor);
+        object->SetEmissive(true);
+
+        posCursor += vec4(normalSpace, 0.0f, 0.0f, 0.0f);
+    }
 }
 
 //----------------------------------------------------------------------------

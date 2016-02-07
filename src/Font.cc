@@ -15,7 +15,7 @@ namespace puddi
 
 	void Font::Init()
 	{
-        Texture::LoadTexture("myfont", "textures/font2.png");
+        Texture::LoadTexture("myfont", "textures/testfont.png");
 
         std::vector<vec4> rect = Geometry::CreateRectangle(1.0);
 		std::vector<vec4> normals({ vec4(0.0, 0.0, 1.0, 0.0), vec4(0.0, 0.0, 1.0, 0.0), vec4(0.0, 0.0, 1.0, 0.0), vec4(0.0, 0.0, 1.0, 0.0) });
@@ -53,8 +53,8 @@ namespace puddi
                 Shader::TextureCoordinates.insert(Shader::TextureCoordinates.end(), texCoords.begin(), texCoords.end());
                 Shader::VertexIndices.insert(Shader::VertexIndices.end(), indices.begin(), indices.end());
 
-				std::cout << "adding " << std::string(1, i * cols + j + 32) << std::endl;
-                VertexMesh::AddVertexMeshPrototype(std::string(1, i * cols + j + 32), Material::None()/*Material::Plastic(vec4(0.0f, 0.0f, 0.0f, 0.0f))*/, indexOffset, indexCount, true);
+				//std::cout << "adding " << std::string(1, i * cols + j + 32) << std::endl;
+                VertexMesh::AddVertexMeshPrototype(std::string(1, i * cols + j + 32), /*Material::None()*/Material::Plastic(vec4(1.0f, 1.0f, 1.0f, 1.0f)), indexOffset, indexCount, true);
             }
 		}
 	}
