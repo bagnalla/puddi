@@ -17,11 +17,15 @@ namespace puddi
 		init();
 	}
 
-	DrawableObject::DrawableObject(const Object *par, const VertexMesh &mesh) : DrawableObject(par)
+	DrawableObject::DrawableObject(const Object *par, const VertexMesh &mesh) : Object(par)
 	{
+        init();
+
         VertexMesh *vertexMesh = new VertexMesh(mesh);
 		vertexMesh->SetOwner(this);
 		vertexMeshes.push_back(vertexMesh);
+
+		//updateRenderNodes();
 	}
 
 	DrawableObject::DrawableObject(const Object *par, SchematicNode *schematic) : DrawableObject(par)
@@ -38,14 +42,14 @@ namespace puddi
 		updateRenderNodes();
 	}
 
-	void DrawableObject::Draw() const
-	{
-		Shader::SetModel(finalModel);
-		/*if (cubeMap != 0)
-			Shader::SetReflectiveCubeMap(reflectiveCubeMap);*/
-		for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)
-			(*it)->Draw();
-	};
+//	void DrawableObject::Draw() const
+//	{
+//		Shader::SetModel(finalModel);
+//		/*if (cubeMap != 0)
+//			Shader::SetReflectiveCubeMap(reflectiveCubeMap);*/
+//		for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)
+//			(*it)->Draw();
+//	};
 
 	void DrawableObject::SendTransformToGPU()
 	{

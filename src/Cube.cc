@@ -35,8 +35,6 @@ namespace puddi
 
 	// PRIVATE
 
-	int Cube::indexOffset, Cube::indexCount;
-
 	void Cube::createPrototypeVertices()
 	{
 		std::vector<vec4> cube = Geometry::CreateCube(1.0);
@@ -46,8 +44,8 @@ namespace puddi
 		std::vector<vec2> texCoords = Geometry::CreateCubeTextureCoordinates();
 
 		int vertexOffset = Shader::Vertices.size();
-		indexOffset = Shader::VertexIndices.size();
-		indexCount = cube.size();
+		int indexOffset = Shader::VertexIndices.size();
+		int indexCount = cube.size();
 
 		std::vector<uint> indices;
 		for (int i = 0; i < indexCount; ++i)

@@ -32,7 +32,13 @@ namespace puddi
 	VertexMesh::~VertexMesh()
 	{
 		if (renderNode != NULL)
-			renderNode->meshes.erase(std::find(renderNode->meshes.begin(), renderNode->meshes.end(), this));
+		{
+			auto it = std::find(renderNode->meshes.begin(), renderNode->meshes.end(), this);
+            if (it != renderNode->meshes.end())
+                renderNode->meshes.erase(std::find(renderNode->meshes.begin(), renderNode->meshes.end(), this));
+            else
+                std::cerr << "in VerteshMesh destructor: attempted to remove self from rendernode that didnt know about me. this should never happen\n";
+		}
 	}
 
 	void VertexMesh::AddVertexMeshPrototype(const char *name, const Material& mat, int vOffset, int vCount, bool tStrip)
@@ -72,7 +78,13 @@ namespace puddi
 	void VertexMesh::UpdateRenderNode()
 	{
 		if (renderNode != NULL)
-			renderNode->meshes.erase(std::find(renderNode->meshes.begin(), renderNode->meshes.end(), this));
+		{
+            auto it = std::find(renderNode->meshes.begin(), renderNode->meshes.end(), this);
+            if (it != renderNode->meshes.end())
+                renderNode->meshes.erase(std::find(renderNode->meshes.begin(), renderNode->meshes.end(), this));
+            else
+                std::cerr << "in VerteshMesh::UpdateRenderNode(): attempted to remove self from rendernode that didnt know about me. this should never happen\n";
+        }
 		renderNode = Puddi::MainRenderGraph->AddVertexMesh(this);
 		Shadow::AddToDepthRenderList(this);
 	}
@@ -127,7 +139,6 @@ namespace puddi
 	void VertexMesh::SetTexture(GLuint tex)
 	{
 		texture = tex;
-		UpdateRenderNode();
 	}
 
 	GLuint VertexMesh::GetCubeMap()
@@ -137,7 +148,6 @@ namespace puddi
 	void VertexMesh::SetCubeMap(GLuint cMap)
 	{
 		cubeMap = cMap;
-		UpdateRenderNode();
 	}
 
 	bool VertexMesh::GetReflectiveCubeMap()
@@ -147,7 +157,6 @@ namespace puddi
 	void VertexMesh::SetReflectiveCubeMap(bool b)
 	{
 		reflectiveCubeMap = b;
-		UpdateRenderNode();
 	}
 
 	bool VertexMesh::GetBumpMapEnabled()
@@ -157,7 +166,6 @@ namespace puddi
 	void VertexMesh::SetBumpMapEnabled(bool b)
 	{
 		bumpMapEnabled = b;
-		UpdateRenderNode();
 	}
 
 	bool VertexMesh::GetEmissive()
@@ -167,7 +175,6 @@ namespace puddi
 	void VertexMesh::SetEmissive(bool b)
 	{
 		emissive = b;
-		UpdateRenderNode();
 	}
 
 	vec4 VertexMesh::GetEmissionColor()

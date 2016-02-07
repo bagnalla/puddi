@@ -6,6 +6,7 @@
 #include "Cube.h"
 #include "GlmHeaders.h"
 #include "Rectangle.h"
+#include "Skybox.h"
 #include "Font.h"
 #include <vector>
 #include <iostream>
@@ -19,7 +20,8 @@ DrawableObject *rect;
 
 void init(void)
 {
-	GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda.jpg", "bumpmaps/Shrek-and-Yoda_NRM.jpg");
+	GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda.jpg");
+	Texture::LoadCubeMap("skybox_2", "textures/skybox2.jpg");
 	//GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda (copy).jpg");
 	//GLuint texture = Texture::CreateTextureFromString("bakow", "bakow_string", "fonts/Bitstream/VeraMono-Bold.ttf", 24, vec3(1.0f, 0.0f, 0.0f));
 
@@ -37,6 +39,11 @@ void init(void)
 
 	// CONTAINERS
 	objectContainer = new Object(Puddi::GetRootObject());
+
+	Skybox *skybox = new Skybox(Puddi::MainCamera);
+	skybox->SetCubeMap(Texture::GetCubeMapByName("skybox_2"));
+	skybox->SetEmissive(true);
+	skybox->SetScale(Puddi::ViewDistance);
 
 	// OBJECTS
     rect = new Rectangle(objectContainer);

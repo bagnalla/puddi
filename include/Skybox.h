@@ -10,13 +10,13 @@ namespace puddi
 	public:
 		static void Init();
 
-		Skybox(Object *par);
+		Skybox(const Object *par);
 
-		void Draw() const;
+		//void Draw() const;
 
 	private:
-		static int indexOffset;
-		static int indexCount;
+        static int indexOffset;
+        static int indexCount;
 
 		static void createPrototypeVertices();
 	};

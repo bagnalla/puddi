@@ -15,8 +15,6 @@ namespace puddi
 		//void Draw() const;
 
 	private:
-		static int indexOffset;
-		static int indexCount;
 
 		static void createPrototypeVertices();
 	};

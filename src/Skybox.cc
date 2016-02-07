@@ -12,7 +12,7 @@ namespace puddi
 		createPrototypeVertices();
 	}
 
-	Skybox::Skybox(Object *par) : DrawableObject(par, VertexMesh::GetVertexMeshPrototypeByName("skybox"))
+	Skybox::Skybox(const Object *par) : DrawableObject(par, VertexMesh::GetVertexMeshPrototypeByName("skybox"))
 	{
 		RotateX(-M_PI / 2.0f);
 		RotateZ(M_PI);
@@ -20,11 +20,11 @@ namespace puddi
 		AddIgnoreParentModelFlag(IGNORE_PARENT_ROTATIONX | IGNORE_PARENT_ROTATIONY | IGNORE_PARENT_ROTATIONZ);
 	}
 
-	void Skybox::Draw() const
-	{
-		DrawableObject::Draw();
-		glDrawArrays(GL_TRIANGLES, indexOffset, indexCount);
-	}
+//	void Skybox::Draw() const
+//	{
+//		DrawableObject::Draw();
+//		glDrawArrays(GL_TRIANGLES, indexOffset, indexCount);
+//	}
 
 	// PRIVATE
 

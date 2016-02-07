@@ -22,8 +22,6 @@ namespace puddi
 
 	// PRIVATE
 
-	int Sphere::indexOffset, Sphere::indexCount;
-
 	void Sphere::createPrototypeVertices()
 	{
 		std::vector<vec4> tangents;
@@ -42,8 +40,8 @@ namespace puddi
 		}
 
 		int vertexOffset = Shader::Vertices.size();
-		indexOffset = Shader::VertexIndices.size();
-		indexCount = sphere.size();
+		int indexOffset = Shader::VertexIndices.size();
+		int indexCount = sphere.size();
 
 		std::vector<uint> indices;
 		for (int i = 0; i < indexCount; ++i)

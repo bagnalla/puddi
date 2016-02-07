@@ -18,7 +18,7 @@ namespace puddi
 
 		DrawableObject(const Object *par, SchematicNode *schematic);
 
-		virtual void Draw() const;
+		//virtual void Draw() const;
 
 		void SendTransformToGPU();
 

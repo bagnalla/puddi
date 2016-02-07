@@ -15,8 +15,6 @@ namespace puddi
 		//void Draw() const;
 
 	private:
-		static int indexOffset; // location of sphere vertices in global array
-		static int indexCount; // # of cube vertices
 
 		static void createPrototypeVertices();
 	};

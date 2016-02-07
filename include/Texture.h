@@ -16,8 +16,6 @@ namespace puddi
 		static void EndTextureLoading();
 
 		static GLuint LoadTexture(const char *name, const char *filePath, const char *bumpPath = nullptr);
-		//static GLuint CreateTextureFromString(const std::string &str, const std::string &name, const std::string &fontPath, int fontSize, const glm::vec3 &color);
-		static GLuint CreateTextureFromBitmap(void *buf, int w, int h, int format);
 		static GLuint LoadCubeMap(const char *name, const char *filePath, const char *bumpPath = nullptr);
 		static GLuint LoadCubeMapMirrored(const char *name, const char *filePath, const char *bumpPath = nullptr);
 
@@ -28,7 +26,7 @@ namespace puddi
 		static GLuint GetCubeMapByName(std::string name);
 		static GLuint GetCubeMapByFile(std::string path);
 		static GLuint GetBumpMapByCubeMap(GLuint cubeMap);
-		
+
 		static void DestroyTexture(const std::string &name, const std::string &path = "");
 
 	private:
@@ -41,8 +39,7 @@ namespace puddi
 		static std::unordered_map<GLuint, GLuint> cubeBumpMapMap;
 
 		static GLuint loadTexture(const char *path);
-		static GLuint loadTextureFromSurface(SDL_Surface *surface, GLint internalFormat, GLint format);
-		static GLuint createTextureFromBitmap(void *buf, int w, int h, int format);
+		//static GLuint loadTextureFromSurface(SDL_Surface *surface, GLint internalFormat, GLint format);
 		static GLuint loadCubeMap(const char *path);
 		static GLuint loadCubeMapMirrored(const char *path);
 	};

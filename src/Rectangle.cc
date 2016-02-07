@@ -36,9 +36,6 @@ namespace puddi
 
 	// PRIVATE
 
-	int Rectangle::indexOffset;
-	int Rectangle::indexCount;
-
 	void Rectangle::createPrototypeVertices()
 	{
 		std::vector<vec4> rect = Geometry::CreateRectangle(1.0);
@@ -48,8 +45,8 @@ namespace puddi
 		std::vector<vec2> texCoords = Util::Vec4toVec2(Util::TransformVertices(rect, translate(vec3(0.5f, 0.5f, 0.0f)) * glm::scale(vec3(1.0, 1.0, 1.0))));
 
 		int vertexOffset = Shader::Vertices.size();
-		indexOffset = Shader::VertexIndices.size();
-		indexCount = rect.size();
+		int indexOffset = Shader::VertexIndices.size();
+		int indexCount = rect.size();
 
 		std::vector<uint> indices;
 		for (int i = 0; i < indexCount; ++i)

@@ -349,7 +349,7 @@ void init(void)
 	// ENABLE SHADOWS
 	//Shadow::RenderShadowCubeMap(vec3(lightSource->position), sun);
 	//Puddi::MainRenderGraph->SetShadowMode(SHADOW_MODE_OMNI);
-	
+
 	//Shadow::RenderShadowOrthoMap(vec3(lightSource->position));
 	//Shadow::SetMode(SHADOW_MODE_UNI);
 	//Shadow::SetResolution(SHADOW_RESOLUTION_EXTRA_HIGH);
@@ -481,7 +481,7 @@ int update()
 		////o->RotateY(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
 		//o->RotateZ(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
 	//}, concurrency::static_partitioner());
-	
+
 	for (auto it = objects.begin(); it != objects.end(); ++it)
 	{
 		//o->RotateX(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
@@ -514,10 +514,10 @@ int main(int argc, char **argv)
 		return initStatus;
 
 	init();
-	
+
 	Puddi::RegisterUpdateFunction(update);
-	
+
 	Puddi::RegisterPreDrawFunction(draw);
-	
+
 	return Puddi::Run();
 }

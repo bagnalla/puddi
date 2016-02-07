@@ -1,11 +1,12 @@
 #ifndef FONT_H
 #define FONT_H
 
-#include "Rectangle.h"
 #include <vector>
 
 namespace puddi
 {
+    class Rectangle;
+
 	class Font
 	{
 	public:

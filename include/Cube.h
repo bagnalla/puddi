@@ -15,8 +15,6 @@ namespace puddi
 		bool ContainsPoint(const vec4& p) const;
 
 	private:
-		static int indexOffset;
-		static int indexCount;
 
 		static void createPrototypeVertices();
 	};
