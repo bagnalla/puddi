@@ -10,8 +10,10 @@
 #include "Font.h"
 #include <vector>
 #include <iostream>
+#include <string>
 
 using namespace puddi;
+using namespace std;
 
 LightSource *lightSource;
 Object *objectContainer;
@@ -46,19 +48,52 @@ void init(void)
 	skybox->SetScale(Puddi::ViewDistance);
 
 	// OBJECTS
-    rect = new Rectangle(objectContainer);
-    rect->SetTexture(texture);
-    rect->RotateX(M_PI / 2.0f);
+    //rect = new Rectangle(objectContainer);
+    //rect->SetTexture(texture);
+    //rect->RotateX(M_PI / 2.0f);
 
 	// MIDDLE CUBE
-	cube = new Cube(objectContainer);
-	//cube->SetPosition(vec4(0.0f, 0.0f, -Puddi::WorldSize * 0.25f, 1.0));
-	cube->SetTexture(texture);
-	//cube->SetBumpMapEnabled(false);
-	cube->Scale(00000.1f);
-	//cube->RotateX(-M_PI / 2.0f);
-	//cube->SetEmissionColor(vec4(0.0f, 0.0f, 0.0f, 0.0f));
-	//cube->SetEmissive(true);
+	//cube = new Cube(objectContainer);
+	//cube->SetTexture(texture);
+	//cube->Scale(00000.1f);
+	
+	//DrawableObject *object = new DrawableObject(objectContainer, VertexMesh::GetVertexMeshPrototypeByName("a"));
+	////DrawableObject *object = new Rectangle(objectContainer);
+	//object->SetTexture(Texture::GetTextureByName("myfont"));
+	//object->SetBumpMapEnabled(false);
+	//object->RotateX(M_PI / 2.0f);
+	
+	//int rows = 10;
+	//int cols = 10;
+	//for (int i = 0; i < rows; ++i)
+	//{
+		//for (int j = 0; j < cols; ++j)
+		//{
+			//DrawableObject *object = new DrawableObject(objectContainer, VertexMesh::GetVertexMeshPrototypeByName(std::string(1, i * cols + j + 32)));
+			//object->SetTexture(Texture::GetTextureByName("myfont"));
+			//object->RotateX(M_PI / 2.0f);
+			//object->Translate(vec4(j, 0.0f, -i, 0.0f));
+		//}
+	//}
+	
+	//string msg = "int main() { cout << \"hello\" << endl; }";
+	vector<string> lines;
+	lines.push_back("int main()");
+	lines.push_back("{");
+	lines.push_back("  cout << \"hello\" << endl;");
+	lines.push_back("}");
+	for (int j = 0; j < lines.size(); j++)
+	{
+		string msg = lines[j];
+		for (int i = 0; i < msg.length(); ++i)
+		{
+			DrawableObject *object = new DrawableObject(objectContainer, VertexMesh::GetVertexMeshPrototypeByName(std::string(1, msg[i])));
+			object->SetTexture(Texture::GetTextureByName("myfont"));
+			object->RotateX(M_PI / 2.0f);
+			object->Translate(vec4(i, 0.0f, -j, 0.0f));
+			object->SetEmissive(true);
+		}
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -134,7 +169,7 @@ int update()
 	}
 	//o->RotateX(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
 	//o->RotateY(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
-	cube->RotateZ(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
+	//cube->RotateZ(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
 
 	//rect->RotateZ(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
 

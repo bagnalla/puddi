@@ -6,6 +6,7 @@
 //#include <glm/vec4.hpp>
 #include "Material.h"
 #include <GL/glew.h>
+#include <string>
 #include <unordered_map>
 
 namespace puddi
@@ -23,9 +24,9 @@ namespace puddi
 
 		~VertexMesh();
 
-		static void AddVertexMeshPrototype(const char *name, const Material& mat, int vOffset, int vCount, bool tStrip);
+		static void AddVertexMeshPrototype(const std::string &name, const Material& mat, int iOffset, int iCount, bool tStrip);
 
-		static VertexMesh GetVertexMeshPrototypeByName(const char *name);
+		static VertexMesh GetVertexMeshPrototypeByName(const std::string &name);
 
 		virtual void Draw() const;
 
@@ -67,7 +68,7 @@ namespace puddi
 		void SetRenderEnabled(bool b);
 
 	private:
-		static std::unordered_map<const char*, VertexMesh> vertexMeshPrototypeMap;
+		static std::unordered_map<std::string, VertexMesh> vertexMeshPrototypeMap;
 
 		DrawableObject *owner;
 		Material material;

@@ -41,16 +41,16 @@ namespace puddi
 		}
 	}
 
-	void VertexMesh::AddVertexMeshPrototype(const char *name, const Material& mat, int vOffset, int vCount, bool tStrip)
+	void VertexMesh::AddVertexMeshPrototype(const std::string &name, const Material& mat, int iOffset, int iCount, bool tStrip)
 	{
 		auto it = vertexMeshPrototypeMap.find(name);
 		if (it == vertexMeshPrototypeMap.end())
-			vertexMeshPrototypeMap.emplace(name, VertexMesh(NULL, mat, vOffset, vCount, tStrip));
+			vertexMeshPrototypeMap.emplace(name, VertexMesh(NULL, mat, iOffset, iCount, tStrip));
 		else
 			std::cerr << "vertex mesh already exists with name: " << name << std::endl;
 	}
 
-	VertexMesh VertexMesh::GetVertexMeshPrototypeByName(const char *name)
+	VertexMesh VertexMesh::GetVertexMeshPrototypeByName(const std::string &name)
 	{
 		auto it = vertexMeshPrototypeMap.find(name);
 		if (it != vertexMeshPrototypeMap.end())
@@ -198,7 +198,7 @@ namespace puddi
 
 	// PRIVATE
 
-	std::unordered_map<const char*, VertexMesh> VertexMesh::vertexMeshPrototypeMap;
+	std::unordered_map<std::string, VertexMesh> VertexMesh::vertexMeshPrototypeMap;
 
 	void VertexMesh::init()
 	{
