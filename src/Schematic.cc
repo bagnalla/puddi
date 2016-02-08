@@ -58,8 +58,8 @@ namespace puddi
 			return -2;
 		}
 
-		// cleanup - calling 'aiReleaseImport' is important, as the library 
-		// keeps internal resources until the scene is freed again. Not 
+		// cleanup - calling 'aiReleaseImport' is important, as the library
+		// keeps internal resources until the scene is freed again. Not
 		// doing so can cause severe resource leaking.
 		aiReleaseImport(scene);
 
@@ -83,7 +83,7 @@ namespace puddi
 		aiVector3D position;
 
 		node->mTransformation.Decompose(scaling, rotation, position);*/
-		
+
 		// TRANSFORM
 		// WARNING: THIS CONSTRUCTOR MIGHT NOT BEHAVE THE WAY WE WANT
 		schematicNode->transform = mat4(
@@ -92,7 +92,7 @@ namespace puddi
 			vec4(node->mTransformation.c1, node->mTransformation.c2, node->mTransformation.c3, node->mTransformation.c4),
 			vec4(node->mTransformation.d1, node->mTransformation.d2, node->mTransformation.d3, node->mTransformation.d4)
 		);
-		
+
 		// may be multiple meshes per node (transform shared among them)
 		for (uint i = 0; i < node->mNumMeshes; ++i)
 		{
@@ -138,10 +138,14 @@ namespace puddi
 			if (mesh->HasTextureCoords(0))
 			{
 				for (int j = 0; j < mesh->mNumVertices; ++j)
+				{
+                    //std::cout << mesh->mTextureCoords[0][j].x << " " << mesh->mTextureCoords[0][j].y << std::endl;
 					textureCoordinates.push_back(vec2(mesh->mTextureCoords[0][j].x, -mesh->mTextureCoords[0][j].y));
+                }
 			}
 			else
 			{
+                std::cerr << "no texture coordinates for model " << subdirectory << std::endl;
 				for (int j = 0; j < mesh->mNumVertices; ++j)
 					textureCoordinates.push_back(vec2(0.0f, 0.0f));
 			}

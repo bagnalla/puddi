@@ -7,6 +7,7 @@
 namespace puddi
 {
 	class VertexMesh;
+	class TerrainVertexMesh;
 	struct SchematicNode;
 
 	class DrawableObject : public Object
@@ -15,6 +16,8 @@ namespace puddi
 		DrawableObject(const Object *par);
 
 		DrawableObject(const Object *par, const VertexMesh &mesh);
+
+		DrawableObject(const Object *par, TerrainVertexMesh *mesh);
 
 		DrawableObject(const Object *par, SchematicNode *schematic);
 

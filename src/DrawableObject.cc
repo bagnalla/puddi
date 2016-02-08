@@ -5,6 +5,7 @@
 #include "Puddi.h"
 #include "Shadow.h"
 #include "VertexMesh.h"
+#include "TerrainVertexMesh.h"
 #include "Schematic.h"
 #include "Texture.h"
 
@@ -25,7 +26,17 @@ namespace puddi
 		vertexMesh->SetOwner(this);
 		vertexMeshes.push_back(vertexMesh);
 
-		//updateRenderNodes();
+		updateRenderNodes();
+	}
+
+	DrawableObject::DrawableObject(const Object *par, TerrainVertexMesh *mesh) : Object(par)
+	{
+        init();
+
+        mesh->SetOwner(this);
+		vertexMeshes.push_back(mesh);
+
+		updateRenderNodes();
 	}
 
 	DrawableObject::DrawableObject(const Object *par, SchematicNode *schematic) : DrawableObject(par)
@@ -80,6 +91,8 @@ namespace puddi
 		for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)
 			(*it)->SetEmissionColor(c);
 		updateRenderNodes();
+		for (auto it = children.begin(); it != children.end(); ++it)
+			static_cast<DrawableObject*>(*it)->SetEmissionColor(c);
 	}
 
 	void DrawableObject::SetMaterial(const Material& m)
@@ -87,6 +100,8 @@ namespace puddi
 		for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)
 			(*it)->SetMaterial(m);
 		updateRenderNodes();
+		for (auto it = children.begin(); it != children.end(); ++it)
+			static_cast<DrawableObject*>(*it)->SetMaterial(m);
 	}
 
 	void DrawableObject::SetTexture(GLuint tex)
@@ -94,6 +109,8 @@ namespace puddi
 		for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)
 			(*it)->SetTexture(tex);
 		updateRenderNodes();
+		for (auto it = children.begin(); it != children.end(); ++it)
+			static_cast<DrawableObject*>(*it)->SetTexture(tex);
 	}
 
 	void DrawableObject::SetCubeMap(GLuint cm)

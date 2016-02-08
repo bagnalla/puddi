@@ -65,7 +65,9 @@ namespace puddi
 		static void RegisterPreDrawFunction(draw_function f);
 		static void RegisterDrawFunction(draw_function f);
 
+        // must be called after Shader::Init (call from post_init function)
 		static void EnableShadows(ShadowMode mode, ShadowResolution resolution);
+
 		static void SetShadowLightPosition(const glm::vec3 &pos);
 		static void SetShadowIgnoreObject(DrawableObject *o);
 

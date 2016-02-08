@@ -118,7 +118,7 @@ namespace puddi
 		// start texture loading
 		Texture::InitTextureLoading();
 
-		std::cerr << "Puddi initialization complete. Waiting to enter Run()...\n";
+		std::cerr << "Puddi: initialization complete. Waiting for call to Run() ...\n";
 
 		return 0;
 	}
@@ -135,6 +135,8 @@ namespace puddi
             (*it)();
 
 		int status_code;
+
+		std::cerr << "Puddi: entering main loop\n";
 
 		while (true)
 		{
@@ -206,7 +208,7 @@ namespace puddi
         else
             Shadow::RenderShadowCubeMap(vec3(1.0f, 0.0f, 0.0f), shadowIgnoreObject);
 
-            Shadow::SetMode(mode);
+        Shadow::SetMode(mode);
 
         Shadow::SetResolution(resolution);
     }

@@ -13,6 +13,7 @@
 #include "HeightMapTerrain.h"
 #include "Shadow.h"
 #include "RenderGraph.h"
+#include "Schematic.h"
 #include <vector>
 #include <iostream>
 #include <string>
@@ -56,11 +57,19 @@ void init(void)
 	terrainMesh->SetTexture3(Texture::GetTextureByName("stone1"));
 	terrainMesh->SetTexture4(Texture::GetTextureByName("snow1"));
 	terrainMesh->SetTextureHeights(vec4(0.0f, 0.3f, 0.5f, 0.9f));
+	DrawableObject *terrainContainer = new DrawableObject(Puddi::GetRootObject(), terrainMesh);
+	terrainContainer->Scale(0.01f);
+
+	//if (Schematic::InitSchematic("models/cube rounded.obj", "cube") < 0)
+	//if (Schematic::InitSchematic("models/cube rounded - 554 faces.obj", "cube") < 0)
+	if (Schematic::InitSchematic("models/alien_boss_spider.obj", "cube") < 0)
+		std::cerr << "error loading cube rounded model\n";
 
 	auto terrain = new DrawableObject(Puddi::GetRootObject());
 	terrain->AddVertexMesh(terrainMesh);
-	terrain->SetScale(10.0f);
-	terrain->Translate(vec4(-1000.0f, -1000.0f, -1000.0f, 0.0f));
+	terrain->SetScale(1.0f);
+	//terrain->Translate(vec4(-1000.0f, -1000.0f, -1000.0f, 0.0f));
+	terrain->Translate(vec4(-100.0f, -100.0f, -100.0f, 0.0f));
 
 	// CONTAINERS
 	objectContainer = new Object(Puddi::GetRootObject());
@@ -77,10 +86,11 @@ void init(void)
     //rect->RotateX(M_PI / 2.0f);
 
 	// MIDDLE CUBE
-	cube = new Cube(objectContainer);
+	cube = new DrawableObject(objectContainer, Schematic::GetSchematicByName("cube"));
 	cube->SetTexture(texture);
-	cube->SetScale(100);
-	//cube->Scale(00000.1f);
+	//cube->SetScale(100);
+	cube->Translate(vec4(-50.0f, 0.0f, 0.0f, 0.0f));
+	cube->Scale(0.01f);
 
 	//DrawableObject *object = new DrawableObject(objectContainer, VertexMesh::GetVertexMeshPrototypeByName("a"));
 	////DrawableObject *object = new Rectangle(objectContainer);
@@ -124,7 +134,7 @@ void init(void)
 
     vec4 initialPos = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     vec4 posCursor = initialPos;
-    float charSize = 6.0f;
+    float charSize = 0.5f;
     float tabSpace = 4.0f * charSize;
     for (int i = 0; i < fileChars.size(); ++i)
     {
@@ -242,7 +252,7 @@ int update()
 	}
 	//o->RotateX(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
 	//o->RotateY(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
-	//cube->RotateZ(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
+	cube->RotateZ(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
 
 	//rect->RotateZ(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
 
@@ -266,7 +276,7 @@ void draw()
 
 int main(int argc, char **argv)
 {
-	if (int initStatus = Puddi::Init(2000.0f) != 0)
+	if (int initStatus = Puddi::Init(250.0f) != 0)
 		return initStatus;
 
 	init();
