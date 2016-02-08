@@ -13,6 +13,7 @@
 #include "Util.h"
 #include "FpsTracker.h"
 #include "Font.h"
+#include "DrawableObject.h"
 //#include <SDL2/SDL_ttf.h>
 #include <iostream>
 
@@ -106,7 +107,7 @@ namespace puddi
 		glClearColor(0.5, 0.5, 1.0, 1.0);
 
 		// initialize projection matrix
-		Puddi::UpdateProjectionMatrixAndViewport();
+		UpdateProjectionMatrixAndViewport();
 
 		// SET SHADOW NEAR AND FAR PLANES
 		Shadow::SetZRange(2.0f, Puddi::ViewDistance);
@@ -117,7 +118,7 @@ namespace puddi
 		// start texture loading
 		Texture::InitTextureLoading();
 
-		std::cerr << "Puddi initialization complete.\n";
+		std::cerr << "Puddi initialization complete. Waiting to enter Run()...\n";
 
 		return 0;
 	}
@@ -128,6 +129,10 @@ namespace puddi
 		Texture::EndTextureLoading();
 
 		sendVertexDataToGPU();
+
+		// call post-init functions
+        for (auto it = postInitFunctions.begin(); it != postInitFunctions.end(); ++it)
+            (*it)();
 
 		int status_code;
 
@@ -146,6 +151,8 @@ namespace puddi
 			// call pre-draw functions
             for (auto it = preDrawFunctions.begin(); it != preDrawFunctions.end(); ++it)
                 (*it)();
+
+            preDraw();
 
 			draw();
 		}
@@ -170,6 +177,11 @@ namespace puddi
 		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	}
 
+    void Puddi::RegisterPostInitFunction(init_function f)
+	{
+		postInitFunctions.push_back(f);
+	}
+
 	void Puddi::RegisterUpdateFunction(update_function f)
 	{
 		updateFunctions.push_back(f);
@@ -185,6 +197,30 @@ namespace puddi
 		drawFunctions.push_back(f);
 	}
 
+    void Puddi::EnableShadows(ShadowMode mode, ShadowResolution resolution)
+    {
+        // initial call to these so that the shadow map binding will
+        // work when you enable shadows
+        if (mode == SHADOW_MODE_UNI)
+            Shadow::RenderShadowOrthoMap(vec3(1.0f, 0.0f, 0.0f));
+        else
+            Shadow::RenderShadowCubeMap(vec3(1.0f, 0.0f, 0.0f), shadowIgnoreObject);
+
+            Shadow::SetMode(mode);
+
+        Shadow::SetResolution(resolution);
+    }
+
+    void Puddi::SetShadowLightPosition(const glm::vec3 &pos)
+    {
+        shadowLightPosition = pos;
+    }
+
+    void Puddi::SetShadowIgnoreObject(DrawableObject *o)
+    {
+        shadowIgnoreObject = o;
+    }
+
 	// PRIVATE
 
 	SDL_Window* Puddi::window;
@@ -194,9 +230,13 @@ namespace puddi
 	UpdateNode* Puddi::rootUpdateNode;
 	ModelNode* Puddi::rootModelNode;
 
+    std::vector<init_function> Puddi::postInitFunctions;
 	std::vector<update_function> Puddi::updateFunctions;
 	std::vector<draw_function> Puddi::preDrawFunctions;
 	std::vector<draw_function> Puddi::drawFunctions;
+
+	glm::vec3 Puddi::shadowLightPosition;
+	DrawableObject* Puddi::shadowIgnoreObject = nullptr;
 
 	int Puddi::update()
 	{
@@ -210,6 +250,14 @@ namespace puddi
 		//std::cout << rootModelNode->children.size() << std::endl;
 
 		return 0;
+	}
+
+	void Puddi::preDraw()
+	{
+        if (Shadow::GetMode() == SHADOW_MODE_UNI)
+            Shadow::RenderShadowOrthoMap(shadowLightPosition);
+        else if (Shadow::GetMode() == SHADOW_MODE_OMNI)
+            Shadow::RenderShadowCubeMap(shadowLightPosition, shadowIgnoreObject);
 	}
 
 	void Puddi::draw()

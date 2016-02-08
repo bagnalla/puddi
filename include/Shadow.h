@@ -3,8 +3,8 @@
 
 //#define SHADOW_MAP_SIZE 512
 //#define SHADOW_MAP_SIZE 1024
-//#define SHADOW_MAP_SIZE 2048
-#define SHADOW_MAP_SIZE 4096
+#define SHADOW_MAP_SIZE 2048
+//#define SHADOW_MAP_SIZE 4096
 
 #include <GL/glew.h>
 #include <glm/vec2.hpp>

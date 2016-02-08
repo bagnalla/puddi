@@ -18,11 +18,15 @@ namespace puddi
 	class Object;
 	class RenderGraph;
 	class Camera;
+	class DrawableObject;
 	struct UpdateNode;
 	struct ModelNode;
+	enum ShadowMode : int;
+	enum ShadowResolution : int;
 
 	typedef int (*update_function)(void);
 	typedef void (*draw_function)(void);
+	typedef void (*init_function)(void);
 
 	class Puddi
 	{
@@ -56,9 +60,14 @@ namespace puddi
 		// only enables full screen atm
 		static void ToggleFullScreen();
 
+        static void RegisterPostInitFunction(init_function f);
 		static void RegisterUpdateFunction(update_function f);
 		static void RegisterPreDrawFunction(draw_function f);
 		static void RegisterDrawFunction(draw_function f);
+
+		static void EnableShadows(ShadowMode mode, ShadowResolution resolution);
+		static void SetShadowLightPosition(const glm::vec3 &pos);
+		static void SetShadowIgnoreObject(DrawableObject *o);
 
 	private:
 		static SDL_Window *window;
@@ -68,11 +77,17 @@ namespace puddi
 		static UpdateNode *rootUpdateNode;
 		static ModelNode *rootModelNode;
 
+        static std::vector<init_function> postInitFunctions;
 		static std::vector<update_function> updateFunctions;
 		static std::vector<draw_function> preDrawFunctions;
 		static std::vector<draw_function> drawFunctions;
 
+		static glm::vec3 shadowLightPosition;
+		static DrawableObject *shadowIgnoreObject;
+
 		static int update();
+
+		static void preDraw();
 
 		static void draw();
 

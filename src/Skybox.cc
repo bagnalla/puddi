@@ -16,7 +16,6 @@ namespace puddi
 	{
 		RotateX(-M_PI / 2.0f);
 		RotateZ(M_PI);
-		DisableShadowCasting();
 		AddIgnoreParentModelFlag(IGNORE_PARENT_ROTATIONX | IGNORE_PARENT_ROTATIONY | IGNORE_PARENT_ROTATIONZ);
 	}
 

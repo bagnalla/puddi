@@ -40,7 +40,7 @@ void init(void)
 	lightSource->ambient = vec4(1.0, 1.0, 1.0, 1.0);
 	lightSource->diffuse = vec4(1.0, 1.0, 1.0, 1.0);
 	lightSource->specular = vec4(1.0, 1.0, 1.0, 1.0);
-	lightSource->position = vec4(-1.0f, -1.0f, 1.0f, 0.0f);
+	lightSource->position = vec4(-250.0f, -500.0f, 500.0f, 0.0f);
 	lightSource->UpdateMatrix();
 	LightSource::UpdateLightSourceMatricesInShaders();
 
@@ -62,11 +62,6 @@ void init(void)
 	terrain->SetScale(10.0f);
 	terrain->Translate(vec4(-1000.0f, -1000.0f, -1000.0f, 0.0f));
 
-	// ENABLE SHADOWS
-	Shadow::RenderShadowOrthoMap(vec3(lightSource->position));
-	Shadow::SetMode(SHADOW_MODE_UNI);
-	Shadow::SetResolution(SHADOW_RESOLUTION_EXTRA_HIGH);
-
 	// CONTAINERS
 	objectContainer = new Object(Puddi::GetRootObject());
 
@@ -74,6 +69,7 @@ void init(void)
 	skybox->SetCubeMap(Texture::GetCubeMapByName("skybox_2"));
 	skybox->SetEmissive(true);
 	skybox->SetScale(Puddi::ViewDistance);
+	skybox->DisableShadowCasting();
 
 	// OBJECTS
     //rect = new Rectangle(objectContainer);
@@ -83,6 +79,7 @@ void init(void)
 	// MIDDLE CUBE
 	cube = new Cube(objectContainer);
 	cube->SetTexture(texture);
+	cube->SetScale(100);
 	//cube->Scale(00000.1f);
 
 	//DrawableObject *object = new DrawableObject(objectContainer, VertexMesh::GetVertexMeshPrototypeByName("a"));
@@ -127,13 +124,13 @@ void init(void)
 
     vec4 initialPos = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     vec4 posCursor = initialPos;
-    float charSize = 10.0f;
+    float charSize = 6.0f;
     float tabSpace = 4.0f * charSize;
     for (int i = 0; i < fileChars.size(); ++i)
     {
         char c = fileChars[i];
 
-        cout << c << endl;
+        //cout << c << endl;
 
         // tab
         if (c == 9)
@@ -149,6 +146,12 @@ void init(void)
             posCursor.x = initialPos.x;
             continue;
         }
+
+//        if (c == 32)
+//        {
+//            posCursor += vec4(charSize, 0.0f, 0.0f, 0.0f);
+//            continue;
+//        }
 
         // ignore weird characters
         if (c < 32 || c > 126)
@@ -246,21 +249,33 @@ int update()
 	return 0;
 }
 
+void enableShadows()
+{
+    Puddi::EnableShadows(SHADOW_MODE_UNI, SHADOW_RESOLUTION_MEDIUM);
+    // overwrite z range to give better shadow precision
+	Shadow::SetZRange(100.0f, Puddi::ViewDistance);
+
+	Puddi::SetShadowLightPosition(vec3(lightSource->position));
+}
+
 void draw()
 {
-    Shadow::RenderShadowOrthoMap(vec3(lightSource->position));
+    //Shadow::RenderShadowOrthoMap(vec3(lightSource->position));
+    //Shadow::RenderShadowOrthoMap(vec3(lightSource->position));
 }
 
 int main(int argc, char **argv)
 {
-	if (int initStatus = Puddi::Init(3000.0f) != 0)
+	if (int initStatus = Puddi::Init(2000.0f) != 0)
 		return initStatus;
 
 	init();
 
+	Puddi::RegisterPostInitFunction(enableShadows);
+
 	Puddi::RegisterUpdateFunction(update);
 
-	Puddi::RegisterDrawFunction(draw);
+	//Puddi::RegisterPreDrawFunction(draw);
 
 	return Puddi::Run();
 }

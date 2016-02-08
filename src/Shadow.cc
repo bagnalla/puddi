@@ -80,7 +80,7 @@ namespace puddi
 
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
 
-		glViewport(0, 0, resolution, resolution);
+		glViewport(0, 0, SHADOW_MAP_SIZE, SHADOW_MAP_SIZE);
 
 		mat4 cam;
 		mat4 proj = computeOrthoCamAndProjection(lightDir, cam);
@@ -111,7 +111,7 @@ namespace puddi
 
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
 
-		glViewport(0, 0, resolution, resolution);
+		glViewport(0, 0, SHADOW_MAP_SIZE, SHADOW_MAP_SIZE);
 
 		mat4 projection = perspective(static_cast<float>(M_PI) / 2.0f, 1.0f, zRange.x, zRange.y);
 		Shader::SetProjection(projection);
