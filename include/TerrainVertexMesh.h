@@ -26,6 +26,8 @@ namespace puddi
 		float GetGroundCoordZ() const;
 		float GetScaleZ() const;
 		int GetMaxHeight() const;
+		int GetSizeX() const;
+		int GetSizeY() const;
 
 		void SetTexture1(GLuint tex1);
 		void SetTexture2(GLuint tex2);
@@ -35,6 +37,8 @@ namespace puddi
 		void SetGroundCoordZ(float z);
 		void SetScaleZ(float z);
 		void SetMaxHeight(int h);
+		void SetSizeX(int x);
+		void SetSizeY(int y);
 
 	private:
 		GLuint texture1;
@@ -45,6 +49,9 @@ namespace puddi
 		float groundCoordZ;
 		float scaleZ;
 		int maxHeight;
+
+		int sizeX;  // this * scale.x = x size of mesh
+		int sizeY; // this * scale.y = y size of mesh
 	};
 }
 

@@ -137,6 +137,8 @@ namespace puddi
 		mesh.SetGroundCoordZ(0.0f);
 		mesh.SetScaleZ(scaleZ);
 		mesh.SetMaxHeight(maxHeight);
+		mesh.SetSizeX(surface->w);
+		mesh.SetSizeY(surface->h);
 
 		return mesh;
 

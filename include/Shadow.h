@@ -1,10 +1,7 @@
 #ifndef SHADOW_H
 #define SHADOW_H
 
-//#define SHADOW_MAP_SIZE 512
-//#define SHADOW_MAP_SIZE 1024
-//#define SHADOW_MAP_SIZE 2048
-#define SHADOW_MAP_SIZE 4096
+#define SHADOW_MAP_SIZE_DEFAULT SHADOW_RESOLUTION_MEDIUM
 
 #include <GL/glew.h>
 #include <glm/vec2.hpp>
@@ -61,6 +58,8 @@ namespace puddi
 		static int resolution;
 
 		static std::vector<VertexMesh*> depthRenderList;
+
+		static void configureDepthAndCubeMapBuffers();
 
 		static void renderDepthRenderList();
 

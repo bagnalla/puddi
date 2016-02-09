@@ -201,6 +201,8 @@ namespace puddi
 
     void Puddi::EnableShadows(ShadowMode mode, ShadowResolution resolution)
     {
+        Shadow::SetResolution(resolution);
+
         // initial call to these so that the shadow map binding will
         // work when you enable shadows
         if (mode == SHADOW_MODE_UNI)
@@ -209,8 +211,6 @@ namespace puddi
             Shadow::RenderShadowCubeMap(vec3(1.0f, 0.0f, 0.0f), shadowIgnoreObject);
 
         Shadow::SetMode(mode);
-
-        Shadow::SetResolution(resolution);
     }
 
     void Puddi::SetShadowLightPosition(const glm::vec3 &pos)

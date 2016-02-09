@@ -106,6 +106,14 @@ namespace puddi
 	{
 		return maxHeight;
 	}
+	int TerrainVertexMesh::GetSizeX() const
+	{
+        return sizeX;
+	}
+    int TerrainVertexMesh::GetSizeY() const
+    {
+        return sizeY;
+    }
 
 	void TerrainVertexMesh::SetTexture1(GLuint tex1)
 	{
@@ -138,5 +146,13 @@ namespace puddi
 	void TerrainVertexMesh::SetMaxHeight(int h)
 	{
 		maxHeight = h;
+	}
+	void TerrainVertexMesh::SetSizeX(int x)
+	{
+		sizeX = x;
+	}
+	void TerrainVertexMesh::SetSizeY(int y)
+	{
+		sizeY = y;
 	}
 }

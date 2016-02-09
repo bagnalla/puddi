@@ -45,9 +45,12 @@ void init(void)
 	lightSource->UpdateMatrix();
 	LightSource::UpdateLightSourceMatricesInShaders();
 
-	auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("heightmaps/terrain1_height.jpg", 25.0f, 25.0f, 0.25f));
+	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("heightmaps/terrain1_height.jpg", 25.0f, 25.0f, 0.25f));
+	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("heightmaps/seamless_heightmap_1.jpg", 25.0f, 25.0f, 0.25f));
 	//terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("heightmaps/west_norway.png", 50.0f, 50.0f, 0.25f));
-	//terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/bill.png", 25.0f, 25.0f, 0.1f));
+	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/bill.png", 25.0f, 25.0f, 0.1f));
+	auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ocaml_logo_2.png", 25.0f, 25.0f, 0.1f));
+	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ou_logo_1.png", 25.0f, 25.0f, 0.1f));
 	Texture::LoadTexture("sand1", "textures/sand1.jpg", "bumpmaps/sand1_NRM.jpg");
 	Texture::LoadTexture("grass1", "textures/grass1.jpg", "bumpmaps/grass1_NRM.jpg");
 	Texture::LoadTexture("stone1", "textures/stone1.jpg", "bumpmaps/stone1_NRM.jpg");
@@ -67,9 +70,38 @@ void init(void)
 
 	auto terrain = new DrawableObject(Puddi::GetRootObject());
 	terrain->AddVertexMesh(terrainMesh);
-	terrain->SetScale(1.0f);
+	terrain->SetScale(0.1f);
 	//terrain->Translate(vec4(-1000.0f, -1000.0f, -1000.0f, 0.0f));
-	terrain->Translate(vec4(-100.0f, -100.0f, -100.0f, 0.0f));
+	//terrain->Translate(vec4(-100.0f, -100.0f, -100.0f, 0.0f));
+	terrain->Translate(vec4(-20.0f, -50.0f, -75.0f, 0.0f));
+
+//	for (int i = 1; i < 1; ++i)
+//	{
+//        for (int j = 0; j < 1; ++j)
+//        {
+//            auto terrain = new DrawableObject(Puddi::GetRootObject());
+//            terrain->AddVertexMesh(new TerrainVertexMesh(*terrainMesh));
+//            terrain->SetScale(1.0f);
+//            //terrain->Translate(vec4(-1000.0f, -1000.0f, -1000.0f, 0.0f));
+//            terrain->Translate(vec4(-100.0f, -100.0f, -100.0f, 0.0f));
+//            terrain->Translate(vec4(-254.0f * i, -254.0f * j, 0.0f, 0.0f));
+//            //terrain->Translate(vec4(-1024.0f * i, -1024.0f * j, 0.0f, 0.0f));
+//        }
+//	}
+//
+//	terrain = new DrawableObject(Puddi::GetRootObject());
+//	terrain->AddVertexMesh(new TerrainVertexMesh(*terrainMesh));
+//	terrain->SetScale(1.0f);
+//	//terrain->Translate(vec4(-1000.0f, -1000.0f, -1000.0f, 0.0f));
+//	terrain->Translate(vec4(-100.0f, -100.0f, -100.0f, 0.0f));
+//	terrain->Translate(vec4(0.0f, -254.0f, 0.0f, 0.0f));
+//
+//	terrain = new DrawableObject(Puddi::GetRootObject());
+//	terrain->AddVertexMesh(new TerrainVertexMesh(*terrainMesh));
+//	terrain->SetScale(1.0f);
+//	//terrain->Translate(vec4(-1000.0f, -1000.0f, -1000.0f, 0.0f));
+//	terrain->Translate(vec4(-100.0f, -100.0f, -100.0f, 0.0f));
+//	terrain->Translate(vec4(-254.0f, 0.0f, 0.0f, 0.0f));
 
 	// CONTAINERS
 	objectContainer = new Object(Puddi::GetRootObject());
@@ -261,7 +293,7 @@ int update()
 
 void enableShadows()
 {
-    Puddi::EnableShadows(SHADOW_MODE_UNI, SHADOW_RESOLUTION_MEDIUM);
+    Puddi::EnableShadows(SHADOW_MODE_UNI, SHADOW_RESOLUTION_EXTRA_HIGH);
     // overwrite z range to give better shadow precision
 	Shadow::SetZRange(100.0f, Puddi::ViewDistance);
 
@@ -276,7 +308,7 @@ void draw()
 
 int main(int argc, char **argv)
 {
-	if (int initStatus = Puddi::Init(250.0f) != 0)
+	if (int initStatus = Puddi::Init(500.0f) != 0)
 		return initStatus;
 
 	init();
