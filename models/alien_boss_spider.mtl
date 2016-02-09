@@ -10,6 +10,8 @@ newmtl wire_174186203
 	Ka 0.682353 0.729412 0.796079
 	Kd 0.682353 0.729412 0.796079
 	Ks 0.350000 0.350000 0.350000
+map_Kd Biomechanical_Boss_base_back_d.tga
+map_Bump Biomechanical_Boss_base_back_n.tga
 
 newmtl Material__252
 	Ns 10.000000
@@ -22,6 +24,8 @@ newmtl Material__252
 	Kd 0.588000 0.588000 0.588000
 	Ks 0.000000 0.000000 0.000000
 	Ke 0.000000 0.000000 0.000000
+map_Kd Biomechanical_Boss_base_back_d.tga
+map_Bump Biomechanical_Boss_base_back_n.tga
 
 newmtl Material__254
 	Ns 10.000000
@@ -34,6 +38,8 @@ newmtl Material__254
 	Kd 0.588000 0.588000 0.588000
 	Ks 0.000000 0.000000 0.000000
 	Ke 0.000000 0.000000 0.000000
+map_Kd Biomechanical_Boss_base_back_d.tga
+map_Bump Biomechanical_Boss_base_back_n.tga
 
 newmtl Material__261
 	Ns 10.000000
@@ -46,6 +52,8 @@ newmtl Material__261
 	Kd 0.588000 0.588000 0.588000
 	Ks 0.000000 0.000000 0.000000
 	Ke 0.000000 0.000000 0.000000
+map_Kd Biomechanical_Boss_base_back_d.tga
+map_Bump Biomechanical_Boss_base_back_n.tga
 
 newmtl Material__263
 	Ns 10.000000
@@ -58,3 +66,5 @@ newmtl Material__263
 	Kd 0.588000 0.588000 0.588000
 	Ks 0.000000 0.000000 0.000000
 	Ke 0.000000 0.000000 0.000000
+map_Kd Biomechanical_Boss_base_back_d.tga
+map_Bump Biomechanical_Boss_base_back_n.tga

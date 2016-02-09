@@ -86,12 +86,12 @@ namespace puddi
 
 		// TRANSFORM
 		// WARNING: THIS CONSTRUCTOR MIGHT NOT BEHAVE THE WAY WE WANT
-		schematicNode->transform = mat4(
-			vec4(node->mTransformation.a1, node->mTransformation.a2, node->mTransformation.a3, node->mTransformation.a4),
-			vec4(node->mTransformation.b1, node->mTransformation.b2, node->mTransformation.b3, node->mTransformation.b4),
-			vec4(node->mTransformation.c1, node->mTransformation.c2, node->mTransformation.c3, node->mTransformation.c4),
-			vec4(node->mTransformation.d1, node->mTransformation.d2, node->mTransformation.d3, node->mTransformation.d4)
-		);
+//		schematicNode->transform = mat4(
+//			vec4(node->mTransformation.a1, node->mTransformation.a2, node->mTransformation.a3, node->mTransformation.a4),
+//			vec4(node->mTransformation.b1, node->mTransformation.b2, node->mTransformation.b3, node->mTransformation.b4),
+//			vec4(node->mTransformation.c1, node->mTransformation.c2, node->mTransformation.c3, node->mTransformation.c4),
+//			vec4(node->mTransformation.d1, node->mTransformation.d2, node->mTransformation.d3, node->mTransformation.d4)
+//		);
 
 		// may be multiple meshes per node (transform shared among them)
 		for (uint i = 0; i < node->mNumMeshes; ++i)

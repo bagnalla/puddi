@@ -65,7 +65,8 @@ void init(void)
 
 	//if (Schematic::InitSchematic("models/cube rounded.obj", "cube") < 0)
 	//if (Schematic::InitSchematic("models/cube rounded - 554 faces.obj", "cube") < 0)
-	if (Schematic::InitSchematic("models/alien_boss_spider.obj", "cube") < 0)
+    if (Schematic::InitSchematic("models/alien_boss_spider.obj", "cube", "alien_boss_spider") < 0)
+	//if (Schematic::InitSchematic("models/bb8.obj", "cube", "bb8") < 0)
 		std::cerr << "error loading cube rounded model\n";
 
 	auto terrain = new DrawableObject(Puddi::GetRootObject());
@@ -119,7 +120,7 @@ void init(void)
 
 	// MIDDLE CUBE
 	cube = new DrawableObject(objectContainer, Schematic::GetSchematicByName("cube"));
-	cube->SetTexture(texture);
+	//cube->SetTexture(texture);
 	//cube->SetScale(100);
 	cube->Translate(vec4(-50.0f, 0.0f, 0.0f, 0.0f));
 	cube->Scale(0.01f);
