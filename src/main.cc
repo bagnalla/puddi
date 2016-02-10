@@ -159,7 +159,7 @@ void init(void)
         if (c > 32 && c < 127)
         {
             lTokens.push_back(LexToken { string(1, c), i, i, "" });
-            i++;
+            i += 100;
         }
     }
 
@@ -168,7 +168,7 @@ void init(void)
     lexer->AddVertexMesh(mesh);
     lexer->SetTexture(texture);
     lexer->SetSkipVelocity(0.1f);
-    lexer->SetReadVelocity(0.0005f);
+    lexer->SetReadVelocity(0.1f);
     lexer->Translate(vec4(-10.0f, 0.0f, 0.0f, 0.0f));
 }
 

@@ -99,6 +99,7 @@
 		<Unit filename="include/HeightMap.h" />
 		<Unit filename="include/HeightMapTerrain.h" />
 		<Unit filename="include/InitShader.h" />
+		<Unit filename="include/Lexer.h" />
 		<Unit filename="include/LightSource.h" />
 		<Unit filename="include/Material.h" />
 		<Unit filename="include/ModelGraph.h" />
@@ -112,12 +113,14 @@
 		<Unit filename="include/Shader.h" />
 		<Unit filename="include/Shadow.h" />
 		<Unit filename="include/Skybox.h" />
+		<Unit filename="include/SourceCode.h" />
 		<Unit filename="include/Sphere.h" />
 		<Unit filename="include/TerrainVertexMesh.h" />
 		<Unit filename="include/Text.h" />
 		<Unit filename="include/TextOLD.h" />
 		<Unit filename="include/TextString.h" />
 		<Unit filename="include/Texture.h" />
+		<Unit filename="include/Token.h" />
 		<Unit filename="include/UpdateGraph.h" />
 		<Unit filename="include/Util.h" />
 		<Unit filename="include/VertexMesh.h" />
@@ -198,6 +201,7 @@
 		<Unit filename="src/HeightMap.cc" />
 		<Unit filename="src/HeightMapTerrain.cc" />
 		<Unit filename="src/InitShader.cc" />
+		<Unit filename="src/Lexer.cc" />
 		<Unit filename="src/LightSource.cc" />
 		<Unit filename="src/Material.cc" />
 		<Unit filename="src/ModelGraph.cc" />
@@ -211,12 +215,14 @@
 		<Unit filename="src/Shader.cc" />
 		<Unit filename="src/Shadow.cc" />
 		<Unit filename="src/Skybox.cc" />
+		<Unit filename="src/SourceCode.cc" />
 		<Unit filename="src/Sphere.cc" />
 		<Unit filename="src/TerrainVertexMesh.cc" />
 		<Unit filename="src/Text.cc" />
 		<Unit filename="src/TextOLD.cc" />
 		<Unit filename="src/TextString.cc" />
 		<Unit filename="src/Texture.cc" />
+		<Unit filename="src/Token.cc" />
 		<Unit filename="src/UpdateGraph.cc" />
 		<Unit filename="src/Util.cc" />
 		<Unit filename="src/VertexMesh.cc" />
