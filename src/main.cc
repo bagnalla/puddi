@@ -14,12 +14,16 @@
 #include "Shadow.h"
 #include "RenderGraph.h"
 #include "Schematic.h"
+#include "SourceCode.h"
+#include "Token.h"
+#include "Lexer.h"
 #include <vector>
 #include <iostream>
 #include <string>
 
 using namespace puddi;
 using namespace std;
+using namespace grumpy;
 
 LightSource *lightSource;
 Object *objectContainer;
@@ -65,16 +69,18 @@ void init(void)
 
 	//if (Schematic::InitSchematic("models/cube rounded.obj", "cube") < 0)
 	//if (Schematic::InitSchematic("models/cube rounded - 554 faces.obj", "cube") < 0)
-    if (Schematic::InitSchematic("models/alien_boss_spider.obj", "cube", "alien_boss_spider") < 0)
+    //if (Schematic::InitSchematic("models/alien_boss_spider.obj", "cube", "alien_boss_spider") < 0)
 	//if (Schematic::InitSchematic("models/bb8.obj", "cube", "bb8") < 0)
-		std::cerr << "error loading cube rounded model\n";
+	//	std::cerr << "error loading cube rounded model\n";
 
 	auto terrain = new DrawableObject(Puddi::GetRootObject());
 	terrain->AddVertexMesh(terrainMesh);
 	terrain->SetScale(0.1f);
+	terrain->SetScaleX(0.25f);
+	terrain->SetScaleY(0.25f);
 	//terrain->Translate(vec4(-1000.0f, -1000.0f, -1000.0f, 0.0f));
 	//terrain->Translate(vec4(-100.0f, -100.0f, -100.0f, 0.0f));
-	terrain->Translate(vec4(-20.0f, -50.0f, -75.0f, 0.0f));
+	terrain->Translate(vec4(-20.0f, -125.0f, -125.0f, 0.0f));
 
 //	for (int i = 1; i < 1; ++i)
 //	{
@@ -119,11 +125,11 @@ void init(void)
     //rect->RotateX(M_PI / 2.0f);
 
 	// MIDDLE CUBE
-	cube = new DrawableObject(objectContainer, Schematic::GetSchematicByName("cube"));
-	//cube->SetTexture(texture);
-	//cube->SetScale(100);
-	cube->Translate(vec4(-50.0f, 0.0f, 0.0f, 0.0f));
-	cube->Scale(0.01f);
+//	cube = new DrawableObject(objectContainer, Schematic::GetSchematicByName("cube"));
+//	//cube->SetTexture(texture);
+//	//cube->SetScale(100);
+//	cube->Translate(vec4(-50.0f, 0.0f, 0.0f, 0.0f));
+//	cube->Scale(0.01f);
 
 	//DrawableObject *object = new DrawableObject(objectContainer, VertexMesh::GetVertexMeshPrototypeByName("a"));
 	////DrawableObject *object = new Rectangle(objectContainer);
@@ -144,72 +150,26 @@ void init(void)
 		//}
 	//}
 
-	//string msg = "int main() { cout << \"hello\" << endl; }";
-//	vector<string> lines;
-//	lines.push_back("int main()");
-//	lines.push_back("{");
-//	lines.push_back("  cout << \"hello\" << endl;");
-//	lines.push_back("}");
-//	for (int j = 0; j < lines.size(); j++)
-//	{
-//		string msg = lines[j];
-//		for (int i = 0; i < msg.length(); ++i)
-//		{
-//			DrawableObject *object = new DrawableObject(objectContainer, VertexMesh::GetVertexMeshPrototypeByName(std::string(1, msg[i])));
-//			object->SetTexture(Texture::GetTextureByName("myfont"));
-//			object->RotateX(M_PI / 2.0f);
-//			object->Translate(vec4(i, 0.0f, -j, 0.0f));
-//			object->SetEmissive(true);
-//		}
-//	}
+    SourceCode *sourceCode = new SourceCode(Puddi::GetRootObject(), "sourcefile.cc", "myfont");
 
-    vector<char> fileChars = Util::ReadAllBytes("sourcefile.cc");
-
-    vec4 initialPos = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-    vec4 posCursor = initialPos;
-    float charSize = 0.5f;
-    float tabSpace = 4.0f * charSize;
-    for (int i = 0; i < fileChars.size(); ++i)
+    vector<LexToken> lTokens;
+    for (int i = 0; i < sourceCode->characters.size(); ++i)
     {
-        char c = fileChars[i];
-
-        //cout << c << endl;
-
-        // tab
-        if (c == 9)
+        char c = sourceCode->characters[i];
+        if (c > 32 && c < 127)
         {
-            posCursor += vec4(tabSpace, 0.0f, 0.0f, 0.0f);
-            continue;
+            lTokens.push_back(LexToken { string(1, c), i, i, "" });
+            i++;
         }
-
-        // carriage return
-        if (c == 13 || c == 10)
-        {
-            posCursor += vec4(0.0f, 0.0f, -charSize, 0.0f);
-            posCursor.x = initialPos.x;
-            continue;
-        }
-
-//        if (c == 32)
-//        {
-//            posCursor += vec4(charSize, 0.0f, 0.0f, 0.0f);
-//            continue;
-//        }
-
-        // ignore weird characters
-        if (c < 32 || c > 126)
-            continue;
-
-        DrawableObject *object = new DrawableObject(objectContainer, VertexMesh::GetVertexMeshPrototypeByName(std::string(1, c)));
-        object->SetTexture(Texture::GetTextureByName("myfont"));
-        object->RotateX(M_PI / 2.0f);
-        object->SetPosition(posCursor);
-        object->SetEmissive(true);
-        object->MoveToSecondaryRenderGraph();
-        object->Scale(charSize);
-
-        posCursor += vec4(charSize, 0.0f, 0.0f, 0.0f);
     }
+
+    Lexer *lexer = new Lexer(Puddi::GetRootObject(), sourceCode, lTokens);
+    auto *mesh = new VertexMesh(VertexMesh::GetVertexMeshPrototypeByName("cube"));
+    lexer->AddVertexMesh(mesh);
+    lexer->SetTexture(texture);
+    lexer->SetSkipVelocity(0.1f);
+    lexer->SetReadVelocity(0.0005f);
+    lexer->Translate(vec4(-10.0f, 0.0f, 0.0f, 0.0f));
 }
 
 //----------------------------------------------------------------------------
@@ -285,7 +245,8 @@ int update()
 	}
 	//o->RotateX(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
 	//o->RotateY(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
-	cube->RotateZ(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
+	if (cube != nullptr)
+        cube->RotateZ(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
 
 	//rect->RotateZ(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
 
