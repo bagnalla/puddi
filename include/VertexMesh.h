@@ -67,8 +67,8 @@ namespace puddi
 		bool GetRenderEnabled();
 		void SetRenderEnabled(bool b);
 
-		bool GetSecondaryRender();
-		void SetSecondaryRender(bool b);
+		bool GetRenderGraphIndex();
+		void SetRenderGraphIndex(size_t i);
 
 	private:
 		static std::unordered_map<std::string, VertexMesh> vertexMeshPrototypeMap;
@@ -83,7 +83,6 @@ namespace puddi
 		vec4 emissionColor;
 		RenderNode *renderNode;
 		bool renderEnabled;
-		bool secondaryRender;
 
 		bool triangleStrip;
 
@@ -92,6 +91,7 @@ namespace puddi
 	protected:
 		uint indexOffset;
 		uint indexCount;
+		size_t renderGraphIndex;
 	};
 }
 

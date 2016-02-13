@@ -1,3 +1,5 @@
 libglm
 libsdl2
 libglew
+libassimp
+libsdl-image1.2

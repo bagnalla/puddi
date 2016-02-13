@@ -17,6 +17,8 @@
 //#include <SDL2/SDL_ttf.h>
 #include <iostream>
 
+using namespace std;
+
 namespace puddi
 {
 	// PUBLIC
@@ -30,9 +32,6 @@ namespace puddi
 	vec4 Puddi::CameraPosition;
 
 	Camera* Puddi::MainCamera;
-
-	RenderGraph* Puddi::MainRenderGraph = new RenderGraph();
-	RenderGraph* Puddi::SecondaryRenderGraph = new RenderGraph();
 
 	std::string Puddi::WindowTitleMessage = "";
 
@@ -73,6 +72,9 @@ namespace puddi
 
 		if (SDL_SetRelativeMouseMode(SDL_TRUE) == -1)
 			std::cerr << "unable to set relative mouse mode.\n";
+
+        // default render graph
+        renderGraphs.push_back(new RenderGraph());
 
 		Rectangle::Init();
 		Cube::Init();
@@ -174,6 +176,30 @@ namespace puddi
 		return rootObject;
 	}
 
+    RenderGraph* Puddi::GetDefaultRenderGraph()
+    {
+        return renderGraphs[0];
+    }
+
+    RenderGraph* Puddi::GetRenderGraph(size_t index)
+    {
+        if (index >= renderGraphs.size())
+            return nullptr;
+        return renderGraphs[index];
+    }
+
+    size_t Puddi::AddRenderGraph()
+    {
+        renderGraphs.push_back(new RenderGraph());
+        return renderGraphs.size() - 1;
+    }
+
+    void Puddi::RenderAll()
+    {
+        for (auto it = renderGraphs.begin(); it != renderGraphs.end(); ++it)
+            (*it)->Render();
+    }
+
 	void Puddi::ToggleFullScreen()
 	{
 		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
@@ -232,6 +258,8 @@ namespace puddi
 	UpdateNode* Puddi::rootUpdateNode;
 	ModelNode* Puddi::rootModelNode;
 
+	vector<RenderGraph*> Puddi::renderGraphs;
+
     std::vector<init_function> Puddi::postInitFunctions;
 	std::vector<update_function> Puddi::updateFunctions;
 	std::vector<draw_function> Puddi::preDrawFunctions;
@@ -268,9 +296,7 @@ namespace puddi
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		MainRenderGraph->Render();
-
-		SecondaryRenderGraph->Render();
+        RenderAll();
 
 		// call additional draw functions
         for (auto it = drawFunctions.begin(); it != drawFunctions.end(); ++it)

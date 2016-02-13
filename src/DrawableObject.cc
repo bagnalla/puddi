@@ -191,16 +191,16 @@ namespace puddi
 			static_cast<DrawableObject*>(*it)->DisableShadowCasting();
 	};
 
-	void DrawableObject::MoveToSecondaryRenderGraph()
+	void DrawableObject::SetRenderGraph(size_t index)
 	{
         for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)
         {
             auto vMesh = *it;
-            vMesh->SetSecondaryRender(true);
+            vMesh->SetRenderGraphIndex(index);
             vMesh->UpdateRenderNode();
         }
 		for (auto it = children.begin(); it != children.end(); ++it)
-			static_cast<DrawableObject*>(*it)->MoveToSecondaryRenderGraph();
+			static_cast<DrawableObject*>(*it)->SetRenderGraph(index);
 	}
 
 	// PRIVATE

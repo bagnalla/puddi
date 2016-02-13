@@ -27,8 +27,8 @@ namespace grumpy
         scanBar->RotateX(M_PI_2);
         scanBar->SetEmissive(true);
         scanBar->SetEmissionColor(vec4(1.0f, 1.0f, 0.0f, 0.5f));
-        scanBar->Scale(2.0f);
-        scanBar->MoveToSecondaryRenderGraph();
+        scanBar->Scale(10.0f);
+        scanBar->SetRenderGraph(2);
     }
 
     void Lexer::Update()

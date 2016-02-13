@@ -15,7 +15,7 @@ namespace puddi
 
 	TerrainVertexMesh::~TerrainVertexMesh()
 	{
-		Puddi::MainRenderGraph->RemoveTerrainVertexMesh(this);
+		Puddi::GetRenderGraph(renderGraphIndex)->RemoveTerrainVertexMesh(this);
 	}
 
 	void TerrainVertexMesh::DrawWithoutBumpMap() const
@@ -70,7 +70,7 @@ namespace puddi
 
 	void TerrainVertexMesh::UpdateRenderNode()
 	{
-		Puddi::MainRenderGraph->AddTerrainVertexMesh(this);
+		Puddi::GetRenderGraph(renderGraphIndex)->AddTerrainVertexMesh(this);
 		Shadow::AddToDepthRenderList(this);
 	}
 

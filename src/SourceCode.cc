@@ -65,7 +65,7 @@ namespace grumpy
             glyph->RotateX(M_PI / 2.0f);
             glyph->SetPosition(posCursor);
             glyph->SetEmissive(true);
-            glyph->MoveToSecondaryRenderGraph();
+            glyph->SetRenderGraph(1);
             glyph->SetScaleX(charWidth);
             glyphs.push_back(glyph);
 

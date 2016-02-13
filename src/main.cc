@@ -33,6 +33,9 @@ DrawableObject *rect;
 
 void init(void)
 {
+    Puddi::AddRenderGraph();
+    Puddi::AddRenderGraph();
+
 	GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda.jpg", "bumpmaps/Shrek-and-Yoda_NRM.jpg");
 	Texture::LoadCubeMap("skybox_2", "textures/skybox2.jpg");
 	//GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda (copy).jpg");

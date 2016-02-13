@@ -22,7 +22,7 @@ Debug: $(SRCDIR)/main.cc $(objects)
 $(OBJDIR)/%.o: $(SRCDIR)/%.cc $(INCLUDEDIR)/%.h
 	$(CC) $< -c $(OPTIONS) -I$(INCLUDEDIR) $(LDLIBS) -o $@
 
-clean: cleanRelease cleanDebug
+clean: cleanRelease
 
 cleanRelease:
 	rm release/puddi $(objects)

@@ -41,12 +41,6 @@ namespace puddi
 
 		static Camera *MainCamera;
 
-		static RenderGraph *MainRenderGraph;
-
-		// secondary is mainly for objects with transparency
-		// to be rendered after everything else
-		static RenderGraph *SecondaryRenderGraph;
-
 		static std::string WindowTitleMessage;
 
 		static int Init(float worldSize);
@@ -56,6 +50,12 @@ namespace puddi
 		static void UpdateProjectionMatrixAndViewport();
 
 		static const Object* GetRootObject();
+
+		static RenderGraph* GetDefaultRenderGraph();
+		static RenderGraph* GetRenderGraph(size_t index);
+		static size_t AddRenderGraph();
+
+		static void RenderAll();
 
 		// only enables full screen atm
 		static void ToggleFullScreen();
@@ -78,6 +78,8 @@ namespace puddi
 		static Object *rootObject;
 		static UpdateNode *rootUpdateNode;
 		static ModelNode *rootModelNode;
+
+		static std::vector<RenderGraph*> renderGraphs;
 
         static std::vector<init_function> postInitFunctions;
 		static std::vector<update_function> updateFunctions;
