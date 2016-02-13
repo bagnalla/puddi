@@ -20,6 +20,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using namespace puddi;
 using namespace std;
@@ -150,25 +151,67 @@ void init(void)
 		//}
 	//}
 
-    SourceCode *sourceCode = new SourceCode(Puddi::GetRootObject(), "sourcefile.cc", "myfont");
+    //SourceCode *sourceCode = new SourceCode(Puddi::GetRootObject(), "sourcefile.cc", "myfont");
+    SourceCode *sourceCode = new SourceCode(Puddi::GetRootObject(), "program.gpy", "myfont");
 
     vector<LexToken> lTokens;
-    for (int i = 0; i < sourceCode->characters.size(); ++i)
+
+    ifstream infile("lexer.out");
+
+    LexToken tok;
+
+    while (infile >> tok.name >> tok.start >> tok.end)
     {
-        char c = sourceCode->characters[i];
-        if (c > 32 && c < 127)
+        tok.value = "";
+        tok.end--;
+
+        size_t lparen = tok.name.find('(');
+        if (lparen != string::npos)
         {
-            lTokens.push_back(LexToken { string(1, c), i, i, "" });
-            i += 100;
         }
+
+        lTokens.push_back(tok);
+
+        //cout << tok.name << endl;
     }
+
+//    vector<char> tokBuf = Util::ReadAllBytes("lexer.out");
+//    vector<char> buf;
+//    vector<LexToken> lTokens;
+//    LexToken tok;
+//    for (int i = 0; i < tokBuf.size(); ++i)
+//    {
+//        char c = tokBuf[i];
+//        if (c == '|')
+//        {
+//            tok.name = string(buf.begin(), buf.end());
+//            buf.clear();
+//        }
+//        else if (c == 'r' || c == 'n')
+//        {
+//            continue;
+//        }
+//        else
+//
+//    }
+
+//    vector<LexToken> lTokens;
+//    for (int i = 0; i < sourceCode->characters.size(); ++i)
+//    {
+//        char c = sourceCode->characters[i];
+//        if (c > 32 && c < 127)
+//        {
+//            lTokens.push_back(LexToken { string(1, c), i, i, "" });
+//            i += 100;
+//        }
+//    }
 
     Lexer *lexer = new Lexer(Puddi::GetRootObject(), sourceCode, lTokens);
     auto *mesh = new VertexMesh(VertexMesh::GetVertexMeshPrototypeByName("cube"));
     lexer->AddVertexMesh(mesh);
     lexer->SetTexture(texture);
     lexer->SetSkipVelocity(0.1f);
-    lexer->SetReadVelocity(0.1f);
+    lexer->SetReadVelocity(0.01f);
     lexer->Translate(vec4(-10.0f, 0.0f, 0.0f, 0.0f));
 }
 

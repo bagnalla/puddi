@@ -39,6 +39,8 @@ namespace grumpy
         float readVelocity;
 
         LexerState state;
+
+        DrawableObject *scanBar;
     };
 }
 

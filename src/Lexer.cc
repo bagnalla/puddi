@@ -2,6 +2,8 @@
 #include "SourceCode.h"
 #include "GlmHeaders.h"
 #include "FpsTracker.h"
+#include "Rectangle.h"
+#include "Cube.h"
 #include <iostream>
 
 using namespace puddi;
@@ -20,6 +22,13 @@ namespace grumpy
         skipVelocity = 0.0f;
         readVelocity = 0.0f;
         state = LEXER_STATE_SKIPPING;
+
+        scanBar = new Cube(this);
+        scanBar->RotateX(M_PI_2);
+        scanBar->SetEmissive(true);
+        scanBar->SetEmissionColor(vec4(1.0f, 1.0f, 0.0f, 0.5f));
+        scanBar->Scale(2.0f);
+        scanBar->MoveToSecondaryRenderGraph();
     }
 
     void Lexer::Update()
@@ -43,6 +52,7 @@ namespace grumpy
             }
 
             vec4 targetPosition = targetGlyph->GetPosition() - vec4(targetGlyph->GetScaleX() / 2.0f, 0.0f, 0.0f, 0.0f);
+            //vec4 targetPosition = targetGlyph->GetPosition();
 
             float moveAmount = skipVelocity * FpsTracker::GetFrameTimeMs();
 
@@ -54,12 +64,14 @@ namespace grumpy
 
                 if (currentCharacterIndex == currentToken.start)
                 {
-                    cout << "reached token" << currentTokenIndex << ". entering read state" << endl;
+                    cout << "reached token" << currentTokenIndex << " at pos " << currentCharacterIndex << ". entering read state until pos " << currentToken.end << endl;
                     state = LEXER_STATE_READING;
                 }
-
-                sourceCode->glyphs[currentCharacterIndex]->Cull();
-                currentCharacterIndex++;
+                else
+                {
+                    sourceCode->glyphs[currentCharacterIndex]->Cull();
+                    currentCharacterIndex++;
+                }
             }
             else
             {
@@ -71,6 +83,7 @@ namespace grumpy
             DrawableObject *targetGlyph = sourceCode->glyphs[currentToken.end];
 
             vec4 targetPosition = targetGlyph->GetPosition() + vec4(targetGlyph->GetScaleX() / 2.0f, 0.0f, 0.0f, 0.0f);
+            //vec4 targetPosition = targetGlyph->GetPosition();
 
             float moveAmount = readVelocity * FpsTracker::GetFrameTimeMs();
 

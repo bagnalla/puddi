@@ -13,6 +13,7 @@ Date:				December 9, 2015
 
 #include "Util.h"
 #include <fstream>
+#include <iostream>
 
 namespace puddi
 {
@@ -170,6 +171,9 @@ namespace puddi
 
 	std::vector<char> Util::ReadAllBytes(char const* fileName)
 	{
+        if (!FileExists(fileName))
+            std::cerr << "File not found: " << fileName << std::endl;
+
 		std::ifstream ifs(fileName, std::ios::binary | std::ios::ate);
 		std::ifstream::pos_type pos = ifs.tellg();
 
@@ -180,7 +184,7 @@ namespace puddi
 
 		return result;
 	}
-	
+
 	float Util::WrapAngle(float theta)
 	{
 		//theta = fmod(theta, M_PI_2);
@@ -197,6 +201,6 @@ namespace puddi
 		}
 		else {
 			return false;
-		}   
+		}
 	}
 }

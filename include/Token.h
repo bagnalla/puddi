@@ -12,6 +12,8 @@ namespace grumpy
         int start;
         int end;
         std::string value;
+
+        LexToken();
     };
 
     class Token : public puddi::DrawableObject
