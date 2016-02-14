@@ -100,8 +100,11 @@ namespace puddi
 		//glBlendFunc(GL_ZERO, GL_SRC_COLOR);
 		//glBlendFunc(GL_ONE, GL_ONE);
 
-		glEnable(GL_PRIMITIVE_RESTART);
-		glPrimitiveRestartIndex(UINT_MAX);
+        if(GLEW_VERSION_3_1)
+        {
+            glEnable(GL_PRIMITIVE_RESTART);
+            glPrimitiveRestartIndex(UINT_MAX);
+        }
 
 		Puddi::ViewDistance = Puddi::WorldSize * 1.6f;
 

@@ -28,13 +28,13 @@ float vecToDepth (vec3 Vec)
 void main()
 {
 	vec3 NN = normalize(N);
-	
+
 	vec3 EE = normalize(E);
-	
+
 	vec4 ambientProduct = materialAmbient * lightSource[0];
 	vec4 diffuseProduct = materialDiffuse * lightSource[1];
 	vec4 specularProduct = materialSpecular * lightSource[2];
-	
+
 	float distance;
 	//if (lightSource[3].w == 0.0)
 		distance = 1.0;

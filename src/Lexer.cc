@@ -27,7 +27,7 @@ namespace grumpy
         scanBarColor = vec4(1.0f, 1.0f, 0.0f, 0.0f);
 
         scanBar = new Cube(this);
-        scanBar->RotateX(M_PI_2);
+        scanBar->RotateX(M_PI / 2.0f);
         scanBar->SetEmissive(true);
         scanBar->SetEmissionColor(scanBarColor);
         scanBar->Scale(1.0f);

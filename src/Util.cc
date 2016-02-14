@@ -171,8 +171,11 @@ namespace puddi
 
 	std::vector<char> Util::ReadAllBytes(char const* fileName)
 	{
-        if (!FileExists(fileName))
-            std::cerr << "File not found: " << fileName << std::endl;
+		if (!FileExists(fileName))
+		{
+			std::cerr << "File not found: " << fileName << std::endl;
+			return std::vector<char>();
+		}
 
 		std::ifstream ifs(fileName, std::ios::binary | std::ios::ate);
 		std::ifstream::pos_type pos = ifs.tellg();
@@ -193,13 +196,14 @@ namespace puddi
 		return theta;
 	}
 
-	bool Util::FileExists(const std::string& name)
-	{
-		if (FILE *file = fopen(name.c_str(), "r")) {
-			fclose(file);
+	bool Util::FileExists(const std::string& name) {
+		std::ifstream f(name.c_str());
+		if (f.good()) {
+			f.close();
 			return true;
 		}
 		else {
+			f.close();
 			return false;
 		}
 	}
