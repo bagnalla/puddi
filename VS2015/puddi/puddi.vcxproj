@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\AST.h" />
     <ClInclude Include="..\..\include\Bagnall.h" />
     <ClInclude Include="..\..\include\Camera.h" />
     <ClInclude Include="..\..\include\CRSpline.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="..\..\include\VertexMesh.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\AST.cpp" />
     <ClCompile Include="..\..\src\Camera.cc" />
     <ClCompile Include="..\..\src\CRSpline.cc" />
     <ClCompile Include="..\..\src\Cube.cc" />
