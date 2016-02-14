@@ -34,12 +34,14 @@ namespace grumpy
         std::vector<LexToken> lTokens;
         int currentCharacterIndex;
         int currentTokenIndex;
+        glm::vec4 currentTokenStartPos;
 
         float skipVelocity;
         float readVelocity;
 
         LexerState state;
 
+        glm::vec4 scanBarColor;
         DrawableObject *scanBar;
     };
 }
