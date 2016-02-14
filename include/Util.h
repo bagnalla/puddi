@@ -7,6 +7,7 @@
 #include <vector>
 #include <GL/glew.h>
 #include "GlmHeaders.h"
+#include <SDL2/SDL.h>
 
 const GLfloat DegreesToRadians = M_PI / 180.0;
 

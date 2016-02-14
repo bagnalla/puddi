@@ -24,7 +24,7 @@ namespace grumpy
         state = LEXER_STATE_SKIPPING;
 
         scanBar = new Cube(this);
-        scanBar->RotateX(M_PI_2);
+        scanBar->RotateX(M_PI / 2.0f);
         scanBar->SetEmissive(true);
         scanBar->SetEmissionColor(vec4(1.0f, 1.0f, 0.0f, 0.5f));
         scanBar->Scale(10.0f);

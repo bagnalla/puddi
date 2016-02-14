@@ -1,5 +1,7 @@
 #define GLM_FORCE_RADIANS
 
+#define M_PI    3.14159265358979323846264338327950288
+
 //#include <glm/glm.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
