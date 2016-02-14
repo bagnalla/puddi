@@ -19,7 +19,9 @@ void main()
 	{
 		vec3 v = normalize((vPositionWorld - cameraPosition).xyz);
 		vec3 N = normalize((model * vNormal).xyz);
-		cubeMapCoord = v - 2 * dot(v, N) * N;
+		//vec3 temp = 2.0 * dot(v, N) * N;
+		//cubeMapCoord = vec3(v.x - temp.x, v.y - temp.y, x.z - temp.z);
+		cubeMapCoord = v - 2.0 * dot(v, N) * N;
 	}
 	// non reflective
 	else
