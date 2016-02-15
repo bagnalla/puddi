@@ -86,6 +86,7 @@
 		<Unit filename="heightmaps/terrain3.jpg" />
 		<Unit filename="heightmaps/west_norway.png" />
 		<Unit filename="heightmaps/world_height_lowres.jpg" />
+		<Unit filename="include/AST.h" />
 		<Unit filename="include/Bagnall.h" />
 		<Unit filename="include/CRSpline.h" />
 		<Unit filename="include/Camera.h" />
@@ -190,6 +191,7 @@
 		<Unit filename="shaders/vertex/vshader_terrain_texture_bump.glsl" />
 		<Unit filename="shaders/vertex/vshader_texture.glsl" />
 		<Unit filename="shaders/vertex/vshader_texture_bump.glsl" />
+		<Unit filename="src/AST.cc" />
 		<Unit filename="src/CRSpline.cc" />
 		<Unit filename="src/Camera.cc" />
 		<Unit filename="src/Cube.cc" />

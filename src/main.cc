@@ -180,13 +180,13 @@ void init(void)
         //cout << tok.name << endl;
     }
 
-    Lexer *lexer = new Lexer(Puddi::GetRootObject(), sourceCode, lTokens);
-    auto *mesh = new VertexMesh(VertexMesh::GetVertexMeshPrototypeByName("cube"));
-    lexer->AddVertexMesh(mesh);
-    lexer->SetTexture(texture);
-    lexer->SetSkipVelocity(0.1f);
-    lexer->SetReadVelocity(0.01f);
-    lexer->Translate(vec4(-10.0f, 0.0f, 0.0f, 0.0f));
+//    Lexer *lexer = new Lexer(Puddi::GetRootObject(), sourceCode, lTokens);
+//    auto *mesh = new VertexMesh(VertexMesh::GetVertexMeshPrototypeByName("cube"));
+//    lexer->AddVertexMesh(mesh);
+//    lexer->SetTexture(texture);
+//    lexer->SetSkipVelocity(0.1f);
+//    lexer->SetReadVelocity(0.01f);
+//    lexer->Translate(vec4(-10.0f, 0.0f, 0.0f, 0.0f));
 
     auto bytes = Util::ReadAllBytes("parser.out");
     queue<char> q;
@@ -195,7 +195,7 @@ void init(void)
         q.push(bytes[i]);
 
     ASTNode *ast = new ASTNode(Puddi::GetRootObject(), nullptr, q);
-    ast->Translate(vec4(ast->GetWidth() / 3.0f, 0.0f, 0.0f, 0.0f));
+    ast->Translate(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 0.0f));
     ast->SetScaleX(0.5f);
 }
 

@@ -45,8 +45,8 @@ namespace grumpy
             {
                 //DrawableObject *conn = new Cube(glyphContainer);
                 DrawableObject *conn = new Cube(container);
-                conn->Scale(1.1f);
-                conn->SetScaleX(2.1f);
+                conn->Scale(0.9f);
+                conn->SetScaleX(1.9f);
                 conn->RotateX(M_PI / 2.0f);
                 conn->Translate(vec4(glyphCount + 1.0f, 0.0f, 0.0f, 0.0f));
                 conn->SetEmissive(true);
