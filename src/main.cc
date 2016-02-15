@@ -194,7 +194,7 @@ void init(void)
     for (int i = 0; i < bytes.size(); ++i)
         q.push(bytes[i]);
 
-    ASTNode *ast = new ASTNode(Puddi::GetRootObject(), nullptr, q);
+    ASTNode *ast = new ASTNode(Puddi::GetRootObject(), nullptr, nullptr, q);
     ast->Translate(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 0.0f));
     ast->SetScaleX(0.5f);
 }
@@ -229,24 +229,24 @@ int update()
 				Puddi::ToggleFullScreen();
 				break;
 			// ROTATE MIDDLE OBJECT
-			case SDLK_1:
-				cube->RotateX(-0.005f * FpsTracker::GetFrameTimeMs());
-				break;
-			case SDLK_2:
-				cube->RotateX(0.005f * FpsTracker::GetFrameTimeMs());
-				break;
-			case SDLK_3:
-				cube->RotateY(-0.005f * FpsTracker::GetFrameTimeMs());
-				break;
-			case SDLK_4:
-				cube->RotateY(0.005f * FpsTracker::GetFrameTimeMs());
-				break;
-			case SDLK_5:
-				cube->RotateZ(-0.005f * FpsTracker::GetFrameTimeMs());
-				break;
-			case SDLK_6:
-				cube->RotateZ(0.005f * FpsTracker::GetFrameTimeMs());
-				break;
+//			case SDLK_1:
+//				cube->RotateX(-0.005f * FpsTracker::GetFrameTimeMs());
+//				break;
+//			case SDLK_2:
+//				cube->RotateX(0.005f * FpsTracker::GetFrameTimeMs());
+//				break;
+//			case SDLK_3:
+//				cube->RotateY(-0.005f * FpsTracker::GetFrameTimeMs());
+//				break;
+//			case SDLK_4:
+//				cube->RotateY(0.005f * FpsTracker::GetFrameTimeMs());
+//				break;
+//			case SDLK_5:
+//				cube->RotateZ(-0.005f * FpsTracker::GetFrameTimeMs());
+//				break;
+//			case SDLK_6:
+//				cube->RotateZ(0.005f * FpsTracker::GetFrameTimeMs());
+//				break;
 			}
 		}
 		// mouse click

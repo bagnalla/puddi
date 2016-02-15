@@ -11,7 +11,7 @@ namespace grumpy
 {
 	// PUBLIC
 
-	ASTNode::ASTNode(const Object *par, DrawableObject *connector, queue<char> &input) : DrawableObject(par)
+	ASTNode::ASTNode(const Object *par, ASTNode *parentNode, DrawableObject *connector, queue<char> &input) : DrawableObject(par)
 	{
         if (!input.size() || input.front() != '[')
         {
@@ -20,11 +20,13 @@ namespace grumpy
         }
         input.pop();
 
+        parent = parentNode;
         parentConnector = connector;
         int childrenWidthSum = 0;
 
         container = new Object(this);
         int glyphCount = 0;
+        tokenRequired = false;
 
         while (true)
         {
@@ -32,6 +34,16 @@ namespace grumpy
 
             if (c == '\t' || c == '\r' || c == '\n')
             {
+                input.pop();
+                continue;
+            }
+
+            if (c == '`')
+            {
+                tokenRequired = true;
+                input.pop();
+                while (c = input.front() != '`')
+                    input.pop();
                 input.pop();
                 continue;
             }
@@ -55,7 +67,7 @@ namespace grumpy
 
                 glyphCount += 2;
 
-                auto node = new ASTNode(container, conn, input);
+                auto node = new ASTNode(container, this, conn, input);
                 //node->Translate(vec4(0.0f, 0.0f, -1.0f, 0.0f));
                 //node->Translate(conn->GetPosition() + vec4(0.0f, 0.0f, -1.0f, 0.0f));
                 childNodes.push_back(node);
@@ -120,7 +132,10 @@ namespace grumpy
         //body->Translate(vec4(-0.5f, 0.0f, 0.0f, 0.0f));
         body->SetScaleX(glyphCount);
         body->SetEmissive(true);
-        body->SetEmissionColor(vec4(0.25f, 0.25f, 0.25f, 0.25f));
+        if (tokenRequired)
+            body->SetEmissionColor(vec4(0.3f, 0.15f, 0.0f, 0.4f));
+        else
+            body->SetEmissionColor(vec4(0.25f, 0.25f, 0.25f, 0.25f));
         body->SetRenderGraph(3);
 	}
 

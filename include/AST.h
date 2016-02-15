@@ -10,17 +10,19 @@ namespace grumpy
 	class ASTNode : public puddi::DrawableObject
 	{
 	public:
-		ASTNode(const puddi::Object *par, DrawableObject *connector, std::queue<char> &input);
+		ASTNode(const puddi::Object *par, ASTNode *parentNode, DrawableObject *connector, std::queue<char> &input);
 
 		int GetWidth() const;
 
 	private:
+        ASTNode *parent;
 		std::vector<DrawableObject*> glyphs;
 		DrawableObject *parentConnector;
 		DrawableObject *parentConnectorLine;
 		std::vector<ASTNode*> childNodes;
 		int width;
 		Object *container;
+		bool tokenRequired;
 	};
 }
 
