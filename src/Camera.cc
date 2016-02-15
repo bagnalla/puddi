@@ -77,10 +77,12 @@ namespace puddi
 				holdingD = true;
 				break;
 			case SDLK_z:
-				Translate(vec4(0.0f, 0.0f, -Puddi::WorldSize / 100.0f, 0.0f));
+				//Translate(vec4(0.0f, 0.0f, -Puddi::WorldSize / 100.0f, 0.0f));
+				holdingZ = true;
 				break;
 			case SDLK_SPACE:
-				Translate(vec4(0.0f, 0.0f, Puddi::WorldSize / 100.0f, 0.0f));
+				//Translate(vec4(0.0f, 0.0f, Puddi::WorldSize / 100.0f, 0.0f));
+				holdingSpace = true;
 				break;
 			}
 		}
@@ -100,6 +102,12 @@ namespace puddi
 			case SDLK_d:
 				holdingD = false;
 				break;
+            case SDLK_z:
+				holdingZ = false;
+				break;
+            case SDLK_SPACE:
+				holdingSpace = false;
+				break;
 			}
 		}
 		else if (ev.type == SDL_MOUSEMOTION)
@@ -116,22 +124,22 @@ namespace puddi
 		vec4 moveDirection = vec4(0.0, 0.0, 0.0, 0.0);
 
 		if (holdingA)
-		{
 			moveDirection -= Util::RotateZ(M_PI / 2.0) * lookDirection;
-		}
 		if (holdingD)
-		{
 			moveDirection += Util::RotateZ(M_PI / 2.0) * lookDirection;
-		}
 		if (holdingW)
 			moveDirection += lookDirection;
 		if (holdingS)
 			moveDirection -= lookDirection;
 
-		if (length(moveDirection) == 0.0)
-			return;
+		if (length(moveDirection) != 0.0)
+            moveDirection = normalize(vec4(moveDirection.x, moveDirection.y, 0.0, 0.0));
 
-		moveDirection = normalize(vec4(moveDirection.x, moveDirection.y, 0.0, 0.0));
+        if (holdingZ)
+            moveDirection -= vec4(0.0f, 0.0f, 1.0f, 0.0f);
+        if (holdingSpace)
+			moveDirection += vec4(0.0f, 0.0f, 1.0f, 0.0f);
+
 		vec4 finalMove = moveDirection * Puddi::WorldSize / 10000.0f * static_cast<float>(FpsTracker::GetFrameTimeMs());
 
 		Translate(finalMove);

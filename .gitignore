@@ -37,3 +37,6 @@ release/
 *.ipdb
 *.ilk
 *.pdb
+
+#Code::Blocks
+*.layout

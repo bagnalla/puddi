@@ -30,7 +30,7 @@ namespace puddi
 		void InputEvent(SDL_Event ev);
 
 	private:
-		bool holdingW, holdingA, holdingS, holdingD;
+		bool holdingW, holdingA, holdingS, holdingD, holdingZ, holdingSpace;
 		vec3 lookTheta; // rotation values of the camera
 		vec4 lookDirection; // look direction vector of the camera
 		mat4 lookRotation;

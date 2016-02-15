@@ -10,7 +10,7 @@ namespace puddi
 	// PUBLIC
 
 	Object::Object(const Object *parent) : Object(parent, false, false) {}
-	
+
 	Object::Object(const Object *parent, bool childrenUpdateInParallel, bool childrenModelUpdateInParallel)
 	{
 		position = vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -163,6 +163,7 @@ namespace puddi
 	void Object::LookAt(const vec4& point)
 	{
 		vec4 displacement = point - (parentModel * position);
+		//vec4 displacement = point - position;
 		SetRotationZ(atan2(displacement.y, displacement.x));
 		SetRotationY(-atan2(displacement.z, length(vec2(displacement))));
 	}
@@ -350,6 +351,11 @@ namespace puddi
 	{
 		return culled;
 	}
+
+    int Object::GetNumberOfChildren() const
+    {
+        return children.size();
+    }
 
 	// PROTECTED
 

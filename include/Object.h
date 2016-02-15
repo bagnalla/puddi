@@ -123,6 +123,8 @@ namespace puddi
 
 		bool GetCulled() const;
 
+		int GetNumberOfChildren() const;
+
 	protected:
 		vec4 position; // position of the object in world space
 		vec4 oldPosition;
