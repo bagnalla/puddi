@@ -18,7 +18,7 @@ namespace grumpy
     class Lexer : public puddi::DrawableObject
     {
     public:
-        Lexer(const Object* par, SourceCode *code, const std::vector<LexToken> &lToks);
+        Lexer(Object* par, SourceCode *code, const std::vector<LexToken> &lToks);
 
         void Update();
 

@@ -13,13 +13,13 @@ namespace puddi
 	class DrawableObject : public Object
 	{
 	public:
-		DrawableObject(const Object *par);
+		DrawableObject(Object *par);
 
-		DrawableObject(const Object *par, const VertexMesh &mesh);
+		DrawableObject(Object *par, const VertexMesh &mesh);
 
-		DrawableObject(const Object *par, TerrainVertexMesh *mesh);
+		DrawableObject(Object *par, TerrainVertexMesh *mesh);
 
-		DrawableObject(const Object *par, SchematicNode *schematic);
+		DrawableObject(Object *par, SchematicNode *schematic);
 
 		//virtual void Draw() const;
 

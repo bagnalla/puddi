@@ -12,7 +12,7 @@ namespace grumpy
         value = "";
     }
 
-    Token::Token(const Object *par, const LexToken &lTok) : DrawableObject(par)
+    Token::Token(Object *par, const LexToken &lTok) : DrawableObject(par)
     {
         lToken = lTok;
     }

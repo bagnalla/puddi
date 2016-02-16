@@ -10,7 +10,7 @@ namespace grumpy
 {
     // PUBLIC
 
-    SourceCode::SourceCode(const Object *par, const string &path, const std::string &font) : DrawableObject(par)
+    SourceCode::SourceCode(Object *par, const string &path, const std::string &font) : DrawableObject(par)
     {
         characters = Util::ReadAllBytes(path.c_str());
         this->font = font;

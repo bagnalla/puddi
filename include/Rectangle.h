@@ -10,7 +10,7 @@ namespace puddi
 	public:
 		static void Init();
 
-		Rectangle(const Object *par);
+		Rectangle(Object *par);
 
 		//void Draw() const;
 

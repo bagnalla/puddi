@@ -10,7 +10,7 @@ namespace grumpy
     class SourceCode : public puddi::DrawableObject
     {
     public:
-        SourceCode(const puddi::Object *par, const std::string &path, const std::string &font);
+        SourceCode(puddi::Object *par, const std::string &path, const std::string &font);
 
         // parallel vectors
         // characters with no glyph will have a

@@ -19,7 +19,7 @@ namespace grumpy
     class Token : public puddi::DrawableObject
     {
     public:
-        Token(const puddi::Object *par, const LexToken &lTok);
+        Token(puddi::Object *par, const LexToken &lTok);
 
     private:
         LexToken lToken;

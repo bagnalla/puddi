@@ -174,7 +174,7 @@ namespace puddi
 		glViewport(0, 0, w, h);
 	}
 
-	const Object* Puddi::GetRootObject()
+	Object* Puddi::GetRootObject()
 	{
 		return rootObject;
 	}

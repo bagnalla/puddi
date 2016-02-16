@@ -138,6 +138,9 @@
     <ClInclude Include="..\..\include\AST.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\SyntaxParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Camera.cc">
@@ -248,7 +251,10 @@
     <ClCompile Include="..\..\src\VertexMesh.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\AST.cpp">
+    <ClCompile Include="..\..\src\SyntaxParser.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\AST.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

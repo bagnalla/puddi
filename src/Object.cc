@@ -9,9 +9,9 @@ namespace puddi
 {
 	// PUBLIC
 
-	Object::Object(const Object *parent) : Object(parent, false, false) {}
+	Object::Object(Object *parent) : Object(parent, false, false) {}
 
-	Object::Object(const Object *parent, bool childrenUpdateInParallel, bool childrenModelUpdateInParallel)
+	Object::Object(Object *parent, bool childrenUpdateInParallel, bool childrenModelUpdateInParallel)
 	{
 		position = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 		oldPosition = position;
@@ -40,6 +40,8 @@ namespace puddi
 			modelNode->parallel = childrenModelUpdateInParallel;
 			SetParentModel(parent->GetFinalModel());
 			//SetParentInverseModel(parent->GetFinalInverseModel());
+
+			parent->AddChild(this);
 		}
 	}
 

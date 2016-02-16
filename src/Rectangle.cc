@@ -26,7 +26,7 @@ namespace puddi
 		createPrototypeVertices();
 	}
 
-	Rectangle::Rectangle(const Object *par) : DrawableObject(par, VertexMesh::GetVertexMeshPrototypeByName("rectangle")) {}
+	Rectangle::Rectangle(Object *par) : DrawableObject(par, VertexMesh::GetVertexMeshPrototypeByName("rectangle")) {}
 
 	//void Rectangle::Draw() const
 	//{

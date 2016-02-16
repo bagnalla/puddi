@@ -18,7 +18,7 @@
 #include "Token.h"
 #include "Lexer.h"
 #include "AST.h"
-#include "Parser.h"
+#include "SyntaxParser.h"
 #include <vector>
 #include <iostream>
 #include <string>
@@ -33,6 +33,8 @@ LightSource *lightSource;
 Object *objectContainer;
 DrawableObject *cube;
 DrawableObject *rect;
+
+SyntaxParser *parser;
 
 void init(void)
 {
@@ -57,40 +59,36 @@ void init(void)
 	lightSource->UpdateMatrix();
 	LightSource::UpdateLightSourceMatricesInShaders();
 
-	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("heightmaps/terrain1_height.jpg", 25.0f, 25.0f, 0.25f));
-	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("heightmaps/seamless_heightmap_1.jpg", 25.0f, 25.0f, 0.25f));
-	//terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("heightmaps/west_norway.png", 50.0f, 50.0f, 0.25f));
-	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/bill.png", 25.0f, 25.0f, 0.1f));
-	auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ocaml_logo_2.png", 25.0f, 25.0f, 0.1f));
-	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ou_logo_1.png", 25.0f, 25.0f, 0.1f));
-	Texture::LoadTexture("sand1", "textures/sand1.jpg", "bumpmaps/sand1_NRM.jpg");
-	Texture::LoadTexture("grass1", "textures/grass1.jpg", "bumpmaps/grass1_NRM.jpg");
-	Texture::LoadTexture("stone1", "textures/stone1.jpg", "bumpmaps/stone1_NRM.jpg");
-	Texture::LoadTexture("snow1", "textures/snow1.jpg", "bumpmaps/snow1_NRM.jpg");
-	terrainMesh->SetTexture1(Texture::GetTextureByName("sand1"));
-	terrainMesh->SetTexture2(Texture::GetTextureByName("grass1"));
-	terrainMesh->SetTexture3(Texture::GetTextureByName("stone1"));
-	terrainMesh->SetTexture4(Texture::GetTextureByName("snow1"));
-	terrainMesh->SetTextureHeights(vec4(0.0f, 0.3f, 0.5f, 0.9f));
-	//DrawableObject *terrainContainer = new DrawableObject(Puddi::GetRootObject(), terrainMesh);
-	//terrainContainer->Scale(0.01f);
+	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ocaml_logo_2.png", 25.0f, 25.0f, 0.1f));
+	////auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ou_logo_1.png", 25.0f, 25.0f, 0.1f));
+	//Texture::LoadTexture("sand1", "textures/sand1.jpg", "bumpmaps/sand1_NRM.jpg");
+	//Texture::LoadTexture("grass1", "textures/grass1.jpg", "bumpmaps/grass1_NRM.jpg");
+	//Texture::LoadTexture("stone1", "textures/stone1.jpg", "bumpmaps/stone1_NRM.jpg");
+	//Texture::LoadTexture("snow1", "textures/snow1.jpg", "bumpmaps/snow1_NRM.jpg");
+	//terrainMesh->SetTexture1(Texture::GetTextureByName("sand1"));
+	//terrainMesh->SetTexture2(Texture::GetTextureByName("grass1"));
+	//terrainMesh->SetTexture3(Texture::GetTextureByName("stone1"));
+	//terrainMesh->SetTexture4(Texture::GetTextureByName("snow1"));
+	//terrainMesh->SetTextureHeights(vec4(0.0f, 0.3f, 0.5f, 0.9f));
+	////DrawableObject *terrainContainer = new DrawableObject(Puddi::GetRootObject(), terrainMesh);
+	////terrainContainer->Scale(0.01f);
 
-	//if (Schematic::InitSchematic("models/cube rounded.obj", "cube") < 0)
-	//if (Schematic::InitSchematic("models/cube rounded - 554 faces.obj", "cube") < 0)
-    //if (Schematic::InitSchematic("models/alien_boss_spider.obj", "cube", "alien_boss_spider") < 0)
-	//if (Schematic::InitSchematic("models/bb8.obj", "cube", "bb8") < 0)
-	//	std::cerr << "error loading cube rounded model\n";
+	////if (Schematic::InitSchematic("models/cube rounded.obj", "cube") < 0)
+	////if (Schematic::InitSchematic("models/cube rounded - 554 faces.obj", "cube") < 0)
+ //   //if (Schematic::InitSchematic("models/alien_boss_spider.obj", "cube", "alien_boss_spider") < 0)
+	////if (Schematic::InitSchematic("models/bb8.obj", "cube", "bb8") < 0)
+	////	std::cerr << "error loading cube rounded model\n";
 
-	auto terrain = new DrawableObject(Puddi::GetRootObject());
-	terrain->AddVertexMesh(terrainMesh);
-	terrain->SetScale(0.1f);
-	terrain->SetScaleX(0.25f);
-	terrain->SetScaleY(0.25f);
-	terrain->RotateZ(M_PI / 2.0f);
-	//terrain->Translate(vec4(-1000.0f, -1000.0f, -1000.0f, 0.0f));
-	//terrain->Translate(vec4(-100.0f, -100.0f, -100.0f, 0.0f));
-	//terrain->Translate(vec4(-20.0f, -125.0f, -125.0f, 0.0f));
-	terrain->Translate(vec4(0.0f, 150.0f, -125.0f, 0.0f));
+	//auto terrain = new DrawableObject(Puddi::GetRootObject());
+	//terrain->AddVertexMesh(terrainMesh);
+	//terrain->SetScale(0.1f);
+	//terrain->SetScaleX(0.25f);
+	//terrain->SetScaleY(0.25f);
+	//terrain->RotateZ(M_PI / 2.0f);
+	////terrain->Translate(vec4(-1000.0f, -1000.0f, -1000.0f, 0.0f));
+	////terrain->Translate(vec4(-100.0f, -100.0f, -100.0f, 0.0f));
+	////terrain->Translate(vec4(-20.0f, -125.0f, -125.0f, 0.0f));
+	//terrain->Translate(vec4(0.0f, 150.0f, -125.0f, 0.0f));
 
 //	for (int i = 1; i < 1; ++i)
 //	{
@@ -164,7 +162,7 @@ void init(void)
     SourceCode *sourceCode = new SourceCode(Puddi::GetRootObject(), "program.gpy", "myfont");
 
     vector<LexToken> lTokens;
-    ifstream infile("lexer.out");
+    ifstream infile("lexer.in");
     LexToken tok;
     while (infile >> tok.name >> tok.start >> tok.end)
     {
@@ -189,7 +187,7 @@ void init(void)
 //    lexer->SetReadVelocity(0.01f);
 //    lexer->Translate(vec4(-10.0f, 0.0f, 0.0f, 0.0f));
 
-    auto bytes = Util::ReadAllBytes("parser.out");
+    auto bytes = Util::ReadAllBytes("parser.in");
     queue<char> q;
 
     for (int i = 0; i < bytes.size(); ++i)
@@ -198,9 +196,10 @@ void init(void)
     ASTNode *ast = new ASTNode(Puddi::GetRootObject(), nullptr, nullptr, q);
     ast->Translate(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 0.0f));
     ast->SetScaleX(0.5f);
+	ast->SetAssignedLocation(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 0.0f));
     ast->Hide();
 
-    Parser *parser = new Parser(Puddi::GetRootObject(), ast);
+	parser = new SyntaxParser(Puddi::GetRootObject(), ast);
     parser->AddVertexMesh(new VertexMesh(VertexMesh::GetVertexMeshPrototypeByName("cube")));
     parser->SetTexture(texture);
 //    parser->SetEmissive(true);
@@ -208,10 +207,10 @@ void init(void)
     parser->SetVelocity(0.01f);
     //parser->DisableRender();
 
-    queue<Token*> tokenQueue;
+    /*queue<Token*> tokenQueue;
     for (auto it = lTokens.begin(); it != lTokens.end(); ++it)
         tokenQueue.push(new Token(Puddi::GetRootObject(), *it));
-    parser->SetTokenQueue(tokenQueue);
+    parser->SetTokenQueue(tokenQueue);*/
 }
 
 //----------------------------------------------------------------------------
@@ -242,6 +241,9 @@ int update()
 			// ENABLE FULLSCREEN
 			case SDLK_f:
 				Puddi::ToggleFullScreen();
+				break;
+			case SDLK_1:
+				parser->AddTokenToQueue(new Token(Puddi::GetRootObject(), LexToken()));
 				break;
 			// ROTATE MIDDLE OBJECT
 //			case SDLK_1:

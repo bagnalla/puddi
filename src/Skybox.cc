@@ -12,7 +12,7 @@ namespace puddi
 		createPrototypeVertices();
 	}
 
-	Skybox::Skybox(const Object *par) : DrawableObject(par, VertexMesh::GetVertexMeshPrototypeByName("skybox"))
+	Skybox::Skybox(Object *par) : DrawableObject(par, VertexMesh::GetVertexMeshPrototypeByName("skybox"))
 	{
 		RotateX(-M_PI / 2.0f);
 		RotateZ(M_PI);

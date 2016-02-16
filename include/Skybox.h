@@ -10,7 +10,7 @@ namespace puddi
 	public:
 		static void Init();
 
-		Skybox(const Object *par);
+		Skybox(Object *par);
 
 		//void Draw() const;
 

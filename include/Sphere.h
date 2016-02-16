@@ -10,7 +10,7 @@ namespace puddi
 	public:
 		static void Init();
 
-		Sphere(const Object *par);
+		Sphere(Object *par);
 
 		//void Draw() const;
 

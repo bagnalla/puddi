@@ -148,6 +148,7 @@
     <ClInclude Include="..\..\include\Material.h" />
     <ClInclude Include="..\..\include\ModelGraph.h" />
     <ClInclude Include="..\..\include\Object.h" />
+    <ClInclude Include="..\..\include\SyntaxParser.h" />
     <ClInclude Include="..\..\include\Puddi.h" />
     <ClInclude Include="..\..\include\Rectangle.h" />
     <ClInclude Include="..\..\include\RenderGraph.h" />
@@ -169,7 +170,7 @@
     <ClInclude Include="..\..\include\VertexMesh.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\AST.cpp" />
+    <ClCompile Include="..\..\src\AST.cc" />
     <ClCompile Include="..\..\src\Camera.cc" />
     <ClCompile Include="..\..\src\CRSpline.cc" />
     <ClCompile Include="..\..\src\Cube.cc" />
@@ -187,6 +188,7 @@
     <ClCompile Include="..\..\src\Material.cc" />
     <ClCompile Include="..\..\src\ModelGraph.cc" />
     <ClCompile Include="..\..\src\Object.cc" />
+    <ClCompile Include="..\..\src\SyntaxParser.cc" />
     <ClCompile Include="..\..\src\Puddi.cc" />
     <ClCompile Include="..\..\src\Rectangle.cc" />
     <ClCompile Include="..\..\src\RenderGraph.cc" />

@@ -13,7 +13,7 @@ namespace grumpy
 {
     // PUBLIC
 
-    Lexer::Lexer(const Object* par, SourceCode *code, const vector<LexToken> &lToks) : DrawableObject(par)
+    Lexer::Lexer(Object* par, SourceCode *code, const vector<LexToken> &lToks) : DrawableObject(par)
     {
         sourceCode = code;
         lTokens = lToks;

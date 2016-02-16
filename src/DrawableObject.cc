@@ -13,12 +13,12 @@ namespace puddi
 {
 	// PUBLIC
 
-	DrawableObject::DrawableObject(const Object *par) : Object(par)
+	DrawableObject::DrawableObject(Object *par) : Object(par)
 	{
 		init();
 	}
 
-	DrawableObject::DrawableObject(const Object *par, const VertexMesh &mesh) : Object(par)
+	DrawableObject::DrawableObject(Object *par, const VertexMesh &mesh) : Object(par)
 	{
         init();
 
@@ -29,7 +29,7 @@ namespace puddi
 		updateRenderNodes();
 	}
 
-	DrawableObject::DrawableObject(const Object *par, TerrainVertexMesh *mesh) : Object(par)
+	DrawableObject::DrawableObject(Object *par, TerrainVertexMesh *mesh) : Object(par)
 	{
         init();
 
@@ -39,7 +39,7 @@ namespace puddi
 		updateRenderNodes();
 	}
 
-	DrawableObject::DrawableObject(const Object *par, SchematicNode *schematic) : DrawableObject(par)
+	DrawableObject::DrawableObject(Object *par, SchematicNode *schematic) : DrawableObject(par)
 	{
 		for (auto it = schematic->vertexMeshes.begin(); it != schematic->vertexMeshes.end(); ++it)
 		{

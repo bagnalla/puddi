@@ -40,8 +40,8 @@ namespace puddi
 	class Object
 	{
 	public:
-		Object(const Object *parent);
-		Object(const Object *parent, bool childrenUpdateInParallel, bool childrenModelUpdateInParallel);
+		Object(Object *parent);
+		Object(Object *parent, bool childrenUpdateInParallel, bool childrenModelUpdateInParallel);
 
 		virtual ~Object();
 

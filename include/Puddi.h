@@ -49,7 +49,7 @@ namespace puddi
 
 		static void UpdateProjectionMatrixAndViewport();
 
-		static const Object* GetRootObject();
+		static Object* GetRootObject();
 
 		static RenderGraph* GetDefaultRenderGraph();
 		static RenderGraph* GetRenderGraph(size_t index);
