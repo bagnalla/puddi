@@ -4,17 +4,19 @@ namespace grumpy
 {
     // PUBLIC
 
-    LexToken::LexToken()
+    LexToken::LexToken() : LexToken("", 0, 0, "") {}
+
+    LexToken::LexToken(const std::string &n, int s, int e, const std::string &v)
     {
-        name = "";
-        start = 0;
-        end = 0;
-        value = "";
+        name = n;
+        start = s;
+        end = e;
+        value = v;
     }
 
     Token::Token(Object *par, const LexToken &lTok) : DrawableObject(par)
     {
-        lToken = lTok;
+        LToken = lTok;
     }
 
     // PRIVATE

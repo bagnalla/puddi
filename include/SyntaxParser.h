@@ -12,7 +12,8 @@ namespace grumpy
     enum SyntaxParserState : int
     {
         SYNTAXPARSER_STATE_WAITING,
-        SYNTAXPARSER_STATE_MOVING
+        SYNTAXPARSER_STATE_MOVING,
+        SYNTAXPARSER_STATE_DONE
     };
 
     class SyntaxParser : public puddi::DrawableObject
@@ -36,6 +37,7 @@ namespace grumpy
         int currentNodeIndex;
         float velocity;
         SyntaxParserState state;
+        glm::vec4 homePosition;
 
         void createNodesVector();
         void addToNodesVectorRecursive(ASTNode *node);

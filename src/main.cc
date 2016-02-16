@@ -209,6 +209,7 @@ void init(void)
     queue<Token*> tokenQueue;
     for (auto it = lTokens.begin(); it != lTokens.end(); ++it)
         tokenQueue.push(new Token(Puddi::GetRootObject(), *it));
+    //tokenQueue.push(new Token(Puddi::GetRootObject(), LexToken("EOF", 0, 0, "")));
     parser->SetTokenQueue(tokenQueue);
 }
 

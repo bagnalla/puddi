@@ -43,7 +43,7 @@ namespace puddi
 
 		if (int status = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) != 0)
 		{
-			std::cerr << "Failed to initialize SDL.\n";
+			std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
 			SDL_Quit();
 			return status;
 		}
