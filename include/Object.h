@@ -52,6 +52,7 @@ namespace puddi
 		void PassDownParentModel(Object *c) const;
 
 		vec4 GetPosition() const;
+		vec4 GetWorldPosition() const;
 
 		void SetPosition(const vec4& position);
 

@@ -60,8 +60,7 @@ namespace grumpy
             float moveAmount = skipVelocity * FpsTracker::GetFrameTimeMs();
 
             vec4 displacement = targetPosition - position;
-            float len = length(displacement);
-            if (len <= moveAmount)
+            if (length(displacement) <= moveAmount)
             {
                 SetPosition(targetPosition);
 
@@ -98,9 +97,7 @@ namespace grumpy
 
             float moveAmount = readVelocity * FpsTracker::GetFrameTimeMs();
 
-            displacement = targetPosition - position;
-            float len = length(displacement);
-            if (len <= moveAmount)
+            if (length(targetPosition - position) <= moveAmount)
             {
                 SetPosition(targetPosition);
 
@@ -130,7 +127,7 @@ namespace grumpy
 		}
     }
 
-    float Lexer::GetSkipVelocity()
+    float Lexer::GetSkipVelocity() const
     {
         return skipVelocity;
     }
@@ -139,7 +136,7 @@ namespace grumpy
         skipVelocity = v;
     }
 
-    float Lexer::GetReadVelocity()
+    float Lexer::GetReadVelocity() const
     {
         return readVelocity;
     }

@@ -14,14 +14,20 @@ namespace grumpy
 
 		int GetWidth() const;
 
+		bool GetTokenRequired() const;
+
+        std::vector<ASTNode*> ChildNodes;
+
+        void Hide();
+        void Show();
+
 	private:
         ASTNode *parent;
 		std::vector<DrawableObject*> glyphs;
 		DrawableObject *parentConnector;
 		DrawableObject *parentConnectorLine;
-		std::vector<ASTNode*> childNodes;
 		int width;
-		Object *container;
+		DrawableObject *container;
 		bool tokenRequired;
 	};
 }

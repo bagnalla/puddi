@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="include/GlmHeaders.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="shaders/vertex/vshader_texture_bump.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="463" topLine="0" />
+			<Cursor1 position="0" topLine="8" />
 		</Cursor>
 	</File>
 	<File name="src/Texture.cc" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -17,33 +17,19 @@
 			<Collapse line="41" />
 		</Folding>
 	</File>
+	<File name="Makefile" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="599" topLine="0" />
+		</Cursor>
+	</File>
 	<File name="include/Shadow.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="93" topLine="6" />
 		</Cursor>
 	</File>
-	<File name="src/Rectangle.cc" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/TextString.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="789" topLine="10" />
-		</Cursor>
-		<Folding>
-			<Collapse line="146" />
-			<Collapse line="148" />
-			<Collapse line="224" />
-			<Collapse line="227" />
-			<Collapse line="233" />
-			<Collapse line="238" />
-			<Collapse line="240" />
-			<Collapse line="272" />
-			<Collapse line="277" />
-			<Collapse line="282" />
-			<Collapse line="287" />
-			<Collapse line="311" />
-		</Folding>
-	</File>
-	<File name="src/Shader.cc" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="7375" topLine="207" />
+			<Cursor1 position="170" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="src/SDLUtil.cc" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -51,90 +37,48 @@
 			<Cursor1 position="0" topLine="111" />
 		</Cursor>
 	</File>
-	<File name="shaders/fragment/fshader_cubemap_bump.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/Object.cc" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2407" topLine="63" />
-		</Cursor>
-	</File>
-	<File name="shaders/vertex/vshader_terrain_texture_bump.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="14" />
-		</Cursor>
-	</File>
-	<File name="src/RenderGraph.cc" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8508" topLine="54" />
+			<Cursor1 position="2303" topLine="7" />
 		</Cursor>
 		<Folding>
 			<Collapse line="14" />
-			<Collapse line="18" />
-			<Collapse line="27" />
-			<Collapse line="32" />
+			<Collapse line="26" />
 			<Collapse line="35" />
-			<Collapse line="41" />
-			<Collapse line="49" />
-			<Collapse line="63" />
-			<Collapse line="69" />
-			<Collapse line="77" />
-			<Collapse line="92" />
-			<Collapse line="100" />
-			<Collapse line="103" />
-			<Collapse line="114" />
-			<Collapse line="126" />
-			<Collapse line="131" />
-			<Collapse line="139" />
-			<Collapse line="157" />
-			<Collapse line="163" />
-			<Collapse line="173" />
-			<Collapse line="183" />
+			<Collapse line="46" />
+			<Collapse line="59" />
+			<Collapse line="60" />
+			<Collapse line="66" />
+			<Collapse line="71" />
+			<Collapse line="73" />
+			<Collapse line="78" />
 		</Folding>
 	</File>
-	<File name="include/Lexer.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/Text.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="482" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include/Rectangle.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="246" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="shaders/fragment/fshader_material.glsl" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="12" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="shaders/fragment/fshader_terrain_texture_bump.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3851" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src/Font.cc" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="284" topLine="9" />
-		</Cursor>
-	</File>
-	<File name="src/Puddi.cc" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2401" topLine="82" />
+			<Cursor1 position="242" topLine="0" />
 		</Cursor>
 		<Folding>
-			<Collapse line="44" />
+			<Collapse line="128" />
+			<Collapse line="143" />
+			<Collapse line="149" />
+			<Collapse line="164" />
+			<Collapse line="174" />
+			<Collapse line="247" />
+			<Collapse line="271" />
+			<Collapse line="285" />
+			<Collapse line="309" />
+			<Collapse line="320" />
 		</Folding>
 	</File>
-	<File name="shaders/fragment/fshader_cubemap.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="shaders/vertex/vshader_texture.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="56" />
+			<Cursor1 position="0" topLine="4" />
 		</Cursor>
 	</File>
-	<File name="shaders/fragment/fshader_emissive_cubemap.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/DrawableObject.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="73" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src/Cube.cc" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="272" topLine="0" />
+			<Cursor1 position="647" topLine="9" />
 		</Cursor>
 	</File>
 	<File name="shaders/fragment/fshader_texture.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -142,9 +86,29 @@
 			<Cursor1 position="385" topLine="1" />
 		</Cursor>
 	</File>
-	<File name="src/Skybox.cc" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/Camera.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="338" topLine="0" />
+			<Cursor1 position="507" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include/SourceCode.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="106" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/Token.cc" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="139" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="shaders/fragment/fshader_emissive_cubemap.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="73" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include/Object.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1252" topLine="37" />
 		</Cursor>
 	</File>
 	<File name="include/Shader.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -152,9 +116,128 @@
 			<Cursor1 position="1665" topLine="37" />
 		</Cursor>
 	</File>
-	<File name="include/TextString.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/FpsTracker.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="170" topLine="0" />
+			<Cursor1 position="406" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include/Sphere.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="234" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/TerrainVertexMesh.cc" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3937" topLine="18" />
+		</Cursor>
+		<Folding>
+			<Collapse line="12" />
+			<Collapse line="16" />
+			<Collapse line="21" />
+			<Collapse line="41" />
+			<Collapse line="71" />
+			<Collapse line="77" />
+			<Collapse line="81" />
+			<Collapse line="85" />
+			<Collapse line="89" />
+			<Collapse line="93" />
+			<Collapse line="97" />
+			<Collapse line="101" />
+			<Collapse line="105" />
+			<Collapse line="118" />
+			<Collapse line="122" />
+			<Collapse line="126" />
+			<Collapse line="130" />
+			<Collapse line="134" />
+			<Collapse line="138" />
+		</Folding>
+	</File>
+	<File name="src/Text.cc" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6811" topLine="178" />
+		</Cursor>
+	</File>
+	<File name="src/main.cc" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8067" topLine="164" />
+		</Cursor>
+		<Folding>
+			<Collapse line="152" />
+			<Collapse line="154" />
+			<Collapse line="220" />
+			<Collapse line="298" />
+			<Collapse line="307" />
+			<Collapse line="313" />
+		</Folding>
+	</File>
+	<File name="include/Schematic.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="112" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="shaders/fragment/fshader_cubemap_bump.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2407" topLine="63" />
+		</Cursor>
+	</File>
+	<File name="src/Util.cc" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4438" topLine="126" />
+		</Cursor>
+		<Folding>
+			<Collapse line="0" />
+			<Collapse line="22" />
+			<Collapse line="44" />
+			<Collapse line="172" />
+		</Folding>
+	</File>
+	<File name="src/Parser.cc" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="341" topLine="9" />
+		</Cursor>
+	</File>
+	<File name="src/Lexer.cc" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1916" topLine="53" />
+		</Cursor>
+	</File>
+	<File name="include/AST.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="597" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include/Token.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="319" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/Skybox.cc" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="338" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/AST.cc" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2063" topLine="35" />
+		</Cursor>
+		<Folding>
+			<Collapse line="16" />
+			<Collapse line="35" />
+			<Collapse line="41" />
+			<Collapse line="105" />
+			<Collapse line="115" />
+			<Collapse line="142" />
+			<Collapse line="147" />
+		</Folding>
+	</File>
+	<File name="shaders/vertex/vshader_terrain_texture_bump.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="14" />
+		</Cursor>
+	</File>
+	<File name="src/TextString.cc" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="416" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="src/Schematic.cc" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -185,79 +268,38 @@
 			<Collapse line="183" />
 		</Folding>
 	</File>
-	<File name="include/DrawableObject.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="shaders/fragment/fshader_cubemap.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="647" topLine="9" />
+			<Cursor1 position="0" topLine="56" />
 		</Cursor>
 	</File>
-	<File name="src/ModelGraph.cc" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/VertexMesh.cc" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2178" topLine="61" />
+			<Cursor1 position="3189" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src/Text.cc" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/Rectangle.cc" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="6811" topLine="178" />
+			<Cursor1 position="789" topLine="10" />
 		</Cursor>
+		<Folding>
+			<Collapse line="146" />
+			<Collapse line="148" />
+			<Collapse line="224" />
+			<Collapse line="227" />
+			<Collapse line="233" />
+			<Collapse line="238" />
+			<Collapse line="240" />
+			<Collapse line="272" />
+			<Collapse line="277" />
+			<Collapse line="282" />
+			<Collapse line="287" />
+			<Collapse line="311" />
+		</Folding>
 	</File>
-	<File name="src/HeightMapTerrain.cc" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/Shadow.cc" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4689" topLine="103" />
-		</Cursor>
-	</File>
-	<File name="include/Font.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="89" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include/VertexMesh.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="839" topLine="26" />
-		</Cursor>
-	</File>
-	<File name="include/Token.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="213" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include/FpsTracker.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="406" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include/AST.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="262" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="shaders/vertex/vshader_texture_bump.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="8" />
-		</Cursor>
-	</File>
-	<File name="shaders/vertex/vshader_texture.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="4" />
-		</Cursor>
-	</File>
-	<File name="include/TerrainVertexMesh.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="618" topLine="6" />
-		</Cursor>
-	</File>
-	<File name="src/AST.cc" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1093" topLine="55" />
-		</Cursor>
-	</File>
-	<File name="include/RenderNode.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="264" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src/Sphere.cc" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="381" topLine="0" />
+			<Cursor1 position="7134" topLine="156" />
 		</Cursor>
 	</File>
 	<File name="src/mainOLD.cc" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -265,97 +307,29 @@
 			<Cursor1 position="2270" topLine="39" />
 		</Cursor>
 	</File>
-	<File name="shaders/fragment/fshader_texture_bump.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/Lexer.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3459" topLine="74" />
+			<Cursor1 position="533" topLine="4" />
 		</Cursor>
 	</File>
-	<File name="src/Shadow.cc" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/DrawableObject.cc" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="7134" topLine="156" />
+			<Cursor1 position="5580" topLine="174" />
 		</Cursor>
 	</File>
-	<File name="include/Camera.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="shaders/fragment/fshader_material.glsl" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="507" topLine="0" />
+			<Cursor1 position="12" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src/TextString.cc" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/ModelGraph.cc" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="416" topLine="0" />
+			<Cursor1 position="2178" topLine="61" />
 		</Cursor>
-	</File>
-	<File name="src/DrawableObject.cc" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3684" topLine="110" />
-		</Cursor>
-	</File>
-	<File name="include/Text.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="242" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="128" />
-			<Collapse line="143" />
-			<Collapse line="149" />
-			<Collapse line="164" />
-			<Collapse line="174" />
-			<Collapse line="247" />
-			<Collapse line="271" />
-			<Collapse line="285" />
-			<Collapse line="309" />
-			<Collapse line="320" />
-		</Folding>
-	</File>
-	<File name="src/TerrainVertexMesh.cc" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3937" topLine="18" />
-		</Cursor>
-		<Folding>
-			<Collapse line="12" />
-			<Collapse line="16" />
-			<Collapse line="21" />
-			<Collapse line="41" />
-			<Collapse line="71" />
-			<Collapse line="77" />
-			<Collapse line="81" />
-			<Collapse line="85" />
-			<Collapse line="89" />
-			<Collapse line="93" />
-			<Collapse line="97" />
-			<Collapse line="101" />
-			<Collapse line="105" />
-			<Collapse line="118" />
-			<Collapse line="122" />
-			<Collapse line="126" />
-			<Collapse line="130" />
-			<Collapse line="134" />
-			<Collapse line="138" />
-		</Folding>
 	</File>
 	<File name="include/Puddi.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1957" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include/SourceCode.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="106" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src/SourceCode.cc" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1721" topLine="24" />
-		</Cursor>
-	</File>
-	<File name="src/Camera.cc" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2796" topLine="112" />
-		</Cursor>
-	</File>
-	<File name="include/Sphere.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="234" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="include/Cube.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -363,113 +337,125 @@
 			<Cursor1 position="241" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src/Object.cc" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/VertexMesh.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3883" topLine="36" />
+			<Cursor1 position="839" topLine="26" />
+		</Cursor>
+	</File>
+	<File name="src/Sphere.cc" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="381" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/Shader.cc" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7375" topLine="207" />
+		</Cursor>
+	</File>
+	<File name="src/RenderNode.cc" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="578" topLine="113" />
+		</Cursor>
+	</File>
+	<File name="shaders/fragment/fshader_texture_bump.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3459" topLine="74" />
+		</Cursor>
+	</File>
+	<File name="src/SourceCode.cc" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1721" topLine="24" />
+		</Cursor>
+	</File>
+	<File name="include/RenderNode.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="264" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include/TerrainVertexMesh.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="618" topLine="6" />
+		</Cursor>
+	</File>
+	<File name="shaders/fragment/fshader_terrain_texture_bump.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3851" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/Puddi.cc" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2401" topLine="82" />
+		</Cursor>
+		<Folding>
+			<Collapse line="44" />
+		</Folding>
+	</File>
+	<File name="src/Cube.cc" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="272" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include/GlmHeaders.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="463" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/Camera.cc" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2796" topLine="112" />
+		</Cursor>
+	</File>
+	<File name="src/RenderGraph.cc" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8252" topLine="54" />
 		</Cursor>
 		<Folding>
 			<Collapse line="14" />
-			<Collapse line="26" />
+			<Collapse line="18" />
+			<Collapse line="27" />
+			<Collapse line="32" />
 			<Collapse line="35" />
-			<Collapse line="46" />
-			<Collapse line="59" />
-			<Collapse line="60" />
-			<Collapse line="66" />
-			<Collapse line="71" />
-			<Collapse line="73" />
-			<Collapse line="78" />
-			<Collapse line="85" />
-			<Collapse line="89" />
-			<Collapse line="96" />
-			<Collapse line="107" />
-			<Collapse line="115" />
-			<Collapse line="119" />
-			<Collapse line="125" />
+			<Collapse line="41" />
+			<Collapse line="49" />
+			<Collapse line="63" />
+			<Collapse line="69" />
+			<Collapse line="77" />
+			<Collapse line="92" />
+			<Collapse line="100" />
+			<Collapse line="103" />
+			<Collapse line="114" />
+			<Collapse line="126" />
 			<Collapse line="131" />
-			<Collapse line="135" />
-			<Collapse line="141" />
-			<Collapse line="147" />
-			<Collapse line="151" />
+			<Collapse line="139" />
 			<Collapse line="157" />
-			<Collapse line="171" />
-			<Collapse line="175" />
-			<Collapse line="180" />
-			<Collapse line="185" />
-			<Collapse line="189" />
-			<Collapse line="194" />
-			<Collapse line="199" />
-			<Collapse line="203" />
-			<Collapse line="208" />
-			<Collapse line="213" />
-			<Collapse line="218" />
-			<Collapse line="224" />
-			<Collapse line="231" />
-			<Collapse line="239" />
-			<Collapse line="244" />
-			<Collapse line="248" />
-			<Collapse line="254" />
-			<Collapse line="259" />
-			<Collapse line="265" />
-			<Collapse line="282" />
-			<Collapse line="307" />
-			<Collapse line="312" />
-			<Collapse line="318" />
-			<Collapse line="326" />
-			<Collapse line="331" />
-			<Collapse line="336" />
-			<Collapse line="343" />
-			<Collapse line="350" />
+			<Collapse line="163" />
+			<Collapse line="173" />
+			<Collapse line="183" />
 		</Folding>
 	</File>
-	<File name="include/Object.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/Rectangle.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3056" topLine="106" />
+			<Cursor1 position="246" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src/Util.cc" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/Font.cc" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4438" topLine="126" />
-		</Cursor>
-		<Folding>
-			<Collapse line="0" />
-			<Collapse line="22" />
-			<Collapse line="44" />
-			<Collapse line="172" />
-		</Folding>
-	</File>
-	<File name="src/VertexMesh.cc" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3189" topLine="77" />
+			<Cursor1 position="284" topLine="9" />
 		</Cursor>
 	</File>
-	<File name="src/main.cc" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/Font.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="7332" topLine="156" />
-		</Cursor>
-		<Folding>
-			<Collapse line="151" />
-			<Collapse line="153" />
-			<Collapse line="292" />
-		</Folding>
-	</File>
-	<File name="src/Token.cc" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="139" topLine="0" />
+			<Cursor1 position="89" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="Makefile" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/Parser.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="382" topLine="0" />
+			<Cursor1 position="635" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src/Lexer.cc" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/HeightMapTerrain.cc" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1683" topLine="31" />
-		</Cursor>
-	</File>
-	<File name="include/Schematic.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="112" topLine="0" />
+			<Cursor1 position="4689" topLine="103" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

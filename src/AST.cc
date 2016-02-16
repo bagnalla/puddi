@@ -24,7 +24,7 @@ namespace grumpy
         parentConnector = connector;
         int childrenWidthSum = 0;
 
-        container = new Object(this);
+        container = new DrawableObject(this);
         int glyphCount = 0;
         tokenRequired = false;
 
@@ -70,7 +70,7 @@ namespace grumpy
                 auto node = new ASTNode(container, this, conn, input);
                 //node->Translate(vec4(0.0f, 0.0f, -1.0f, 0.0f));
                 //node->Translate(conn->GetPosition() + vec4(0.0f, 0.0f, -1.0f, 0.0f));
-                childNodes.push_back(node);
+                ChildNodes.push_back(node);
                 childrenWidthSum += node->width;
             }
             else
@@ -100,19 +100,19 @@ namespace grumpy
         //vec4 cursor = vec4(-width / 4.0f, 0.0f, -10.0f, 1.0f);
         vec4 cursor = vec4(glyphCount / 2.0f - childrenWidthSum / 2.0f, 0.0f, -3.0f, 1.0f);
         //for (auto it = childNodes.begin(); it != childNodes.end(); ++it)
-        if (childNodes.size())
-            cursor.x += childNodes[0]->width / 2.0f;
-        for (int i = 0; i < childNodes.size(); ++i)
+        if (ChildNodes.size())
+            cursor.x += ChildNodes[0]->width / 2.0f;
+        for (int i = 0; i < ChildNodes.size(); ++i)
         {
-            auto child = childNodes[i];
+            auto child = ChildNodes[i];
             child->SetPosition(cursor);
             cursor.x += child->width / 2.0f;
-            if (i < childNodes.size() - 1)
-                cursor.x += childNodes[i + 1]->width / 2.0f;
+            if (i < ChildNodes.size() - 1)
+                cursor.x += ChildNodes[i + 1]->width / 2.0f;
         }
 
         // create connector lines
-        for (auto it = childNodes.begin(); it != childNodes.end(); ++it)
+        for (auto it = ChildNodes.begin(); it != ChildNodes.end(); ++it)
         {
             auto child = *it;
             child->parentConnectorLine = new Cube(container);
@@ -143,6 +143,23 @@ namespace grumpy
 	{
         return width;
 	}
+
+	bool ASTNode::GetTokenRequired() const
+	{
+        return tokenRequired;
+	}
+
+    void ASTNode::Hide()
+    {
+        DisableRender();
+    }
+
+    void ASTNode::Show()
+    {
+        EnableRender();
+        for (auto it = ChildNodes.begin(); it != ChildNodes.end(); ++it)
+            (*it)->Hide();
+    }
 
 	// PRIVATE
 }

@@ -4,10 +4,17 @@
 #include "DrawableObject.h"
 #include "Token.h"
 #include "AST.h"
+#include <vector>
 #include <queue>
 
 namespace grumpy
 {
+    enum ParserState : int
+    {
+        PARSER_STATE_WAITING,
+        PARSER_STATE_MOVING
+    };
+
     class Parser : public puddi::DrawableObject
     {
     public:
@@ -15,10 +22,21 @@ namespace grumpy
 
         void Update();
 
+        float GetVelocity() const;
+        void SetVelocity(float v);
+
+        void SetTokenQueue(const std::queue<Token*> &tokenQ);
+
     private:
         ASTNode *astRoot;
-        ASTNode *cursor;
+        std::vector<ASTNode*> nodesVector;
         std::queue<Token*> tokenQueue;
+        int currentNodeIndex;
+        float velocity;
+        ParserState state;
+
+        void createNodesVector();
+        void addToNodesVectorRecursive(ASTNode *node);
     };
 }
 

@@ -22,10 +22,10 @@ namespace grumpy
 
         void Update();
 
-        float GetSkipVelocity();
+        float GetSkipVelocity() const;
         void SetSkipVelocity(float v);
 
-        float GetReadVelocity();
+        float GetReadVelocity() const;
         void SetReadVelocity(float v);
 
     private:

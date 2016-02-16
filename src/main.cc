@@ -18,6 +18,7 @@
 #include "Token.h"
 #include "Lexer.h"
 #include "AST.h"
+#include "Parser.h"
 #include <vector>
 #include <iostream>
 #include <string>
@@ -197,6 +198,20 @@ void init(void)
     ASTNode *ast = new ASTNode(Puddi::GetRootObject(), nullptr, nullptr, q);
     ast->Translate(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 0.0f));
     ast->SetScaleX(0.5f);
+    ast->Hide();
+
+    Parser *parser = new Parser(Puddi::GetRootObject(), ast);
+    parser->AddVertexMesh(new VertexMesh(VertexMesh::GetVertexMeshPrototypeByName("cube")));
+    parser->SetTexture(texture);
+//    parser->SetEmissive(true);
+//    parser->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    parser->SetVelocity(0.01f);
+    //parser->DisableRender();
+
+    queue<Token*> tokenQueue;
+    for (auto it = lTokens.begin(); it != lTokens.end(); ++it)
+        tokenQueue.push(new Token(Puddi::GetRootObject(), *it));
+    parser->SetTokenQueue(tokenQueue);
 }
 
 //----------------------------------------------------------------------------

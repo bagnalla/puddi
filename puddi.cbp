@@ -105,6 +105,7 @@
 		<Unit filename="include/Material.h" />
 		<Unit filename="include/ModelGraph.h" />
 		<Unit filename="include/Object.h" />
+		<Unit filename="include/Parser.h" />
 		<Unit filename="include/Puddi.h" />
 		<Unit filename="include/Rectangle.h" />
 		<Unit filename="include/RenderGraph.h" />
@@ -208,6 +209,7 @@
 		<Unit filename="src/Material.cc" />
 		<Unit filename="src/ModelGraph.cc" />
 		<Unit filename="src/Object.cc" />
+		<Unit filename="src/Parser.cc" />
 		<Unit filename="src/Puddi.cc" />
 		<Unit filename="src/Rectangle.cc" />
 		<Unit filename="src/RenderGraph.cc" />
