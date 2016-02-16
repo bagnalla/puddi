@@ -23,6 +23,8 @@ namespace grumpy
 
         parent = parentNode;
         parentConnector = connector;
+        parentConnectorLine = nullptr;
+        position = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 		velocity = 0.01f;
 
         container = new DrawableObject(this);
@@ -136,6 +138,8 @@ namespace grumpy
         else
             body->SetEmissionColor(vec4(0.25f, 0.25f, 0.25f, 0.25f));
         body->SetRenderGraph(3);
+
+        Resize();
 	}
 
 	int ASTNode::GetWidth() const
@@ -221,7 +225,7 @@ namespace grumpy
 
 	void ASTNode::rePositionConnectorLine()
 	{
-		if (parentConnectorLine == NULL)
+		if (parentConnectorLine == nullptr)
 			return;
 
 		parentConnectorLine->SetScaleX(length(position - parentConnector->GetPosition()));

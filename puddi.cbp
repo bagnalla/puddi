@@ -117,6 +117,7 @@
 		<Unit filename="include/Skybox.h" />
 		<Unit filename="include/SourceCode.h" />
 		<Unit filename="include/Sphere.h" />
+		<Unit filename="include/SyntaxParser.h" />
 		<Unit filename="include/TerrainVertexMesh.h" />
 		<Unit filename="include/Text.h" />
 		<Unit filename="include/TextOLD.h" />
@@ -221,6 +222,7 @@
 		<Unit filename="src/Skybox.cc" />
 		<Unit filename="src/SourceCode.cc" />
 		<Unit filename="src/Sphere.cc" />
+		<Unit filename="src/SyntaxParser.cc" />
 		<Unit filename="src/TerrainVertexMesh.cc" />
 		<Unit filename="src/Text.cc" />
 		<Unit filename="src/TextOLD.cc" />

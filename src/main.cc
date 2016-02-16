@@ -158,8 +158,7 @@ void init(void)
 		//}
 	//}
 
-    //SourceCode *sourceCode = new SourceCode(Puddi::GetRootObject(), "sourcefile.cc", "myfont");
-    SourceCode *sourceCode = new SourceCode(Puddi::GetRootObject(), "program.gpy", "myfont");
+    //SourceCode *sourceCode = new SourceCode(Puddi::GetRootObject(), "program.gpy", "myfont");
 
     vector<LexToken> lTokens;
     ifstream infile("lexer.in");
@@ -194,9 +193,9 @@ void init(void)
         q.push(bytes[i]);
 
     ASTNode *ast = new ASTNode(Puddi::GetRootObject(), nullptr, nullptr, q);
-    ast->Translate(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 0.0f));
+    //ast->Translate(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 0.0f));
     ast->SetScaleX(0.5f);
-	ast->SetAssignedLocation(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 0.0f));
+	//ast->SetAssignedLocation(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 1.0f));
     ast->Hide();
 
 	parser = new SyntaxParser(Puddi::GetRootObject(), ast);
@@ -207,10 +206,10 @@ void init(void)
     parser->SetVelocity(0.01f);
     //parser->DisableRender();
 
-    /*queue<Token*> tokenQueue;
+    queue<Token*> tokenQueue;
     for (auto it = lTokens.begin(); it != lTokens.end(); ++it)
         tokenQueue.push(new Token(Puddi::GetRootObject(), *it));
-    parser->SetTokenQueue(tokenQueue);*/
+    parser->SetTokenQueue(tokenQueue);
 }
 
 //----------------------------------------------------------------------------

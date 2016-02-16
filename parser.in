@@ -1,11 +1,10 @@
-[[`DEF`def [`ID`f]`LPAREN`(`RPAREN`) `COLON`:
-   [`TT`unit] `LBRACE`{
-   [`LET`let [`ID`x] `EQ`=
-   [[`INTCONST`1] [`PLUS`+] [[[`INTCONST`2] [`TIMES`*] [`INTCONST`3]] [`DIV`/] [`INTCONST`4]]] `IN`in
-   [`LET`let [`ID`y] `EQ`=
-   [[[`MINUS`-] [`INTCONST`1]] [`TIMES`*] [`INTCONST`3]] `IN`in
-   [`LET`let [`ID`z] `EQ`= [`REF`ref [`ID`y]] `IN`in [`LET`let [`ID`w] `EQ`=
-   [`REF`ref [`ID`z]] `IN`in [[`DEREF`!] [[`DEREF`!] [`ID`w]]]]]]]
- `RBRACE`}][[`ID`f]`LPAREN`(`RPAREN`)]
+[[`DEF`def [`ID`f]`LPAREN`([[`ID`x] `COLON`: [`INT`int]`COMMA`][[`ID`y] `COLON`: [`BOOL`bool]]`RPAREN`)
+   `COLON`:
+   [`INT`int] `LBRACE`{
+   [[`LET`let [`ID`z] `EQ`= [`REF`ref [`ID`x]] `IN`in [[`LET`let [`ID`w]
+   `EQ`= [[`DEREF`!] [`ID`z]] `IN`in
+   [`ID`z]] [`DEFEQ`:=] [[`ID`w] [`PLUS`+] [`INTCONST`1]]]]`SEMI`][[[[`DEREF`!] [`ID`z]] [`PLUS`+] [`INTCONST`1]]]
+ `RBRACE`}
+ ][[`ID`f]`LPAREN`([[`INTCONST`3]`COMMA`][[`BOOLCONST`false]]`RPAREN`)]
 
 ]
