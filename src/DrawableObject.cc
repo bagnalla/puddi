@@ -53,6 +53,12 @@ namespace puddi
 		updateRenderNodes();
 	}
 
+	DrawableObject::~DrawableObject()
+	{
+        for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)
+            delete *it;
+	}
+
 //	void DrawableObject::Draw() const
 //	{
 //		Shader::SetModel(finalModel);

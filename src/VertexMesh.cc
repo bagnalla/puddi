@@ -32,6 +32,7 @@ namespace puddi
 
 	VertexMesh::~VertexMesh()
 	{
+        std::cout << "in VertexMesh destructor\n";
 		if (renderNode != NULL)
 		{
 			auto it = std::find(renderNode->meshes.begin(), renderNode->meshes.end(), this);
@@ -40,6 +41,8 @@ namespace puddi
             else
                 std::cerr << "in VerteshMesh destructor: attempted to remove self from rendernode that didnt know about me. this should never happen\n";
 		}
+
+		Shadow::RemoveFromDepthRenderList(this);
 	}
 
 	void VertexMesh::AddVertexMeshPrototype(const std::string &name, const Material& mat, int iOffset, int iCount, bool tStrip)

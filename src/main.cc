@@ -34,7 +34,11 @@ Object *objectContainer;
 DrawableObject *cube;
 DrawableObject *rect;
 
+Lexer *lexer;
+ASTNode *ast;
 SyntaxParser *parser;
+
+void reset();
 
 void init(void)
 {
@@ -158,7 +162,16 @@ void init(void)
 		//}
 	//}
 
-    //SourceCode *sourceCode = new SourceCode(Puddi::GetRootObject(), "program.gpy", "myfont");
+    SourceCode *sourceCode = new SourceCode(Puddi::GetRootObject(), "program.gpy", "myfont");
+
+    reset();
+}
+
+void reset()
+{
+    delete lexer;
+    delete ast;
+    delete parser;
 
     vector<LexToken> lTokens;
     ifstream infile("lexer.in");
@@ -213,17 +226,19 @@ void init(void)
     ASTNode *ast = new ASTNode(Puddi::GetRootObject(), nullptr, nullptr, q);
     //ast->Translate(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 0.0f));
     ast->SetScaleX(0.5f);
-	//ast->SetAssignedLocation(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 1.0f));
+    ast->SetPosition(vec4(30.0f, 0.0f, 0.0f, 1.0f));
+	ast->SetAssignedLocation(vec4(30.0f, 0.0f, 0.0f, 1.0f));
     ast->Hide();
 
 	parser = new SyntaxParser(Puddi::GetRootObject(), ast);
     parser->AddVertexMesh(new VertexMesh(VertexMesh::GetVertexMeshPrototypeByName("cube")));
-    parser->SetTexture(texture);
+    parser->SetTexture(Texture::GetTextureByName("shrek"));
 //    parser->SetEmissive(true);
 //    parser->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    parser->SetVelocity(0.01f);
+    parser->SetVelocity(0.005f);
     //parser->DisableRender();
-    parser->SetHomePosition(vec4(0.0f, 0.0f, 5.0f, 1.0f));
+    parser->SetHomePosition(ast->GetPosition() + vec4(0.0f, 0.0f, 5.0f, 1.0f));
+    parser->SetPosition(vec4(20.0f, 0.0f, 0.0f, 1.0f));
 
     queue<Token*> tokenQueue;
     for (auto it = lTokens.begin(); it != lTokens.end(); ++it)
@@ -263,6 +278,9 @@ int update()
 				break;
 			case SDLK_1:
 				parser->AddTokenToQueue(new Token(Puddi::GetRootObject(), LexToken()));
+				break;
+            case SDLK_r:
+				reset();
 				break;
 			// ROTATE MIDDLE OBJECT
 //			case SDLK_1:

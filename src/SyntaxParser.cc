@@ -61,6 +61,7 @@ namespace grumpy
 
                 targetNode->Show();
 				astRoot->Resize();
+				delete tokenQueue.front();
                 tokenQueue.pop();
                 state = SYNTAXPARSER_STATE_MOVING;
             }
@@ -91,6 +92,7 @@ namespace grumpy
 				{
 					nodesVector[currentNodeIndex]->Show();
 					astRoot->Resize();
+					delete tokenQueue.front();
 					tokenQueue.pop();
 				}
             }
@@ -136,7 +138,7 @@ namespace grumpy
         sort(nodesVector.begin(), nodesVector.end(),
         [](ASTNode *a, ASTNode *b) -> bool
         {
-            return a->GetParseIndex() > b->GetParseIndex();
+            return a->GetParseIndex() < b->GetParseIndex();
         });
 
         for (int i = 0; i < nodesVector.size(); ++i)

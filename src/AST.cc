@@ -193,8 +193,8 @@ namespace grumpy
             (*it)->EnableRender();
         if (parentConnectorLine != nullptr)
             parentConnectorLine->EnableRender();
-        if (parent != nullptr)
-            parent->Show();
+        //if (parent != nullptr)
+        //    parent->Show();
         hidden = false;
     }
 
@@ -247,7 +247,8 @@ namespace grumpy
 		for (auto it = ChildNodes.begin(); it != ChildNodes.end(); ++it)
 			childrenWidthSum += (*it)->resizeRecursive(); // recursive call
 
-		vec4 cursor = vec4(glyphCount / 2.0f - childrenWidthSum / 2.0f, 0.0f, -3.0f, 1.0f);
+        float deltaY = hidden ? 0.0f : -3.0f;
+		vec4 cursor = vec4(glyphCount / 2.0f - childrenWidthSum / 2.0f, 0.0f, deltaY, 1.0f);
 		if (ChildNodes.size())
 			cursor.x += ChildNodes[0]->width / 2.0f;
 		for (int i = 0; i < ChildNodes.size(); ++i)
