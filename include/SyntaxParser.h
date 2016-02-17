@@ -30,6 +30,8 @@ namespace grumpy
 
 		void AddTokenToQueue(Token *t);
 
+		void SetHomePosition(glm::vec4 v);
+
     private:
         ASTNode *astRoot;
         std::vector<ASTNode*> nodesVector;

@@ -187,10 +187,28 @@ void init(void)
 //    lexer->Translate(vec4(-10.0f, 0.0f, 0.0f, 0.0f));
 
     auto bytes = Util::ReadAllBytes("parser.in");
+    vector<char> sanitizedBytes;
+    bool prevCharWasSpace = false;
+    for (int i = 0; i < bytes.size(); ++i)
+    {
+        if (bytes[i] == ' ')
+        {
+            if (prevCharWasSpace)
+                continue;
+            prevCharWasSpace = true;
+        }
+        else
+            prevCharWasSpace = false;
+
+        sanitizedBytes.push_back(bytes[i]);
+
+        cout << bytes[i];;
+    }
+
     queue<char> q;
 
-    for (int i = 0; i < bytes.size(); ++i)
-        q.push(bytes[i]);
+    for (int i = 0; i < sanitizedBytes.size(); ++i)
+        q.push(sanitizedBytes[i]);
 
     ASTNode *ast = new ASTNode(Puddi::GetRootObject(), nullptr, nullptr, q);
     //ast->Translate(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 0.0f));
@@ -205,6 +223,7 @@ void init(void)
 //    parser->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
     parser->SetVelocity(0.01f);
     //parser->DisableRender();
+    parser->SetHomePosition(vec4(0.0f, 0.0f, 5.0f, 1.0f));
 
     queue<Token*> tokenQueue;
     for (auto it = lTokens.begin(); it != lTokens.end(); ++it)

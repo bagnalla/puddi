@@ -12,6 +12,7 @@ Date:				December 9, 2015
 *************************************************************************************/
 
 #include "Util.h"
+#include <glm/gtx/color_space.hpp>
 #include <fstream>
 #include <iostream>
 
@@ -206,5 +207,14 @@ namespace puddi
 			f.close();
 			return false;
 		}
+	}
+
+	glm::vec4 Util::InterpolateRainbow(float val, float alpha)
+	{
+        auto temp = glm::rgbColor(vec3(val, val, val));
+        std::cout << temp.x << std::endl;
+        std::cout << temp.y << std::endl;
+        std::cout << temp.z << std::endl;
+        return vec4(temp.x, temp.y, temp.z, alpha);
 	}
 }

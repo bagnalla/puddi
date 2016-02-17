@@ -27,15 +27,21 @@ namespace grumpy
 
 		void SetAssignedLocation(const glm::vec4 &l);
 
+		int GetParseIndex() const;
+
+		void SetNodeColor(glm::vec4 c);
+
 	private:
 		ASTNode *parent;
 		std::vector<DrawableObject*> glyphs;
 		DrawableObject *parentConnector;
 		DrawableObject *parentConnectorLine;
+		DrawableObject *body;
 		int width;
 		DrawableObject *container;
 		bool tokenRequired;
 		int glyphCount;
+		int parseIndex;
 
 		glm::vec4 assignedLocation;
 		float velocity;

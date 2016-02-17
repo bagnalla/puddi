@@ -138,10 +138,12 @@ namespace puddi
 		static void Apply(std::vector<vec4>& vecs, vec4(*func)(const vec4&));
 
 		static std::vector<char> ReadAllBytes(char const* fileName);
-		
+
 		static float WrapAngle(float theta);
-		
+
 		static bool FileExists(const std::string& name);
+
+		static glm::vec4 InterpolateRainbow(float val, float alpha);
 	};
 }
 

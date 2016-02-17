@@ -1,6 +1,8 @@
 #include "SyntaxParser.h"
 #include "FpsTracker.h"
+#include "Util.h"
 #include <iostream>
+#include <algorithm>
 
 using namespace puddi;
 using namespace std;
@@ -24,7 +26,6 @@ namespace grumpy
     {
         if (state == SYNTAXPARSER_STATE_DONE)
         {
-            cout << "muh" << endl;
             if (position == homePosition)
                 return;
 
@@ -52,7 +53,7 @@ namespace grumpy
         {
             if (tokenQueue.size())
             {
-                if (tokenQueue.front()->LToken.name == "EOF")
+                if (currentNodeIndex >= nodesVector.size())
                 {
                     state = SYNTAXPARSER_STATE_DONE;
                     return;
@@ -77,14 +78,14 @@ namespace grumpy
 
                 currentNodeIndex++;
 
-                cout << tokenQueue.front()->LToken.name << endl;
-                if (tokenQueue.size() && tokenQueue.front()->LToken.name == "EOF")
+                //cout << tokenQueue.front()->LToken.name << endl;
+                if (currentNodeIndex >= nodesVector.size())
                 {
                     state = SYNTAXPARSER_STATE_DONE;
                     return;
                 }
 
-                if (currentNodeIndex >= nodesVector.size() || (nodesVector[currentNodeIndex]->GetTokenRequired() && !tokenQueue.size()))
+                if (nodesVector[currentNodeIndex]->GetTokenRequired() && !tokenQueue.size())
                     state = SYNTAXPARSER_STATE_WAITING;
 				else
 				{
@@ -119,6 +120,11 @@ namespace grumpy
 		tokenQueue.push(t);
 	}
 
+	void SyntaxParser::SetHomePosition(glm::vec4 v)
+	{
+        homePosition = v;
+	}
+
     // PRIVATE
 
     void SyntaxParser::createNodesVector()
@@ -126,6 +132,17 @@ namespace grumpy
         nodesVector.clear();
 
         addToNodesVectorRecursive(astRoot);
+
+        sort(nodesVector.begin(), nodesVector.end(),
+        [](ASTNode *a, ASTNode *b) -> bool
+        {
+            return a->GetParseIndex() > b->GetParseIndex();
+        });
+
+        for (int i = 0; i < nodesVector.size(); ++i)
+        {
+            nodesVector[i]->SetNodeColor(Util::InterpolateRainbow(i / static_cast<float>(nodesVector.size()), 0.25f));
+        }
     }
 
     void SyntaxParser::addToNodesVectorRecursive(ASTNode *node)

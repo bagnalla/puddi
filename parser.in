@@ -1,10 +1,11 @@
-[[`DEF`def [`ID`f]`LPAREN`([[`ID`x] `COLON`: [`INT`int]`COMMA`][[`ID`y] `COLON`: [`BOOL`bool]]`RPAREN`)
-   `COLON`:
-   [`INT`int] `LBRACE`{
-   [[`LET`let [`ID`z] `EQ`= [`REF`ref [`ID`x]] `IN`in [[`LET`let [`ID`w]
-   `EQ`= [[`DEREF`!] [`ID`z]] `IN`in
-   [`ID`z]] [`DEFEQ`:=] [[`ID`w] [`PLUS`+] [`INTCONST`1]]]]`SEMI`][[[[`DEREF`!] [`ID`z]] [`PLUS`+] [`INTCONST`1]]]
- `RBRACE`}
- ][[`ID`f]`LPAREN`([[`INTCONST`3]`COMMA`][[`BOOLCONST`false]]`RPAREN`)]
+[`24`[`22`def [f]() :
+           unit {
+           [`21`let [x] =
+           [`6`[`0`1] [+] [`5`[`3`[`1`2] [*] [`2`3]] [/] [`4`4]]] in
+           [`20`let [y] = [`10`[`8`[-] [`7`1]] [*] [`9`3]] in [`19`let [z] =
+           [`12`ref [`11`[y]]] in [`18`let [w] = [`14`ref [`13`[z]]] in
+           [`17`[!] [`16`[!] [`15`[w]]]]]]]]
+     }]
+     [`23`[f]()]
 
 ]

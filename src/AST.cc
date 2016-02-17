@@ -21,6 +21,8 @@ namespace grumpy
         }
         input.pop();
 
+        if (parentNode != nullptr)
+            parseIndex = parentNode->parseIndex;
         parent = parentNode;
         parentConnector = connector;
         parentConnectorLine = nullptr;
@@ -45,13 +47,22 @@ namespace grumpy
             {
                 tokenRequired = true;
                 input.pop();
-                while (c = input.front() != '`')
+                string index_string = "";
+                while ((c = input.front()) != '`')
+                {
+                    index_string += c;
                     input.pop();
+                }
+
+                parseIndex = atoi(index_string.c_str());
+
+                cout << parseIndex << endl;
+
                 input.pop();
                 continue;
             }
 
-            cout << c;
+            //cout << c;
 
             if (c == ']')
                 break;
@@ -80,6 +91,7 @@ namespace grumpy
             {
                 if (c != ' ')
                 {
+                    //cout << c << endl;
                     DrawableObject *glyph = new DrawableObject(container, VertexMesh::GetVertexMeshPrototypeByName(string(1, c)));
                     glyph->SetTexture(Texture::GetTextureByName("myfont"));
                     glyph->RotateX(M_PI / 2.0f);
@@ -129,14 +141,15 @@ namespace grumpy
 		//}
 
         // create body
-        auto body = new Cube(this);
+        body = new Cube(this);
         //body->Translate(vec4(-0.5f, 0.0f, 0.0f, 0.0f));
         body->SetScaleX(glyphCount);
         body->SetEmissive(true);
-        if (tokenRequired)
-            body->SetEmissionColor(vec4(0.3f, 0.15f, 0.0f, 0.4f));
-        else
-            body->SetEmissionColor(vec4(0.25f, 0.25f, 0.25f, 0.25f));
+        body->SetEmissionColor(vec4(0.25f, 0.25f, 0.25f, 0.25f));
+//        if (tokenRequired)
+//            body->SetEmissionColor(vec4(0.3f, 0.15f, 0.0f, 0.4f));
+//        else
+//            body->SetEmissionColor(vec4(0.25f, 0.25f, 0.25f, 0.25f));
         body->SetRenderGraph(3);
 
         Resize();
@@ -154,14 +167,14 @@ namespace grumpy
 
     void ASTNode::Hide()
     {
-        DisableRender();
+        //DisableRender();
     }
 
     void ASTNode::Show()
     {
-        EnableRender();
-        for (auto it = ChildNodes.begin(); it != ChildNodes.end(); ++it)
-            (*it)->Hide();
+        //EnableRender();
+        //for (auto it = ChildNodes.begin(); it != ChildNodes.end(); ++it)
+        //    (*it)->Hide();
     }
 
 	void ASTNode::Resize()
@@ -193,6 +206,16 @@ namespace grumpy
 	{
 		assignedLocation = l;
 	}
+
+    int ASTNode::GetParseIndex() const
+    {
+        return parseIndex;
+    }
+
+    void ASTNode::SetNodeColor(glm::vec4 c)
+    {
+        body->SetEmissionColor(c);
+    }
 
 	// PRIVATE
 
