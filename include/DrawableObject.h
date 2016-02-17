@@ -39,9 +39,9 @@ namespace puddi
 
 		void SetCubeMap (GLuint cm);
 
-		void EnableRender();
+		void EnableRender(bool propagate = true);
 
-		void DisableRender();
+		void DisableRender(bool propagate = true);
 
 		void Cull();
 

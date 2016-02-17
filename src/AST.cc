@@ -172,9 +172,9 @@ namespace grumpy
 
     void ASTNode::Show()
     {
-        //EnableRender();
-        //for (auto it = ChildNodes.begin(); it != ChildNodes.end(); ++it)
-        //    (*it)->Hide();
+        EnableRender();
+        for (auto it = ChildNodes.begin(); it != ChildNodes.end(); ++it)
+            (*it)->Hide();
     }
 
 	void ASTNode::Resize()

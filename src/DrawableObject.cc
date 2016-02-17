@@ -120,28 +120,34 @@ namespace puddi
 		updateRenderNodes();
 	}
 
-	void DrawableObject::EnableRender()
+	void DrawableObject::EnableRender(bool propagate)
 	{
 		renderEnabled = true;
 
 		for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)
 			(*it)->EnableRender();
 
-		for (auto it = children.begin(); it != children.end(); ++it)
-			static_cast<DrawableObject*>(*it)->EnableRender();
+        if (propagate)
+        {
+            for (auto it = children.begin(); it != children.end(); ++it)
+                static_cast<DrawableObject*>(*it)->EnableRender();
+        }
 
 		updateRenderNodes();
 	}
 
-	void DrawableObject::DisableRender()
+	void DrawableObject::DisableRender(bool propagate)
 	{
 		renderEnabled = false;
 
 		for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)
 			(*it)->DisableRender();
 
-		for (auto it = children.begin(); it != children.end(); ++it)
-			static_cast<DrawableObject*>(*it)->DisableRender();
+        if (propagate)
+        {
+            for (auto it = children.begin(); it != children.end(); ++it)
+                static_cast<DrawableObject*>(*it)->DisableRender();
+        }
 	}
 
 	void DrawableObject::Cull()

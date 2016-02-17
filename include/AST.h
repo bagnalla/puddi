@@ -42,6 +42,8 @@ namespace grumpy
 		bool tokenRequired;
 		int glyphCount;
 		int parseIndex;
+		bool revealed;
+		float normalAlpha;
 
 		glm::vec4 assignedLocation;
 		float velocity;

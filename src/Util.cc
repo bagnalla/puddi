@@ -211,10 +211,14 @@ namespace puddi
 
 	glm::vec4 Util::InterpolateRainbow(float val, float alpha)
 	{
-        auto temp = glm::rgbColor(vec3(val, val, val));
-        std::cout << temp.x << std::endl;
-        std::cout << temp.y << std::endl;
-        std::cout << temp.z << std::endl;
-        return vec4(temp.x, temp.y, temp.z, alpha);
+//        auto hsv = glm::hsvColor(vec3(0.5f, 0.5f, 0.5f));
+//        hsv.x = val;
+//        auto temp = glm::rgbColor(hsv);
+//        std::cout << temp.x << std::endl;
+//        std::cout << temp.y << std::endl;
+//        std::cout << temp.z << std::endl;
+//        return vec4(temp.x, temp.y, temp.z, alpha);
+
+        return vec4(val, 1 - val, 1 - val, alpha);
 	}
 }
