@@ -34,6 +34,7 @@ namespace grumpy
 	private:
 		ASTNode *parent;
 		std::vector<DrawableObject*> glyphs;
+		std::vector<DrawableObject*> childConnectors;
 		DrawableObject *parentConnector;
 		DrawableObject *parentConnectorLine;
 		DrawableObject *body;
@@ -42,7 +43,7 @@ namespace grumpy
 		bool tokenRequired;
 		int glyphCount;
 		int parseIndex;
-		bool revealed;
+		bool hidden;
 		float normalAlpha;
 
 		glm::vec4 assignedLocation;

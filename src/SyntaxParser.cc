@@ -139,10 +139,15 @@ namespace grumpy
             return a->GetParseIndex() > b->GetParseIndex();
         });
 
-//        for (int i = 0; i < nodesVector.size(); ++i)
-//        {
-//            nodesVector[i]->SetNodeColor(Util::InterpolateRainbow(i / static_cast<float>(nodesVector.size()), 0.25f));
-//        }
+        for (int i = 0; i < nodesVector.size(); ++i)
+        {
+            nodesVector[i]->Hide();
+        }
+
+        for (int i = 0; i < nodesVector.size(); ++i)
+        {
+            nodesVector[i]->SetNodeColor(Util::InterpolateRainbow(i / static_cast<float>(nodesVector.size()), 0.25f));
+        }
     }
 
     void SyntaxParser::addToNodesVectorRecursive(ASTNode *node)

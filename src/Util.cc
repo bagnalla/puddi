@@ -219,6 +219,6 @@ namespace puddi
 //        std::cout << temp.z << std::endl;
 //        return vec4(temp.x, temp.y, temp.z, alpha);
 
-        return vec4(val, 1 - val, 1 - val, alpha);
+        return vec4(1 - val, 1 - val, 1 - val, alpha);
 	}
 }

@@ -32,6 +32,7 @@ namespace grumpy
         container = new DrawableObject(this);
         glyphCount = 0;
         tokenRequired = false;
+        hidden = false;
 
         while (true)
         {
@@ -78,6 +79,7 @@ namespace grumpy
                 conn->SetEmissive(true);
                 conn->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 0.5f));
                 conn->SetRenderGraph(2);
+                childConnectors.push_back(conn);
 
                 glyphCount += 2;
 
@@ -96,6 +98,7 @@ namespace grumpy
                     glyph->SetTexture(Texture::GetTextureByName("myfont"));
                     glyph->RotateX(M_PI / 2.0f);
                     glyph->Translate(vec4(glyphCount + 0.5f, 0.0f, 0.0f, 0.0f));
+                    glyphs.push_back(glyph);
                 }
                 glyphCount++;
             }
@@ -168,13 +171,31 @@ namespace grumpy
     void ASTNode::Hide()
     {
         //DisableRender();
+        body->DisableRender();
+        for (auto it = glyphs.begin(); it != glyphs.end(); ++it)
+            (*it)->DisableRender();
+        for (auto it = childConnectors.begin(); it != childConnectors.end(); ++it)
+            (*it)->DisableRender();
+        if (parentConnectorLine != nullptr)
+            parentConnectorLine->DisableRender();
+        hidden = true;
     }
 
     void ASTNode::Show()
     {
-        EnableRender();
-        for (auto it = ChildNodes.begin(); it != ChildNodes.end(); ++it)
-            (*it)->Hide();
+//        EnableRender();
+//        for (auto it = ChildNodes.begin(); it != ChildNodes.end(); ++it)
+//            (*it)->Hide();
+        body->EnableRender();
+        for (auto it = glyphs.begin(); it != glyphs.end(); ++it)
+            (*it)->EnableRender();
+        for (auto it = childConnectors.begin(); it != childConnectors.end(); ++it)
+            (*it)->EnableRender();
+        if (parentConnectorLine != nullptr)
+            parentConnectorLine->EnableRender();
+        if (parent != nullptr)
+            parent->Show();
+        hidden = false;
     }
 
 	void ASTNode::Resize()
@@ -221,9 +242,6 @@ namespace grumpy
 
 	int ASTNode::resizeRecursive()
 	{
-		if (!GetRenderEnabled())
-			return 0;
-
 		int childrenWidthSum = 0;
 
 		for (auto it = ChildNodes.begin(); it != ChildNodes.end(); ++it)
@@ -243,7 +261,9 @@ namespace grumpy
 				cursor.x += ChildNodes[i + 1]->width / 2.0f;
 		}
 
-		return width = std::max(childrenWidthSum, glyphCount + 1);
+        int personalWidth = hidden ? 0 : glyphCount + 1;
+
+		return width = std::max(childrenWidthSum, personalWidth);
 	}
 
 	void ASTNode::rePositionConnectorLine()
