@@ -223,7 +223,7 @@ void reset()
     for (int i = 0; i < sanitizedBytes.size(); ++i)
         q.push(sanitizedBytes[i]);
 
-    ASTNode *ast = new ASTNode(Puddi::GetRootObject(), nullptr, nullptr, q);
+    ast = new ASTNode(Puddi::GetRootObject(), nullptr, nullptr, q);
     //ast->Translate(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 0.0f));
     ast->SetScaleX(0.5f);
     ast->SetPosition(vec4(30.0f, 0.0f, 0.0f, 1.0f));
@@ -235,16 +235,16 @@ void reset()
     parser->SetTexture(Texture::GetTextureByName("shrek"));
 //    parser->SetEmissive(true);
 //    parser->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    parser->SetVelocity(0.05f);
+    parser->SetVelocity(0.5f);
     //parser->DisableRender();
     parser->SetHomePosition(ast->GetPosition() + vec4(0.0f, 0.0f, 5.0f, 1.0f));
     parser->SetPosition(vec4(20.0f, 0.0f, 0.0f, 1.0f));
 
-    queue<Token*> tokenQueue;
-    for (auto it = lTokens.begin(); it != lTokens.end(); ++it)
-        tokenQueue.push(new Token(Puddi::GetRootObject(), *it));
-    //tokenQueue.push(new Token(Puddi::GetRootObject(), LexToken("EOF", 0, 0, "")));
-    parser->SetTokenQueue(tokenQueue);
+    //queue<Token*> tokenQueue;
+    //for (auto it = lTokens.begin(); it != lTokens.end(); ++it)
+    //    tokenQueue.push(new Token(Puddi::GetRootObject(), *it));
+    ////tokenQueue.push(new Token(Puddi::GetRootObject(), LexToken("EOF", 0, 0, "")));
+    //parser->SetTokenQueue(tokenQueue);
 }
 
 //----------------------------------------------------------------------------
@@ -276,9 +276,9 @@ int update()
 			case SDLK_f:
 				Puddi::ToggleFullScreen();
 				break;
-			case SDLK_1:
+			/*case SDLK_1:
 				parser->AddTokenToQueue(new Token(Puddi::GetRootObject(), LexToken()));
-				break;
+				break;*/
             case SDLK_r:
 				reset();
 				break;
@@ -351,7 +351,7 @@ void draw()
 
 int main(int argc, char **argv)
 {
-	if (int initStatus = Puddi::Init(1000.0f) != 0)
+	if (int initStatus = Puddi::Init(3000.0f) != 0)
 		return initStatus;
 
 	init();

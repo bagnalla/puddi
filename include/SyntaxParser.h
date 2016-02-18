@@ -26,16 +26,11 @@ namespace grumpy
         float GetVelocity() const;
         void SetVelocity(float v);
 
-        void SetTokenQueue(const std::queue<Token*> &tokenQ);
-
-		void AddTokenToQueue(Token *t);
-
 		void SetHomePosition(glm::vec4 v);
 
     private:
         ASTNode *astRoot;
         std::vector<ASTNode*> nodesVector;
-        std::queue<Token*> tokenQueue;
         int currentNodeIndex;
         float velocity;
         SyntaxParserState state;

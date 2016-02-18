@@ -27,7 +27,8 @@ namespace grumpy
         parentConnector = connector;
         parentConnectorLine = nullptr;
         position = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-		velocity = 0.1f;
+		//velocity = 0.05f;
+		velocity = 100.0f;
 
         container = new DrawableObject(this);
         glyphCount = 0;
@@ -57,7 +58,7 @@ namespace grumpy
 
                 parseIndex = atoi(index_string.c_str());
 
-                cout << parseIndex << endl;
+                //cout << parseIndex << endl;
 
                 input.pop();
                 continue;
@@ -214,15 +215,7 @@ namespace grumpy
 
 		float moveAmount = velocity * FpsTracker::GetFrameTimeMs();
 
-		vec4 displacement = assignedLocation - position;
-		if (length(displacement) <= moveAmount)
-		{
-			SetPosition(assignedLocation);
-		}
-		else
-		{
-			Translate(moveAmount * glm::normalize(displacement));
-		}
+		MoveToPoint(assignedLocation, moveAmount, nullptr);
 
 		rePositionConnectorLine();
 	}
@@ -241,6 +234,11 @@ namespace grumpy
     {
         body->SetEmissionColor(c);
     }
+
+	DrawableObject* ASTNode::GetParentConnector() const
+	{
+		return parentConnector;
+	}
 
 	// PRIVATE
 

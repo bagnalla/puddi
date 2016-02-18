@@ -31,6 +31,8 @@ namespace grumpy
 
 		void SetNodeColor(glm::vec4 c);
 
+		DrawableObject* GetParentConnector() const;
+
 	private:
 		ASTNode *parent;
 		std::vector<DrawableObject*> glyphs;

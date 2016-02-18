@@ -48,7 +48,7 @@ namespace puddi
 		}
 
 		for (auto it = schematic->children.begin(); it != schematic->children.end(); ++it)
-			AddChild(new DrawableObject(this, *it));
+			new DrawableObject(this, *it);
 
 		updateRenderNodes();
 	}

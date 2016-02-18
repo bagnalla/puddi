@@ -24,8 +24,10 @@ namespace puddi
 
 	UpdateNode::~UpdateNode()
 	{
-		for (auto it = children.begin(); it != children.end(); ++it)
-			delete *it;
+		//for (auto it = children.begin(); it != children.end(); ++it)
+		//	delete *it;
+		for (; 0 < children.size();)
+			delete children[0];
 
 		if (parent != NULL)
 			parent->RemoveChild(this);

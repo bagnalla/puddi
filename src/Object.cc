@@ -47,15 +47,15 @@ namespace puddi
 
 	Object::~Object()
 	{
+		// delete children objects (recursive)
+		for (int i = 0; i < children.size(); ++i)
+			delete children[i];
+
 		// delete updateNode and its children nodes
 		delete updateNode;
 
 		// delete modelNode and its children nodes
 		delete modelNode;
-
-		// delete children objects (recursive)
-		for (int i = 0; i < children.size(); ++i)
-			delete children[i];
 	}
 
 	void Object::Update()
@@ -68,6 +68,23 @@ namespace puddi
 	int Object::UpdateModel()
 	{
 		return updateModel();
+	}
+
+	void Object::MoveToPoint(const glm::vec4 point, float moveAmount, std::function<void()> callback)
+	{
+		vec4 displacement = point - position;
+
+		if (length(displacement) <= moveAmount)
+		{
+			SetPosition(point);
+
+			if (callback != nullptr)
+				callback();
+		}
+		else
+		{
+			Translate(moveAmount * glm::normalize(displacement));
+		}
 	}
 
 	void Object::PassDownParentModel(Object *c) const
@@ -317,8 +334,12 @@ namespace puddi
 
 	void Object::AddChild(Object *c)
 	{
-		c->SetParentModel(finalModel);
-		children.push_back(c);
+		std::vector<Object*>::iterator it = std::find(children.begin(), children.end(), c);
+		if (it == children.end())
+		{
+			c->SetParentModel(finalModel);
+			children.push_back(c);
+		}
 	}
 
 	void Object::RemoveChild(Object *c)

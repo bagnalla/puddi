@@ -31,75 +31,42 @@ namespace grumpy
 
             float moveAmount = velocity * FpsTracker::GetFrameTimeMs();
 
-            vec4 displacement = homePosition - position;
-            if (length(displacement) <= moveAmount)
-            {
-                SetPosition(homePosition);
-            }
-            else
-            {
-                Translate(moveAmount * glm::normalize(displacement));
-            }
+			MoveToPoint(homePosition, moveAmount, nullptr);
 
             return;
         }
 
-        if (currentNodeIndex >= nodesVector.size())
-            return;
+		if (currentNodeIndex >= nodesVector.size())
+		{
+			state = SYNTAXPARSER_STATE_DONE;
+			return;
+		}
 
         ASTNode *targetNode = nodesVector[currentNodeIndex];
 
         if (state == SYNTAXPARSER_STATE_WAITING)
         {
-            if (tokenQueue.size())
-            {
-                if (currentNodeIndex >= nodesVector.size())
-                {
-                    state = SYNTAXPARSER_STATE_DONE;
-                    return;
-                }
-
-                targetNode->Show();
-				astRoot->Resize();
-				delete tokenQueue.front();
-                tokenQueue.pop();
-                state = SYNTAXPARSER_STATE_MOVING;
-            }
+            //targetNode->Show();
+			//astRoot->Resize();
+            state = SYNTAXPARSER_STATE_MOVING;
         }
         else if (state == SYNTAXPARSER_STATE_MOVING)
         {
-            vec4 targetPosition = targetNode->GetWorldPosition();
+			vec4 targetPosition;
+			if (targetNode->GetParentConnector() != nullptr)
+				targetPosition = targetNode->GetParentConnector()->GetWorldPosition();
+			else
+				targetPosition = targetNode->GetWorldPosition();
 
             float moveAmount = velocity * FpsTracker::GetFrameTimeMs();
 
-            vec4 displacement = targetPosition - position;
-            if (length(displacement) <= moveAmount)
-            {
-                SetPosition(targetPosition);
+			MoveToPoint(targetPosition, moveAmount, [&]()
+			{
+				nodesVector[currentNodeIndex]->Show();
+				astRoot->Resize();
 
-                currentNodeIndex++;
-
-                //cout << tokenQueue.front()->LToken.name << endl;
-                if (currentNodeIndex >= nodesVector.size())
-                {
-                    state = SYNTAXPARSER_STATE_DONE;
-                    return;
-                }
-
-                if (nodesVector[currentNodeIndex]->GetTokenRequired() && !tokenQueue.size())
-                    state = SYNTAXPARSER_STATE_WAITING;
-				else
-				{
-					nodesVector[currentNodeIndex]->Show();
-					astRoot->Resize();
-					delete tokenQueue.front();
-					tokenQueue.pop();
-				}
-            }
-            else
-            {
-                Translate(moveAmount * glm::normalize(displacement));
-            }
+				currentNodeIndex++;
+			});
         }
     }
 
@@ -111,16 +78,6 @@ namespace grumpy
     {
         velocity = v;
     }
-
-    void SyntaxParser::SetTokenQueue(const queue<Token*> &tokenQ)
-    {
-        tokenQueue = tokenQ;
-    }
-
-	void SyntaxParser::AddTokenToQueue(Token *t)
-	{
-		tokenQueue.push(t);
-	}
 
 	void SyntaxParser::SetHomePosition(glm::vec4 v)
 	{
@@ -141,10 +98,10 @@ namespace grumpy
             return a->GetParseIndex() < b->GetParseIndex();
         });
 
-//        for (int i = 0; i < nodesVector.size(); ++i)
-//        {
-//            nodesVector[i]->Hide();
-//        }
+        for (int i = 0; i < nodesVector.size(); ++i)
+        {
+            nodesVector[i]->Hide();
+        }
 
         for (int i = 0; i < nodesVector.size(); ++i)
         {

@@ -5,6 +5,7 @@
 #include "UpdateGraph.h"
 #include "ModelGraph.h"
 #include <vector>
+#include <functional>
 #include "GlmHeaders.h"
 
 namespace puddi
@@ -48,6 +49,8 @@ namespace puddi
 		virtual void Update();
 
 		int UpdateModel();
+
+		void MoveToPoint(const glm::vec4 p, float moveAmount, std::function<void()> callback = nullptr);
 
 		void PassDownParentModel(Object *c) const;
 
