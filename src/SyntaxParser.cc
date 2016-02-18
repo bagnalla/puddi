@@ -52,9 +52,17 @@ namespace grumpy
         }
         else if (state == SYNTAXPARSER_STATE_MOVING)
         {
+//            if (targetNode->GetParent() != nullptr && targetNode->GetParent()->GetHidden())
+//            {
+//                nodesVector[currentNodeIndex]->Show();
+//				astRoot->Resize();
+//				currentNodeIndex++;
+//				return;
+//            }
+
 			vec4 targetPosition;
 			if (targetNode->GetParentConnector() != nullptr)
-				targetPosition = targetNode->GetParentConnector()->GetWorldPosition();
+                targetPosition = targetNode->GetParentConnector()->GetWorldPosition();
 			else
 				targetPosition = targetNode->GetWorldPosition();
 
@@ -64,7 +72,6 @@ namespace grumpy
 			{
 				nodesVector[currentNodeIndex]->Show();
 				astRoot->Resize();
-
 				currentNodeIndex++;
 			});
         }

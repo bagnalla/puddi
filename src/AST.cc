@@ -200,7 +200,10 @@ namespace grumpy
         for (auto it = childConnectors.begin(); it != childConnectors.end(); ++it)
             (*it)->EnableRender();
         if (parentConnectorLine != nullptr)
+        {
             parentConnectorLine->EnableRender();
+            rePositionConnectorLine();
+        }
         //if (parent != nullptr)
         //    parent->Show();
         hidden = false;
@@ -241,6 +244,16 @@ namespace grumpy
 	DrawableObject* ASTNode::GetParentConnector() const
 	{
 		return parentConnector;
+	}
+
+	bool ASTNode::GetHidden() const
+	{
+        return hidden;
+	}
+
+	ASTNode* ASTNode::GetParent() const
+	{
+        return parent;
 	}
 
 	// PRIVATE

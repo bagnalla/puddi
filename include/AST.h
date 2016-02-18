@@ -33,6 +33,10 @@ namespace grumpy
 
 		DrawableObject* GetParentConnector() const;
 
+		bool GetHidden() const;
+
+		ASTNode* GetParent() const;
+
 	private:
 		ASTNode *parent;
 		std::vector<DrawableObject*> glyphs;
