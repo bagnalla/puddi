@@ -33,6 +33,7 @@ LightSource *lightSource;
 Object *objectContainer;
 DrawableObject *cube;
 DrawableObject *rect;
+DrawableObject *wall;
 
 Lexer *lexer;
 ASTNode *ast;
@@ -62,6 +63,14 @@ void init(void)
 	lightSource->position = vec4(-250.0f, -500.0f, 500.0f, 0.0f);
 	lightSource->UpdateMatrix();
 	LightSource::UpdateLightSourceMatricesInShaders();
+
+	wall = new Rectangle(Puddi::GetRootObject());
+	wall->RotateX(M_PI / 2.0f);
+	wall->SetScaleX(200.0f);
+	wall->SetScaleY(100.0f);
+	wall->SetPosition(vec4(0.0f, 10.f, 0.0f, 1.0f));
+	wall->SetMaterial(Material::Rubber(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
+	//wall->SetTexture(texture);
 
 	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ocaml_logo_2.png", 25.0f, 25.0f, 0.1f));
 	////auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ou_logo_1.png", 25.0f, 25.0f, 0.1f));
@@ -226,8 +235,8 @@ void reset()
     ast = new ASTNode(Puddi::GetRootObject(), nullptr, nullptr, q);
     //ast->Translate(vec4(ast->GetWidth() / 2.0f, 0.0f, 0.0f, 0.0f));
     ast->SetScaleX(0.5f);
-    ast->SetPosition(vec4(30.0f, 0.0f, 0.0f, 1.0f));
-	ast->SetAssignedLocation(vec4(30.0f, 0.0f, 0.0f, 1.0f));
+    //ast->SetPosition(vec4(30.0f, 0.0f, 0.0f, 1.0f));
+	//ast->SetAssignedLocation(vec4(30.0f, 0.0f, 0.0f, 1.0f));
     //ast->Hide();
 
 	parser = new SyntaxParser(Puddi::GetRootObject(), ast);
@@ -235,7 +244,7 @@ void reset()
     parser->SetTexture(Texture::GetTextureByName("shrek"));
 //    parser->SetEmissive(true);
 //    parser->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    parser->SetVelocity(0.5f);
+    parser->SetVelocity(0.005f);
     //parser->DisableRender();
     parser->SetHomePosition(ast->GetPosition() + vec4(0.0f, 0.0f, 5.0f, 1.0f));
     parser->SetPosition(vec4(20.0f, 0.0f, 0.0f, 1.0f));
@@ -351,12 +360,12 @@ void draw()
 
 int main(int argc, char **argv)
 {
-	if (int initStatus = Puddi::Init(3000.0f) != 0)
+	if (int initStatus = Puddi::Init(2000.0f) != 0)
 		return initStatus;
 
 	init();
 
-	Puddi::RegisterPostInitFunction(enableShadows);
+	//Puddi::RegisterPostInitFunction(enableShadows);
 
 	Puddi::RegisterUpdateFunction(update);
 

@@ -26,9 +26,9 @@ namespace grumpy
         parent = parentNode;
         parentConnector = connector;
         parentConnectorLine = nullptr;
-        position = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-		//velocity = 0.05f;
-		velocity = 100.0f;
+        SetPosition(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+		velocity = 0.005f;
+		//velocity = 100.0f;
 
         container = new DrawableObject(this);
         glyphCount = 0;
@@ -88,7 +88,8 @@ namespace grumpy
                 //node->Translate(vec4(0.0f, 0.0f, -1.0f, 0.0f));
                 //node->Translate(conn->GetPosition() + vec4(0.0f, 0.0f, -1.0f, 0.0f));
                 ChildNodes.push_back(node);
-				node->SetPosition(conn->GetPosition());
+				//node->SetPosition(conn->GetPosition());
+				SetPosition(conn->GetPosition() + vec4(0.0f, -2.0f, 0.0f, 0.0f));
             }
             else
             {
@@ -157,6 +158,8 @@ namespace grumpy
         body->SetRenderGraph(3);
 
         Resize();
+
+        Update();
 	}
 
 	int ASTNode::GetWidth() const
@@ -274,9 +277,17 @@ namespace grumpy
 		if (parentConnectorLine == nullptr)
 			return;
 
+        if (parent->hidden)
+            parentConnectorLine->DisableRender();
+        else if (!parentConnectorLine->GetRenderEnabled())
+            parentConnectorLine->EnableRender();
+
 		parentConnectorLine->SetScaleX(length(position - parentConnector->GetPosition()));
 		parentConnectorLine->SetPosition(vec4(-position.x, -position.y, -position.z, 1.0f) + (position + parentConnector->GetPosition()) / 2.0f);
 		float theta = atan2(parentConnector->GetPosition().z - position.z, parentConnector->GetPosition().x - position.x);
 		parentConnectorLine->SetRotationY(theta);
+
+//		theta = atan2(parentConnector->GetPosition().y - position.y, parentConnector->GetPosition().x - position.x);
+//		parentConnectorLine->SetRotationZ(theta);
 	}
 }
