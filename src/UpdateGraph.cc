@@ -42,13 +42,13 @@ namespace puddi
 			//{
 				//child->Update();
 			//}, concurrency::static_partitioner());
-			
+
 			//__gnu_parallel::for_each(begin(children), end(children), [&](UpdateNode *child)
 			//{
 				////std::cout << "threads = " << omp_get_num_threads() << std::endl;
 				//child->Update();
 			//});
-			
+
 			#pragma omp parallel for
 			for (int i = 0; i < children.size(); ++i)
 			{

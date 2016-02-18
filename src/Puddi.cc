@@ -87,7 +87,7 @@ namespace puddi
 		Font::Init();
 
 		rootUpdateNode = rootObject->GetUpdateNode();
-		rootUpdateNode->parallel = true;
+		//rootUpdateNode->parallel = true;
 
 		rootModelNode = rootObject->GetModelNode();
 
@@ -97,6 +97,7 @@ namespace puddi
 
         glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		//glBlendFunc(GL_ZERO, GL_SRC_COLOR);
 		//glBlendFunc(GL_ONE, GL_ONE);
 

@@ -27,7 +27,7 @@ namespace grumpy
         parentConnector = connector;
         parentConnectorLine = nullptr;
         position = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-		velocity = 0.01f;
+		velocity = 0.1f;
 
         container = new DrawableObject(this);
         glyphCount = 0;
@@ -170,6 +170,8 @@ namespace grumpy
 
     void ASTNode::Hide()
     {
+        if (hidden)
+            return;
         //DisableRender();
         body->DisableRender();
         for (auto it = glyphs.begin(); it != glyphs.end(); ++it)
@@ -183,6 +185,8 @@ namespace grumpy
 
     void ASTNode::Show()
     {
+        if (!hidden)
+            return;
 //        EnableRender();
 //        for (auto it = ChildNodes.begin(); it != ChildNodes.end(); ++it)
 //            (*it)->Hide();
@@ -205,7 +209,7 @@ namespace grumpy
 
 	void ASTNode::Update()
 	{
-		if (position == assignedLocation || !GetRenderEnabled())
+		if (position == assignedLocation || hidden)
 			return;
 
 		float moveAmount = velocity * FpsTracker::GetFrameTimeMs();

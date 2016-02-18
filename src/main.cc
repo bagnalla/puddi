@@ -162,7 +162,7 @@ void init(void)
 		//}
 	//}
 
-    SourceCode *sourceCode = new SourceCode(Puddi::GetRootObject(), "program.gpy", "myfont");
+    //SourceCode *sourceCode = new SourceCode(Puddi::GetRootObject(), "program.gpy", "myfont");
 
     reset();
 }
@@ -228,14 +228,14 @@ void reset()
     ast->SetScaleX(0.5f);
     ast->SetPosition(vec4(30.0f, 0.0f, 0.0f, 1.0f));
 	ast->SetAssignedLocation(vec4(30.0f, 0.0f, 0.0f, 1.0f));
-    ast->Hide();
+    //ast->Hide();
 
 	parser = new SyntaxParser(Puddi::GetRootObject(), ast);
     parser->AddVertexMesh(new VertexMesh(VertexMesh::GetVertexMeshPrototypeByName("cube")));
     parser->SetTexture(Texture::GetTextureByName("shrek"));
 //    parser->SetEmissive(true);
 //    parser->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    parser->SetVelocity(0.005f);
+    parser->SetVelocity(0.05f);
     //parser->DisableRender();
     parser->SetHomePosition(ast->GetPosition() + vec4(0.0f, 0.0f, 5.0f, 1.0f));
     parser->SetPosition(vec4(20.0f, 0.0f, 0.0f, 1.0f));

@@ -32,7 +32,7 @@ namespace puddi
 
 	VertexMesh::~VertexMesh()
 	{
-        std::cout << "in VertexMesh destructor\n";
+        //std::cout << "in VertexMesh destructor\n";
 		if (renderNode != NULL)
 		{
 			auto it = std::find(renderNode->meshes.begin(), renderNode->meshes.end(), this);

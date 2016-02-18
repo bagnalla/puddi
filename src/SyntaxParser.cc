@@ -141,10 +141,10 @@ namespace grumpy
             return a->GetParseIndex() < b->GetParseIndex();
         });
 
-        for (int i = 0; i < nodesVector.size(); ++i)
-        {
-            nodesVector[i]->Hide();
-        }
+//        for (int i = 0; i < nodesVector.size(); ++i)
+//        {
+//            nodesVector[i]->Hide();
+//        }
 
         for (int i = 0; i < nodesVector.size(); ++i)
         {
