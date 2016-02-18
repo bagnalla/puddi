@@ -65,11 +65,11 @@ void init(void)
 	LightSource::UpdateLightSourceMatricesInShaders();
 
 	wall = new Rectangle(Puddi::GetRootObject());
-	wall->RotateX(M_PI / 2.0f);
+	wall->RotateX(-M_PI / 2.0f);
 	wall->SetScaleX(200.0f);
 	wall->SetScaleY(100.0f);
 	wall->SetPosition(vec4(0.0f, 10.f, 0.0f, 1.0f));
-	wall->SetMaterial(Material::Rubber(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
+	wall->SetMaterial(Material::Plastic(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
 	//wall->SetTexture(texture);
 
 	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ocaml_logo_2.png", 25.0f, 25.0f, 0.1f));
