@@ -8,6 +8,7 @@
 #include <assimp/scene.h>
 #include <vector>
 #include <unordered_map>
+#include <string>
 
 namespace puddi
 {
@@ -26,12 +27,12 @@ namespace puddi
 
 		static void Cleanup();
 
-		static int InitSchematic(const char *filepath, const char *name, std::string subdirectory = "");
+		static int InitSchematic(const char *filepath, std::string name, std::string subdirectory = "");
 
-		static SchematicNode* GetSchematicByName(const char *name);
+		static SchematicNode* GetSchematicByName(std::string name);
 
 	private:
-		static std::unordered_map<const char*, SchematicNode*> schematicNodeMap;
+		static std::unordered_map<std::string, SchematicNode*> schematicNodeMap;
 
 		static SchematicNode* buildSchematic(const aiScene *scene, aiNode *node, std::string subdirectory);
 	};

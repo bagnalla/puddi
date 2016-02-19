@@ -61,8 +61,6 @@ void init(void)
 
 	Schematic::InitSchematic("models/rounded.obj", "pill");
 	Schematic::InitSchematic("models/cube rounded - 554 faces.obj", "rounded_cube");
-	Schematic::InitSchematic("models/bun4.obj", "bun");
-	Schematic::InitSchematic("models/bunny.obj", "bunny");
 
 	Puddi::MainCamera->SetPosition(vec4(0.0f, -5.0f, 0.0f, 1.0f));
 	Puddi::MainCamera->LookAt(vec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -85,9 +83,10 @@ void init(void)
 	wall->SetPosition(vec4(0.0f, 10.f, 0.0f, 1.0f));
 	//wall->SetMaterial(Material::Plastic(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
 	//wall->SetMaterial(Material::Vibrant(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
+	wall->SetMaterial(Material::Medium(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
 	//wall->SetMaterial(Material::BlackRubber());
 	wall->SetBumpMap(bump);
-	wall->SetTexture(texture);
+	//wall->SetTexture(texture);
 
 	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ocaml_logo_2.png", 25.0f, 25.0f, 0.1f));
 	////auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ou_logo_1.png", 25.0f, 25.0f, 0.1f));

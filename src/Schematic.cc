@@ -9,6 +9,8 @@
 #include <assimp/postprocess.h>
 #include <iostream>
 
+using namespace std;
+
 namespace puddi
 {
 	// PUBLIC
@@ -35,7 +37,7 @@ namespace puddi
 		aiDetachAllLogStreams();
 	}
 
-	int Schematic::InitSchematic(const char *filepath, const char *name, std::string subdirectory)
+	int Schematic::InitSchematic(const char *filepath, string name, std::string subdirectory)
 	{
 		if (schematicNodeMap.find(name) != schematicNodeMap.end())
 		{
@@ -66,13 +68,13 @@ namespace puddi
 		return 0;
 	}
 
-	SchematicNode* Schematic::GetSchematicByName(const char *name)
+	SchematicNode* Schematic::GetSchematicByName(string name)
 	{
 		return schematicNodeMap[name];
 	}
 
 	// PRIVATE
-	std::unordered_map<const char*, SchematicNode*> Schematic::schematicNodeMap;
+	std::unordered_map<string, SchematicNode*> Schematic::schematicNodeMap;
 
 	SchematicNode* Schematic::buildSchematic(const aiScene *scene, aiNode *node, std::string subdirectory)
 	{
@@ -226,7 +228,7 @@ namespace puddi
 		for (uint i = 0; i < node->mNumChildren; ++i)
 		{
 			SchematicNode *childNode = buildSchematic(scene, node->mChildren[i], subdirectory);
-			if (childNode != NULL)
+			if (childNode != nullptr)
 				schematicNode->children.push_back(childNode);
 		}
 

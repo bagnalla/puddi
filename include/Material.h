@@ -23,6 +23,14 @@ namespace puddi
 		static Material Vibrant(const vec4& color);
 
 		/**********************************************************************
+		Function:		Medium
+		Purpose:		Create a material based on a given color with a medium
+                        ambient component.
+		Calls:			const vec4& color - the color of the material
+		**********************************************************************/
+		static Material Medium(const vec4& color);
+
+		/**********************************************************************
 		Function:		Plastic
 		Purpose:		Create a plastic material based on a given color
 		Calls:			const vec4& color - the color of the plastic material
