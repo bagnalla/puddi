@@ -79,8 +79,8 @@ namespace grumpy
                 conn->Translate(vec4(glyphCount + 1.0f, 0.0f, 0.0f, 0.0f));
                 //conn->SetEmissive(true);
                 //conn->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 0.5f));
-                conn->SetMaterial(Material::Vibrant(vec4(0.75f, 0.75f, 0.75f, 1.0f)));
-                conn->SetBumpMap(Texture::GetBumpMapByName("rough1"));
+                //conn->SetMaterial(Material::Vibrant(vec4(0.75f, 0.75f, 0.75f, 1.0f)));
+                conn->SetBumpMap(Texture::GetBumpMapByName("rough5"));
                 conn->SetRenderGraph(2);
                 childConnectors.push_back(conn);
 
@@ -241,6 +241,8 @@ namespace grumpy
     void ASTNode::SetNodeColor(glm::vec4 c)
     {
         body->SetEmissionColor(c);
+		for (auto it = childConnectors.begin(); it != childConnectors.end(); ++it)
+			(*it)->SetMaterial(Material::Vibrant(c));
     }
 
 	DrawableObject* ASTNode::GetParentConnector() const
