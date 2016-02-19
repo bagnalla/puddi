@@ -207,14 +207,17 @@ namespace puddi
 			//VertexMesh vMesh(NULL, Material::Rubber(vec4(1.0f, 1.0f, 1.0f, 1.0f)), indexOffset, indexCount, false);
 			VertexMesh vMesh(NULL, Material::None(), indexOffset, indexCount, false);
 			std::string texName = texturePath.C_Str();
-			std::string texPath = "textures/" + subdirectory + "/" + texName;
-			std::string bumpPath = "bumpmaps/" + subdirectory + "/" + std::string(bumpMapPath.C_Str());
-			GLuint texture = 0;
 			if (texName != "")
-				texture = Texture::LoadTexture(texName.c_str(), texPath.c_str(), bumpPath.c_str());
-			else
-				vMesh.SetMaterial(mat);
-			vMesh.SetTexture(texture);
+			{
+				std::string texPath = "textures/" + (subdirectory != "" ? subdirectory + "/" : "") + texName;
+				std::string bumpPath = "bumpmaps/" + (subdirectory != "" ? subdirectory + "/" : "") + std::string(bumpMapPath.C_Str());
+				GLuint texture = 0;
+				if (texName != "")
+					texture = Texture::LoadTexture(texName.c_str(), texPath.c_str(), (bumpMapPath.length != 0 ? bumpPath.c_str() : nullptr));
+				else
+					vMesh.SetMaterial(mat);
+				vMesh.SetTexture(texture);
+			}
 
 			schematicNode->vertexMeshes.push_back(vMesh);
 		}

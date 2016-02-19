@@ -59,6 +59,11 @@ void init(void)
 	//GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda (copy).jpg");
 	//GLuint texture = Texture::CreateTextureFromString("bakow", "bakow_string", "fonts/Bitstream/VeraMono-Bold.ttf", 24, vec3(1.0f, 0.0f, 0.0f));
 
+	Schematic::InitSchematic("models/rounded.obj", "pill");
+	Schematic::InitSchematic("models/cube rounded - 554 faces.obj", "rounded_cube");
+	Schematic::InitSchematic("models/bun4.obj", "bun");
+	Schematic::InitSchematic("models/bunny.obj", "bunny");
+
 	Puddi::MainCamera->SetPosition(vec4(0.0f, -5.0f, 0.0f, 1.0f));
 	Puddi::MainCamera->LookAt(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	//Puddi::MainCamera->SetZoomOut(10.0f);
@@ -72,16 +77,17 @@ void init(void)
 	LightSource::UpdateLightSourceMatricesInShaders();
 
 	//wall = new Cube(Puddi::GetRootObject());
-	//wall->RotateX(M_PI / 2.0f);
-	////wall->SetScaleX(200.0f);
-	////wall->SetScaleY(100.0f);
-	//wall->SetScale(10.0f);
-	//wall->SetPosition(vec4(0.0f, 10.f, 0.0f, 1.0f));
-	////wall->SetMaterial(Material::Plastic(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
+	wall = new DrawableObject(Puddi::GetRootObject(), Schematic::GetSchematicByName("rounded_cube"));
+	wall->RotateX(M_PI / 2.0f);
+	//wall->SetScaleX(200.0f);
+	//wall->SetScaleY(100.0f);
+	wall->SetScale(10.0f);
+	wall->SetPosition(vec4(0.0f, 10.f, 0.0f, 1.0f));
+	//wall->SetMaterial(Material::Plastic(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
 	//wall->SetMaterial(Material::Vibrant(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
-	////wall->SetMaterial(Material::BlackRubber());
-	//wall->SetBumpMap(bump);
-	////wall->SetTexture(texture);
+	//wall->SetMaterial(Material::BlackRubber());
+	wall->SetBumpMap(bump);
+	wall->SetTexture(texture);
 
 	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ocaml_logo_2.png", 25.0f, 25.0f, 0.1f));
 	////auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ou_logo_1.png", 25.0f, 25.0f, 0.1f));
@@ -250,8 +256,9 @@ void reset()
 	//ast->SetAssignedLocation(vec4(30.0f, 0.0f, 0.0f, 1.0f));
     //ast->Hide();
 
-	parser = new SyntaxParser(Puddi::GetRootObject(), ast);
-    parser->AddVertexMesh(new VertexMesh(VertexMesh::GetVertexMeshPrototypeByName("cube")));
+	/*parser = new SyntaxParser(Puddi::GetRootObject(), ast);
+    parser->AddVertexMesh(new VertexMesh(VertexMesh::GetVertexMeshPrototypeByName("cube")));*/
+	parser = new SyntaxParser(Puddi::GetRootObject(), ast, Schematic::GetSchematicByName("rounded_cube"));
     parser->SetTexture(Texture::GetTextureByName("shrek"));
 //    parser->SetEmissive(true);
 //    parser->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -344,8 +351,6 @@ int update()
 			Puddi::UpdateProjectionMatrixAndViewport();
 		}
 	}
-	//o->RotateX(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
-	//o->RotateY(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
 	if (cube != nullptr)
         cube->RotateZ(1.0f / 2000.0f * FpsTracker::GetFrameTimeMs());
 

@@ -13,14 +13,13 @@ namespace grumpy
 
 	SyntaxParser::SyntaxParser(Object *par, ASTNode *root) : DrawableObject(par)
     {
-        astRoot = root;
-        currentNodeIndex = 0;
-        velocity = 0.0f;
-        state = SYNTAXPARSER_STATE_WAITING;
-        homePosition = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
-        createNodesVector();
+		init(root);
     }
+
+	SyntaxParser::SyntaxParser(Object* par, ASTNode *root, SchematicNode *schematic) : DrawableObject(par, schematic)
+	{
+		init(root);
+	}
 
     void SyntaxParser::Update()
     {
@@ -92,6 +91,17 @@ namespace grumpy
 	}
 
     // PRIVATE
+
+	void SyntaxParser::init(ASTNode *root)
+	{
+		astRoot = root;
+		currentNodeIndex = 0;
+		velocity = 0.0f;
+		state = SYNTAXPARSER_STATE_WAITING;
+		homePosition = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+		createNodesVector();
+	}
 
     void SyntaxParser::createNodesVector()
     {

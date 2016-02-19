@@ -2,6 +2,7 @@
 #include "Texture.h"
 #include "Cube.h"
 #include "FpsTracker.h"
+#include "Schematic.h"
 #include <iostream>
 #include <string>
 
@@ -72,15 +73,15 @@ namespace grumpy
             if (c == '[')
             {
                 //DrawableObject *conn = new Cube(glyphContainer);
-                DrawableObject *conn = new Cube(container);
+                //DrawableObject *conn = new Cube(container);
+				DrawableObject *conn = new DrawableObject(container, Schematic::GetSchematicByName("rounded_cube"));
                 conn->Scale(0.9f);
                 conn->SetScaleX(1.9f);
                 conn->RotateX(M_PI / 2.0f);
                 conn->Translate(vec4(glyphCount + 1.0f, 0.0f, 0.0f, 0.0f));
                 //conn->SetEmissive(true);
                 //conn->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 0.5f));
-                //conn->SetMaterial(Material::Vibrant(vec4(0.75f, 0.75f, 0.75f, 1.0f)));
-                conn->SetBumpMap(Texture::GetBumpMapByName("rough5"));
+                //conn->SetBumpMap(Texture::GetBumpMapByName("rough5"));
                 conn->SetRenderGraph(2);
                 childConnectors.push_back(conn);
 
@@ -240,9 +241,11 @@ namespace grumpy
 
     void ASTNode::SetNodeColor(glm::vec4 c)
     {
-        body->SetEmissionColor(c);
-		for (auto it = childConnectors.begin(); it != childConnectors.end(); ++it)
-			(*it)->SetMaterial(Material::Vibrant(c));
+        //body->SetEmissionColor(c);
+		if (parentConnector != nullptr)
+			parentConnector->SetMaterial(Material::Vibrant(c));
+		//for (auto it = childConnectors.begin(); it != childConnectors.end(); ++it)
+		//	(*it)->SetMaterial(Material::Vibrant(c));
     }
 
 	DrawableObject* ASTNode::GetParentConnector() const
