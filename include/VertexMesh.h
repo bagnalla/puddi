@@ -40,34 +40,37 @@ namespace puddi
 
 		void UnCull();
 
-		DrawableObject* GetOwner();
+		DrawableObject* GetOwner() const;
 		void SetOwner(DrawableObject *o);
 
-		Material GetMaterial();
+		Material GetMaterial() const;
 		void SetMaterial(const Material& mat);
 
-		GLuint GetTexture();
+		GLuint GetTexture() const;
 		void SetTexture(GLuint tex);
 
-		GLuint GetCubeMap();
+		GLuint GetBumpMap() const;
+		void SetBumpMap(GLuint b);
+
+		GLuint GetCubeMap() const;
 		void SetCubeMap(GLuint cMap);
 
-		bool GetReflectiveCubeMap();
+		bool GetReflectiveCubeMap() const;
 		void SetReflectiveCubeMap(bool b);
 
-		bool GetBumpMapEnabled();
+		bool GetBumpMapEnabled() const;
 		void SetBumpMapEnabled(bool b);
 
-		bool GetEmissive();
+		bool GetEmissive() const;
 		void SetEmissive(bool b);
 
-		vec4 GetEmissionColor();
+		vec4 GetEmissionColor() const;
 		void SetEmissionColor(const vec4& eColor);
 
-		bool GetRenderEnabled();
+		bool GetRenderEnabled() const;
 		void SetRenderEnabled(bool b);
 
-		bool GetRenderGraphIndex();
+		bool GetRenderGraphIndex() const;
 		void SetRenderGraphIndex(size_t i);
 
 	private:
@@ -79,6 +82,7 @@ namespace puddi
 		GLuint cubeMap;
 		bool reflectiveCubeMap;
 		bool bumpMapEnabled;
+		GLuint bumpmap;
 		bool emissive;
 		vec4 emissionColor;
 		RenderNode *renderNode;

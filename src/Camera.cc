@@ -15,7 +15,7 @@ namespace puddi
 		lookDirection = vec4(0.0f, 1.0f, 0.0f, 0.0f);
 		lookRotation = mat4(1.0f);
 		zoomOut = 0.0;
-		holdingW = holdingA = holdingS = holdingD = false;
+		holdingW = holdingA = holdingS = holdingD = holdingZ = holdingSpace = false;
 	}
 
 	void Camera::Update()

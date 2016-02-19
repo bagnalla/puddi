@@ -96,6 +96,7 @@ namespace puddi
 		static void initEmissiveCubeMapProgram();
 		static void initDepthProgram();
 		static void initMaterialProgram();
+		static void initMaterialBumpProgram();
 		static void initTextureProgram();
 		static void initTextureBumpProgram();
 		static void initCubeMapProgram();

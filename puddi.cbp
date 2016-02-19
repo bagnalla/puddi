@@ -196,6 +196,7 @@
 		<Unit filename="shaders/fragment/fshader_emissive_cubemap.glsl" />
 		<Unit filename="shaders/fragment/fshader_emissive_texture.glsl" />
 		<Unit filename="shaders/fragment/fshader_material.glsl" />
+		<Unit filename="shaders/fragment/fshader_material_bump.glsl" />
 		<Unit filename="shaders/fragment/fshader_terrain_texture_bump.glsl" />
 		<Unit filename="shaders/fragment/fshader_texture.glsl" />
 		<Unit filename="shaders/fragment/fshader_texture_bump.glsl" />

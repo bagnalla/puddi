@@ -120,7 +120,7 @@ namespace puddi
 		UpdateRenderNode();
 	}
 
-	DrawableObject* VertexMesh::GetOwner()
+	DrawableObject* VertexMesh::GetOwner() const
 	{
 		return owner;
 	}
@@ -129,7 +129,7 @@ namespace puddi
 		owner = o;
 	}
 
-	Material VertexMesh::GetMaterial()
+	Material VertexMesh::GetMaterial() const
 	{
 		return material;
 	}
@@ -138,7 +138,7 @@ namespace puddi
 		material = mat;
 	}
 
-	GLuint VertexMesh::GetTexture()
+	GLuint VertexMesh::GetTexture() const
 	{
 		return texture;
 	}
@@ -147,7 +147,16 @@ namespace puddi
 		texture = tex;
 	}
 
-	GLuint VertexMesh::GetCubeMap()
+	GLuint VertexMesh::GetBumpMap() const
+	{
+		return bumpmap;
+	}
+	void VertexMesh::SetBumpMap(GLuint b)
+	{
+		bumpmap = b;
+	}
+
+	GLuint VertexMesh::GetCubeMap() const
 	{
 		return cubeMap;
 	}
@@ -156,7 +165,7 @@ namespace puddi
 		cubeMap = cMap;
 	}
 
-	bool VertexMesh::GetReflectiveCubeMap()
+	bool VertexMesh::GetReflectiveCubeMap() const
 	{
 		return reflectiveCubeMap;
 	}
@@ -165,7 +174,7 @@ namespace puddi
 		reflectiveCubeMap = b;
 	}
 
-	bool VertexMesh::GetBumpMapEnabled()
+	bool VertexMesh::GetBumpMapEnabled() const
 	{
 		return bumpMapEnabled;
 	}
@@ -174,7 +183,7 @@ namespace puddi
 		bumpMapEnabled = b;
 	}
 
-	bool VertexMesh::GetEmissive()
+	bool VertexMesh::GetEmissive() const
 	{
 		return emissive;
 	}
@@ -183,17 +192,16 @@ namespace puddi
 		emissive = b;
 	}
 
-	vec4 VertexMesh::GetEmissionColor()
+	vec4 VertexMesh::GetEmissionColor() const
 	{
 		return emissionColor;
 	}
 	void VertexMesh::SetEmissionColor(const vec4& eColor)
 	{
 		emissionColor = eColor;
-		UpdateRenderNode();
 	}
 
-	bool VertexMesh::GetRenderEnabled()
+	bool VertexMesh::GetRenderEnabled() const
 	{
 		return renderEnabled;
 	}
@@ -202,7 +210,7 @@ namespace puddi
 		renderEnabled = b;
 	}
 
-	bool VertexMesh::GetRenderGraphIndex()
+	bool VertexMesh::GetRenderGraphIndex() const
 	{
 		return renderGraphIndex;
 	}
@@ -220,6 +228,7 @@ namespace puddi
 		owner = NULL;
 		material = Material::None();
 		texture = 0;
+		bumpmap = 0;
 		cubeMap = 0;
 		reflectiveCubeMap = false;
 		bumpMapEnabled = true;

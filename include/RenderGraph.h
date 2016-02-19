@@ -38,6 +38,9 @@ namespace puddi
 		// root node for non-textured objects with normal lighting
 		std::unordered_map<Material, MaterialNode*> materialNodeMap;
 
+		// root node for non-textured objects with normal lighting and bumpmaps
+		std::unordered_map<GLuint, MaterialBumpNode*> materialBumpNodeMap;
+
 		// root node for emissive objects
 		std::unordered_map<vec4, EmissiveNode*> emissiveNodeMap;
 

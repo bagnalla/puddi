@@ -39,6 +39,8 @@ namespace puddi
 
 		void SetTexture(GLuint tex);
 
+		void SetBumpMap(GLuint bump);
+
 		void SetCubeMap (GLuint cm);
 
 		void EnableRender(bool propagate = true);

@@ -21,6 +21,8 @@ namespace puddi
 		auto texture = o->GetTexture();
 		auto material = o->GetMaterial();
 		auto textureBumpmap = Texture::GetBumpMapByTexture(texture);
+		if (textureBumpmap == 0)
+            textureBumpmap = o->GetBumpMap();
 		auto cubeBumpmap = Texture::GetBumpMapByCubeMap(cubeMap);
 
 		// non-emissive
@@ -91,10 +93,29 @@ namespace puddi
 			// no texture, only material
 			else if (texture == 0)
 			{
-				if (materialNodeMap.find(material) == materialNodeMap.end())
-					materialNodeMap.emplace(material, new MaterialNode(material));
+                // with bump map
+                if (textureBumpmap != 0)
+                {
+                    std::unordered_map<Material, MaterialNode*> *_materialNodeMap;
 
-				materialNode = materialNodeMap[material];
+                    if (materialBumpNodeMap.find(texture) == materialBumpNodeMap.end())
+                        materialBumpNodeMap.emplace(texture, new MaterialBumpNode(textureBumpmap));
+
+                    _materialNodeMap = &materialBumpNodeMap[texture]->materialNodeMap;
+
+                    if (_materialNodeMap->find(material) == _materialNodeMap->end())
+                        _materialNodeMap->emplace(material, new MaterialNode(material));
+
+                    materialNode = (*_materialNodeMap)[material];
+                }
+                // without bump map
+                else
+                {
+                    if (materialNodeMap.find(material) == materialNodeMap.end())
+                        materialNodeMap.emplace(material, new MaterialNode(material));
+
+                    materialNode = materialNodeMap[material];
+				}
 			}
 			// no material, texture only
 			else if (material == Material::None())
@@ -252,6 +273,11 @@ namespace puddi
 		// render objects with only material
 		Shader::SetProgram("material");
 		for (auto it = materialNodeMap.begin(); it != materialNodeMap.end(); ++it)
+			(*it).second->Render();
+
+        // render objects with material and bumpmap
+		Shader::SetProgram("material_bump");
+		for (auto it = materialBumpNodeMap.begin(); it != materialBumpNodeMap.end(); ++it)
 			(*it).second->Render();
 
 		// render objects with cubemap

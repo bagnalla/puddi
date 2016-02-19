@@ -3,6 +3,7 @@
 #include "VertexMesh.h"
 #include "TerrainVertexMesh.h"
 #include "Texture.h"
+#include <iostream>
 
 namespace puddi
 {
@@ -116,6 +117,21 @@ namespace puddi
 
 		// render objects
 		RenderNode::Render();
+	}
+
+	// MATERIALBUMPNODE PUBLIC
+
+	void MaterialBumpNode::Render() const
+	{
+		// bind bump map
+		glActiveTexture(GL_TEXTURE0 + TEXTURE_2D_BUMP);
+		glBindTexture(GL_TEXTURE_2D, bumpmap);
+
+		// render material nodes
+		for (auto it = materialNodeMap.begin(); it != materialNodeMap.end(); ++it)
+		{
+			(*it).second->Render();
+		}
 	}
 
 	// MATERIALNODE PUBLIC

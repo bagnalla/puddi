@@ -15,6 +15,14 @@ namespace puddi
 		float shininess; // shininess coefficient
 
 		/**********************************************************************
+		Function:		Vibrant
+		Purpose:		Create a vibrant material based on a given color
+                        (high ambient)
+		Calls:			const vec4& color - the color of the vibrant material
+		**********************************************************************/
+		static Material Vibrant(const vec4& color);
+
+		/**********************************************************************
 		Function:		Plastic
 		Purpose:		Create a plastic material based on a given color
 		Calls:			const vec4& color - the color of the plastic material
@@ -58,7 +66,7 @@ namespace puddi
 
 // hash function for materials
 namespace std {
-	
+
 	template <>
 	struct hash<glm::vec4>
 	{

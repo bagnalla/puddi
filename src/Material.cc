@@ -5,6 +5,16 @@ namespace puddi
 {
 	// PUBLIC
 
+	Material Material::Vibrant(const vec4& color)
+	{
+        Material m;
+		m.ambient = vec4(1.0, 1.0, 1.0, 1.0) * color;
+		m.diffuse = vec4(0.55, 0.55, 0.55, 1.0) * color;
+		m.specular = vec4(0.7, 0.7, 0.7, 1.0) * color;
+		m.shininess = .25*128.0;
+		return m;
+	}
+
 	Material Material::Plastic(const vec4& color)
 	{
 		Material m;

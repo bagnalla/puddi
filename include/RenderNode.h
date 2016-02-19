@@ -36,6 +36,16 @@ namespace puddi
 		void Render() const;
 	};
 
+	struct MaterialBumpNode : public RenderNode
+	{
+		GLuint bumpmap;
+		std::unordered_map<Material, MaterialNode*> materialNodeMap;
+
+		MaterialBumpNode(GLuint bump) { bumpmap = bump; }
+
+		void Render() const;
+	};
+
 	struct TextureBumpNode : public RenderNode
 	{
 		GLuint texture;

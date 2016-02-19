@@ -119,6 +119,15 @@ namespace puddi
 			static_cast<DrawableObject*>(*it)->SetTexture(tex);
 	}
 
+	void DrawableObject::SetBumpMap(GLuint bump)
+	{
+		for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)
+			(*it)->SetBumpMap(bump);
+		updateRenderNodes();
+		for (auto it = children.begin(); it != children.end(); ++it)
+			static_cast<DrawableObject*>(*it)->SetBumpMap(bump);
+	}
+
 	void DrawableObject::SetCubeMap(GLuint cm)
 	{
 		for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)

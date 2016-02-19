@@ -35,6 +35,14 @@ namespace puddi
 		return tex;
 	}
 
+	GLuint Texture::LoadBumpMap(const char *name, const char *bumpPath)
+	{
+        GLuint bump = loadTexture(bumpPath);
+        if (bump != 0)
+            bumpMapNameMap.emplace(name, bump);
+		return bump;
+	}
+
 	GLuint Texture::LoadCubeMap(const char *name, const char *filePath, const char *bumpPath)
 	{
 		GLuint cubeMap = loadCubeMap(filePath);
@@ -64,6 +72,11 @@ namespace puddi
 	GLuint Texture::GetTextureByName(std::string name)
 	{
 		return textureMap[name];
+	}
+
+	GLuint Texture::GetBumpMapByName(std::string name)
+	{
+		return bumpMapNameMap[name];
 	}
 
 	GLuint Texture::GetTextureByFile(std::string path)
@@ -111,6 +124,7 @@ namespace puddi
 	std::unordered_map<std::string, GLuint> Texture::textureMap;
 	std::unordered_map<std::string, GLuint> Texture::textureFileMap;
 	std::unordered_map<GLuint, GLuint> Texture::bumpMapMap;
+	std::unordered_map<std::string, GLuint> Texture::bumpMapNameMap;
 
 	std::unordered_map<std::string, GLuint> Texture::cubeMapMap;
 	std::unordered_map<std::string, GLuint> Texture::cubeMapFileMap;

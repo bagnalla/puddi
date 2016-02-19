@@ -77,8 +77,10 @@ namespace grumpy
                 conn->SetScaleX(1.9f);
                 conn->RotateX(M_PI / 2.0f);
                 conn->Translate(vec4(glyphCount + 1.0f, 0.0f, 0.0f, 0.0f));
-                conn->SetEmissive(true);
-                conn->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 0.5f));
+                //conn->SetEmissive(true);
+                //conn->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 0.5f));
+                conn->SetMaterial(Material::Vibrant(vec4(0.75f, 0.75f, 0.75f, 1.0f)));
+                conn->SetBumpMap(Texture::GetBumpMapByName("rough1"));
                 conn->SetRenderGraph(2);
                 childConnectors.push_back(conn);
 

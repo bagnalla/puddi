@@ -80,10 +80,10 @@ void main()
 
 	//gl_FragColor = vec4((ambient + diffuse + specular).xyz, 1.0);
 
-	if (shadowMode == 1)
-		gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-	else if (shadowMode == 2)
-		gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
-	else
+//	if (shadowMode == 1)
+//		gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+//	else if (shadowMode == 2)
+//		gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+//	else
 		gl_FragColor = vec4((ambient + diffuse + specular).xyz, 1.0);
 }

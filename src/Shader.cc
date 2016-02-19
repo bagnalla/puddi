@@ -54,6 +54,9 @@ namespace puddi
 		// MATERIAL PROGRAM
 		initMaterialProgram();
 
+		// MATERIAL BUMP PROGRAM
+		initMaterialBumpProgram();
+
 		// TEXTURE PROGRAM
 		initTextureProgram();
 
@@ -498,6 +501,69 @@ namespace puddi
 		glUniform1i(uniformMap["shadowMode"], 0);
 		glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
 		glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
+	}
+
+	void Shader::initMaterialBumpProgram()
+	{
+		GLuint program = InitShader("shaders/vertex/vshader_texture_bump.glsl", "shaders/fragment/fshader_material_bump.glsl");
+		nameToProgramMap.emplace("material_bump", program);
+
+		// create a vertex array object
+		GLuint vao;
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+		programToVaoMap.emplace(program, vao);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
+
+		// set up vertex arrays
+		GLuint vPositionLoc = glGetAttribLocation(program, "vPosition");
+		glEnableVertexAttribArray(vPositionLoc);
+		glVertexAttribPointer(vPositionLoc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+
+		GLuint vNormalLoc = glGetAttribLocation(program, "vNormal");
+		glEnableVertexAttribArray(vNormalLoc);
+		glVertexAttribPointer(vNormalLoc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vec4)*Shader::Vertices.size()));
+
+		GLuint vTangentLoc = glGetAttribLocation(program, "vTangent");
+		glEnableVertexAttribArray(vTangentLoc);
+		glVertexAttribPointer(vTangentLoc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vec4)*Shader::Vertices.size() + sizeof(vec4)*Shader::Normals.size()));
+
+		GLuint vBinormalLoc = glGetAttribLocation(program, "vBinormal");
+		glEnableVertexAttribArray(vBinormalLoc);
+		glVertexAttribPointer(vBinormalLoc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vec4)*Shader::Vertices.size() + sizeof(vec4)*Shader::Normals.size() + sizeof(vec4)*Shader::Tangents.size()));
+
+		GLuint vTextureCoordinateLoc = glGetAttribLocation(program, "vTextureCoordinate");
+		glEnableVertexAttribArray(vTextureCoordinateLoc);
+		glVertexAttribPointer(vTextureCoordinateLoc, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vec4)*Shader::Vertices.size() + sizeof(vec4)*Shader::Normals.size() + sizeof(vec4)*Shader::Tangents.size() + sizeof(vec4)*Shader::Binormals.size()));
+
+		// get uniform locations
+		std::unordered_map<std::string, GLuint> uniformMap;
+		uniformMap.emplace("model", getUniform(program, "model"));
+		uniformMap.emplace("camera", getUniform(program, "camera"));
+		uniformMap.emplace("projection", getUniform(program, "projection"));
+		uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
+		uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
+		uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
+		uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
+		uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
+		uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
+		uniformMap.emplace("materialShininess", getUniform(program, "materialShininess"));
+		uniformMap.emplace("bumpTex", getUniform(program, "bumpTex"));
+		uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
+		uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
+		uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
+		uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+
+		// copy uniform map to program uniform map
+		programToUniformMap.emplace(program, uniformMap);
+
+		// initialize uniforms
+		glUseProgram(program);
+		glUniform1i(uniformMap["bumpTex"], TEXTURE_2D_BUMP);
+		glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
+		glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
+		glUniform1i(uniformMap["shadowMode"], 0);
 	}
 
 	void Shader::initTextureProgram()

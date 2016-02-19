@@ -16,10 +16,12 @@ namespace puddi
 		static void EndTextureLoading();
 
 		static GLuint LoadTexture(const char *name, const char *filePath, const char *bumpPath = nullptr);
+		static GLuint LoadBumpMap(const char *name, const char *bumpPath);
 		static GLuint LoadCubeMap(const char *name, const char *filePath, const char *bumpPath = nullptr);
 		static GLuint LoadCubeMapMirrored(const char *name, const char *filePath, const char *bumpPath = nullptr);
 
 		static GLuint GetTextureByName(std::string name);
+		static GLuint GetBumpMapByName(std::string name); // only works if it was loaded by name
 		static GLuint GetTextureByFile(std::string path);
 		static GLuint GetBumpMapByTexture(GLuint tex);
 
@@ -33,6 +35,7 @@ namespace puddi
 		static std::unordered_map<std::string, GLuint> textureMap;
 		static std::unordered_map<std::string, GLuint> textureFileMap;
 		static std::unordered_map<GLuint, GLuint> bumpMapMap;
+		static std::unordered_map<std::string, GLuint> bumpMapNameMap;
 
 		static std::unordered_map<std::string, GLuint> cubeMapMap;
 		static std::unordered_map<std::string, GLuint> cubeMapFileMap;

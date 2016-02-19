@@ -48,6 +48,13 @@ void init(void)
     Puddi::AddRenderGraph();
 
 	GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda.jpg", "bumpmaps/Shrek-and-Yoda_NRM.jpg");
+	//GLuint texture = Texture::LoadTexture("rough", "textures/rough4.jpg", "bumpmaps/rough4_bumpmap_fine.jpg");
+	Texture::LoadBumpMap("rough1", "bumpmaps/rough1_bumpmap_fine.jpg");
+	Texture::LoadBumpMap("rough2", "bumpmaps/rough2_bumpmap_fine.jpg");
+	Texture::LoadBumpMap("rough3", "bumpmaps/rough3_bumpmap_fine.jpg");
+	Texture::LoadBumpMap("rough5", "bumpmaps/rough5_bumpmap_fine.jpg");
+	GLuint bump = Texture::LoadBumpMap("rough4", "bumpmaps/rough4_bumpmap_fine.jpg");
+	//GLuint bump = Texture::LoadBumpMap("rough", "bumpmaps/Shrek-and-Yoda_NRM.jpg");
 	Texture::LoadCubeMap("skybox_2", "textures/skybox2.jpg");
 	//GLuint texture = Texture::LoadTexture("shrek", "textures/Shrek-and-Yoda (copy).jpg");
 	//GLuint texture = Texture::CreateTextureFromString("bakow", "bakow_string", "fonts/Bitstream/VeraMono-Bold.ttf", 24, vec3(1.0f, 0.0f, 0.0f));
@@ -64,13 +71,17 @@ void init(void)
 	lightSource->UpdateMatrix();
 	LightSource::UpdateLightSourceMatricesInShaders();
 
-//	wall = new Rectangle(Puddi::GetRootObject());
-//	//wall->RotateX(-M_PI / 2.0f);
-//	wall->SetScaleX(200.0f);
-//	wall->SetScaleY(100.0f);
-//	wall->SetPosition(vec4(0.0f, 10.f, 0.0f, 1.0f));
-//	wall->SetMaterial(Material::Plastic(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
-//	//wall->SetTexture(texture);
+	wall = new Cube(Puddi::GetRootObject());
+	wall->RotateX(M_PI / 2.0f);
+	//wall->SetScaleX(200.0f);
+	//wall->SetScaleY(100.0f);
+	wall->SetScale(10.0f);
+	wall->SetPosition(vec4(0.0f, 10.f, 0.0f, 1.0f));
+	//wall->SetMaterial(Material::Plastic(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
+	wall->SetMaterial(Material::Vibrant(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
+	//wall->SetMaterial(Material::BlackRubber());
+	wall->SetBumpMap(bump);
+	//wall->SetTexture(texture);
 
 	auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ocaml_logo_2.png", 25.0f, 25.0f, 0.1f));
 	//auto terrainMesh = new TerrainVertexMesh(HeightMapTerrain::CreateTerrainMeshFromFile("textures/ou_logo_1.png", 25.0f, 25.0f, 0.1f));
@@ -244,7 +255,7 @@ void reset()
     parser->SetTexture(Texture::GetTextureByName("shrek"));
 //    parser->SetEmissive(true);
 //    parser->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    parser->SetVelocity(0.005f);
+    parser->SetVelocity(0.5f);
     //parser->DisableRender();
     parser->SetHomePosition(ast->GetPosition() + vec4(0.0f, 0.0f, 5.0f, 1.0f));
     parser->SetPosition(vec4(20.0f, 0.0f, 0.0f, 1.0f));
