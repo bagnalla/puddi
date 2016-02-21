@@ -35,6 +35,7 @@ DrawableObject *cube;
 DrawableObject *rect;
 DrawableObject *wall;
 
+SourceCode *sourceCode;
 Lexer *lexer;
 ASTNode *ast;
 SyntaxParser *parser;
@@ -79,7 +80,7 @@ void init(void)
 	wall->RotateX(M_PI / 2.0f);
 	//wall->SetScaleX(200.0f);
 	//wall->SetScaleY(100.0f);
-	wall->SetScale(10.0f);
+	//wall->SetScale(10.0f);
 	wall->SetPosition(vec4(0.0f, 10.f, 0.0f, 1.0f));
 	//wall->SetMaterial(Material::Plastic(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
 	//wall->SetMaterial(Material::Vibrant(vec4(0.5f, 0.1f, 0.5f, 1.0f)));
@@ -187,7 +188,7 @@ void init(void)
 		//}
 	//}
 
-    //SourceCode *sourceCode = new SourceCode(Puddi::GetRootObject(), "program.gpy", "myfont");
+    sourceCode = new SourceCode(Puddi::GetRootObject(), "program.gpy", "myfont");
 
     reset();
 }
@@ -201,8 +202,10 @@ void reset()
     vector<LexToken> lTokens;
     ifstream infile("lexer.in");
     LexToken tok;
+    int count = 0;
     while (infile >> tok.name >> tok.start >> tok.end)
     {
+        tok.number = count++;
         tok.value = "";
         tok.end--;
 
@@ -216,13 +219,13 @@ void reset()
         //cout << tok.name << endl;
     }
 
-//    Lexer *lexer = new Lexer(Puddi::GetRootObject(), sourceCode, lTokens);
-//    auto *mesh = new VertexMesh(VertexMesh::GetVertexMeshPrototypeByName("cube"));
-//    lexer->AddVertexMesh(mesh);
-//    lexer->SetTexture(texture);
-//    lexer->SetSkipVelocity(0.1f);
-//    lexer->SetReadVelocity(0.01f);
-//    lexer->Translate(vec4(-10.0f, 0.0f, 0.0f, 0.0f));
+    lexer = new Lexer(Puddi::GetRootObject(), sourceCode, lTokens);
+    auto *mesh = new VertexMesh(VertexMesh::GetVertexMeshPrototypeByName("cube"));
+    lexer->AddVertexMesh(mesh);
+    lexer->SetTexture(Texture::GetTextureByName("shrek"));
+    lexer->SetSkipVelocity(0.1f);
+    lexer->SetReadVelocity(0.01f);
+    //lexer->Translate(vec4(0.0f, -10.0f, 0.0f, 0.0f));
 
     auto bytes = Util::ReadAllBytes("parser.in");
     vector<char> sanitizedBytes;
@@ -261,16 +264,15 @@ void reset()
     parser->SetTexture(Texture::GetTextureByName("shrek"));
 //    parser->SetEmissive(true);
 //    parser->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    parser->SetVelocity(0.005f);
+    parser->SetVelocity(0.05f);
     //parser->DisableRender();
     parser->SetHomePosition(ast->GetPosition() + vec4(0.0f, 0.0f, 5.0f, 1.0f));
     parser->SetPosition(vec4(20.0f, 0.0f, 0.0f, 1.0f));
 
-    //queue<Token*> tokenQueue;
-    //for (auto it = lTokens.begin(); it != lTokens.end(); ++it)
-    //    tokenQueue.push(new Token(Puddi::GetRootObject(), *it));
-    ////tokenQueue.push(new Token(Puddi::GetRootObject(), LexToken("EOF", 0, 0, "")));
-    //parser->SetTokenQueue(tokenQueue);
+    for (auto it = lTokens.begin(); it != lTokens.end(); ++it)
+        parser->AddToken(new Token(Puddi::GetRootObject(), *it));
+//    for (int i = 0; i < lTokens.size() / 2; ++i)
+//        parser->AddToken(new Token(Puddi::GetRootObject(), lTokens[i]));
 }
 
 //----------------------------------------------------------------------------

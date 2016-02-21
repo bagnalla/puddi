@@ -4,10 +4,11 @@ namespace grumpy
 {
     // PUBLIC
 
-    LexToken::LexToken() : LexToken("", 0, 0, "") {}
+    LexToken::LexToken() : LexToken(0, "", 0, 0, "") {}
 
-    LexToken::LexToken(const std::string &n, int s, int e, const std::string &v)
+    LexToken::LexToken(int num, const std::string &n, int s, int e, const std::string &v)
     {
+        number = num;
         name = n;
         start = s;
         end = e;

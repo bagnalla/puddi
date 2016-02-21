@@ -30,6 +30,13 @@ namespace puddi
 		return transformedVertices;
 	}
 
+    float Util::Length(const vec4& v)
+    {
+        if (v.x != 0.0f || v.y != 0.0f || v.z != 0.0f || v.w != 0.0f)
+            return length(v);
+        return 0.0f;
+    }
+
 	float Util::Distance(const vec4& p1, const vec4& p2)
 	{
 		//return length(p1 - p2);

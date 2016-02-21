@@ -4,6 +4,7 @@
 #include "Puddi.h"
 #include "Util.h"
 #include <limits.h>
+#include <iostream>
 
 namespace puddi
 {
@@ -74,7 +75,7 @@ namespace puddi
 	{
 		vec4 displacement = point - position;
 
-		if (length(displacement) <= moveAmount)
+		if (Util::Length(displacement) <= moveAmount)
 		{
 			SetPosition(point);
 
@@ -113,6 +114,8 @@ namespace puddi
 	{
 		//vec4 translation = p - position;
 		//Translate(translation);
+		if (p.x != p.x)
+            std::cout << "NaN in Object::SetPosition\n";
 		position = p;
 		changedFlags |= TRANSLATION_CHANGED;
 	}

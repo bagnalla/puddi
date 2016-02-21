@@ -8,13 +8,14 @@ namespace grumpy
 {
     struct LexToken
     {
+        int number;
         std::string name;
         int start;
         int end;
         std::string value;
 
         LexToken();
-        LexToken(const std::string &name, int start, int end, const std::string &value);
+        LexToken(int num, const std::string &name, int start, int end, const std::string &value);
     };
 
     class Token : public puddi::DrawableObject

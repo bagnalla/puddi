@@ -4,6 +4,7 @@
 #include "FpsTracker.h"
 #include "Rectangle.h"
 #include "Cube.h"
+#include "Util.h"
 #include <iostream>
 
 using namespace puddi;
@@ -19,7 +20,7 @@ namespace grumpy
         lTokens = lToks;
         currentCharacterIndex = 0;
         currentTokenIndex = 0;
-        currentTokenStartPos = vec4();
+        currentTokenStartPos = vec4(0.0f, 0.0f, 0.0f, 1.0f);
         skipVelocity = 0.0f;
         readVelocity = 0.0f;
         state = LEXER_STATE_SKIPPING;
@@ -60,7 +61,7 @@ namespace grumpy
             float moveAmount = skipVelocity * FpsTracker::GetFrameTimeMs();
 
             vec4 displacement = targetPosition - position;
-            if (length(displacement) <= moveAmount)
+            if (Util::Length(displacement) <= moveAmount)
             {
                 SetPosition(targetPosition);
 
@@ -87,7 +88,7 @@ namespace grumpy
 		{
             //update scan bar size/position
             vec4 displacement = currentTokenStartPos - position;
-            scanBar->SetScaleX(length(displacement));
+            scanBar->SetScaleX(Util::Length(displacement));
             scanBar->SetPosition(vec4(-scanBar->GetScaleX() / 2.0f, 0.0f, 0.0f, 1.0f));
 
             DrawableObject *targetGlyph = sourceCode->glyphs[currentToken.end];
@@ -97,7 +98,7 @@ namespace grumpy
 
             float moveAmount = readVelocity * FpsTracker::GetFrameTimeMs();
 
-            if (length(targetPosition - position) <= moveAmount)
+            if (Util::Length(targetPosition - position) <= moveAmount)
             {
                 SetPosition(targetPosition);
 
@@ -105,7 +106,7 @@ namespace grumpy
                 scanBarColor.w = 0.0f;
                 scanBar->SetEmissionColor(scanBarColor);
                 scanBar->SetScaleX(0.0f);
-                scanBar->SetPosition(vec4());
+                scanBar->SetPosition(vec4(0.0f, 0.0f, 0.0f, 1.0f));
                 state = LEXER_STATE_SKIPPING;
 
                 for (;currentCharacterIndex <= currentToken.end; currentCharacterIndex++)

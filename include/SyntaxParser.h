@@ -30,6 +30,8 @@ namespace grumpy
 
 		void SetHomePosition(glm::vec4 v);
 
+		void AddToken(Token *t);
+
     private:
         ASTNode *astRoot;
         std::vector<ASTNode*> nodesVector;
@@ -37,6 +39,8 @@ namespace grumpy
         float velocity;
         SyntaxParserState state;
         glm::vec4 homePosition;
+
+        std::vector<Token*> tokenQueue;
 
 		void init(ASTNode *root);
         void createNodesVector();

@@ -1,9 +1,10 @@
 def f() : unit {
-  let x = 1 + 2 * 3 / 4 in
-  let y = -1 * 3 in
-  let z = ref y in
-  let w = ref z in
-  !!w
+  let i = ref 10 in
+  while !i < 10 {
+    let j = ref 20 in
+    tt
+  };
+  tt
 }
 
 f()

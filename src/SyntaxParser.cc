@@ -45,9 +45,19 @@ namespace grumpy
 
         if (state == SYNTAXPARSER_STATE_WAITING)
         {
+            auto requiredTokens = targetNode->GetRequiredTokenNumbers();
+            int tokensNeeded = 0;
+            for (auto it = requiredTokens.begin(); it != requiredTokens.end(); ++it)
+            {
+                tokensNeeded += std::any_of(tokenQueue.begin(), tokenQueue.end(), [&](Token *t) { return t->LToken.number == *it; });
+            }
+            if (!tokensNeeded)
+            {
+                state = SYNTAXPARSER_STATE_MOVING;
+            }
             //targetNode->Show();
 			//astRoot->Resize();
-            state = SYNTAXPARSER_STATE_MOVING;
+            //state = SYNTAXPARSER_STATE_MOVING;
         }
         else if (state == SYNTAXPARSER_STATE_MOVING)
         {
@@ -71,7 +81,25 @@ namespace grumpy
 			{
 				nodesVector[currentNodeIndex]->Show();
 				astRoot->Resize();
-				currentNodeIndex++;
+
+				if (++currentNodeIndex >= nodesVector.size())
+                {
+                    state = SYNTAXPARSER_STATE_DONE;
+                    return;
+                }
+
+				auto requiredTokens = targetNode->GetRequiredTokenNumbers();
+                int tokensNeeded = 0;
+                for (auto it = requiredTokens.begin(); it != requiredTokens.end(); ++it)
+                {
+                    tokensNeeded += !std::any_of(tokenQueue.begin(), tokenQueue.end(), [&](Token *t) { return t->LToken.number == *it; });
+                }
+                if (tokensNeeded)
+                {
+                    cout << "parser waiting on " << tokensNeeded << " tokens from the lexer. tokenQueue size = " << tokenQueue.size() << "\n";
+                    // request x number of tokens from lexer
+                    state = SYNTAXPARSER_STATE_WAITING;
+                }
 			});
         }
     }
@@ -90,6 +118,11 @@ namespace grumpy
         homePosition = v;
 	}
 
+	void SyntaxParser::AddToken(Token *t)
+	{
+        tokenQueue.push_back(t);
+	}
+
     // PRIVATE
 
 	void SyntaxParser::init(ASTNode *root)
@@ -97,7 +130,7 @@ namespace grumpy
 		astRoot = root;
 		currentNodeIndex = 0;
 		velocity = 0.0f;
-		state = SYNTAXPARSER_STATE_WAITING;
+		state = SYNTAXPARSER_STATE_MOVING;
 		homePosition = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
 		createNodesVector();

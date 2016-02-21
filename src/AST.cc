@@ -28,12 +28,11 @@ namespace grumpy
         parentConnector = connector;
         parentConnectorLine = nullptr;
         SetPosition(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-		velocity = 0.005f;
+		velocity = 0.05f;
 		//velocity = 100.0f;
 
         container = new DrawableObject(this);
         glyphCount = 0;
-        tokenRequired = false;
         hidden = false;
 
         while (true)
@@ -48,7 +47,6 @@ namespace grumpy
 
             if (c == '`')
             {
-                tokenRequired = true;
                 input.pop();
                 string index_string = "";
                 while ((c = input.front()) != '`')
@@ -60,6 +58,22 @@ namespace grumpy
                 parseIndex = atoi(index_string.c_str());
 
                 //cout << parseIndex << endl;
+
+                input.pop();
+                continue;
+            }
+
+            if (c == '~')
+            {
+                input.pop();
+                string index_string = "";
+                while ((c = input.front()) != '~')
+                {
+                    index_string += c;
+                    input.pop();
+                }
+
+                requiredTokenNumbers.push_back(atoi(index_string.c_str()));
 
                 input.pop();
                 continue;
@@ -92,7 +106,7 @@ namespace grumpy
                 //node->Translate(conn->GetPosition() + vec4(0.0f, 0.0f, -1.0f, 0.0f));
                 ChildNodes.push_back(node);
 				//node->SetPosition(conn->GetPosition());
-				SetPosition(conn->GetPosition() + vec4(0.0f, -2.0f, 0.0f, 0.0f));
+				node->SetPosition(conn->GetPosition() + vec4(0.0f, -2.0f, 0.0f, 0.0f));
             }
             else
             {
@@ -168,11 +182,6 @@ namespace grumpy
 	int ASTNode::GetWidth() const
 	{
         return width;
-	}
-
-	bool ASTNode::GetTokenRequired() const
-	{
-        return tokenRequired;
 	}
 
     void ASTNode::Hide()
@@ -261,6 +270,11 @@ namespace grumpy
 	ASTNode* ASTNode::GetParent() const
 	{
         return parent;
+	}
+
+	std::vector<int> ASTNode::GetRequiredTokenNumbers() const
+	{
+        return requiredTokenNumbers;
 	}
 
 	// PRIVATE

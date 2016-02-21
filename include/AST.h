@@ -14,8 +14,6 @@ namespace grumpy
 
 		int GetWidth() const;
 
-		bool GetTokenRequired() const;
-
 		std::vector<ASTNode*> ChildNodes;
 
 		void Hide();
@@ -37,6 +35,8 @@ namespace grumpy
 
 		ASTNode* GetParent() const;
 
+		std::vector<int> GetRequiredTokenNumbers() const;
+
 	private:
 		ASTNode *parent;
 		std::vector<DrawableObject*> glyphs;
@@ -46,7 +46,6 @@ namespace grumpy
 		DrawableObject *body;
 		int width;
 		DrawableObject *container;
-		bool tokenRequired;
 		int glyphCount;
 		int parseIndex;
 		bool hidden;
@@ -54,6 +53,8 @@ namespace grumpy
 
 		glm::vec4 assignedLocation;
 		float velocity;
+
+		std::vector<int> requiredTokenNumbers;
 
 		int resizeRecursive();
 
