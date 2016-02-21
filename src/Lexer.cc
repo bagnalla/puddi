@@ -55,7 +55,7 @@ namespace grumpy
                 targetGlyph = sourceCode->glyphs[currentCharacterIndex];
             }
 
-            vec4 targetPosition = targetGlyph->GetPosition() - vec4(targetGlyph->GetScaleX() / 2.0f, 0.0f, 0.0f, 0.0f);
+            vec4 targetPosition = targetGlyph->GetWorldPosition() - vec4(targetGlyph->GetScaleX() / 2.0f, 0.0f, 0.0f, 0.0f);
             //vec4 targetPosition = targetGlyph->GetPosition();
 
             float moveAmount = skipVelocity * FpsTracker::GetFrameTimeMs();
@@ -67,7 +67,7 @@ namespace grumpy
 
                 if (currentCharacterIndex == currentToken.start)
                 {
-                    cout << "reached token" << currentTokenIndex << " at pos " << currentCharacterIndex << ". entering read state until pos " << currentToken.end << endl;
+                    cout << "reached token " << currentTokenIndex << " at pos " << currentCharacterIndex << ". entering read state until pos " << currentToken.end << endl;
                     currentTokenStartPos = targetPosition;
                     scanBarColor.w = 0.5f;
                     scanBar->SetEmissionColor(scanBarColor);
@@ -93,12 +93,13 @@ namespace grumpy
 
             DrawableObject *targetGlyph = sourceCode->glyphs[currentToken.end];
 
-            vec4 targetPosition = targetGlyph->GetPosition() + vec4(targetGlyph->GetScaleX() / 2.0f, 0.0f, 0.0f, 0.0f);
+            vec4 targetPosition = targetGlyph->GetWorldPosition() + vec4(targetGlyph->GetScaleX() / 2.0f, 0.0f, 0.0f, 0.0f);
             //vec4 targetPosition = targetGlyph->GetPosition();
 
             float moveAmount = readVelocity * FpsTracker::GetFrameTimeMs();
 
-            if (Util::Length(targetPosition - position) <= moveAmount)
+			displacement = targetPosition - position;
+            if (Util::Length(displacement) <= moveAmount)
             {
                 SetPosition(targetPosition);
 

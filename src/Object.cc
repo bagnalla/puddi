@@ -122,6 +122,8 @@ namespace puddi
 	void Object::Translate(const vec4& translation)
 	{
 		position += translation;
+		if (position.x != position.x)
+			std::cout << "NaN in Object::Translate\n";
 		changedFlags |= TRANSLATION_CHANGED;
 
 		//if (position.x != position.x || position.y != position.y)

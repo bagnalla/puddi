@@ -188,16 +188,18 @@ void init(void)
 		//}
 	//}
 
-    sourceCode = new SourceCode(Puddi::GetRootObject(), "program.gpy", "myfont");
-
     reset();
 }
 
 void reset()
 {
+	delete sourceCode;
     delete lexer;
     delete ast;
     delete parser;
+
+	sourceCode = new SourceCode(Puddi::GetRootObject(), "program.gpy", "myfont");
+	sourceCode->Translate(vec4(0.0f, -30.0f, 0.0f, 0.0f));
 
     vector<LexToken> lTokens;
     ifstream infile("lexer.in");
