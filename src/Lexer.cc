@@ -4,7 +4,9 @@
 #include "FpsTracker.h"
 #include "Rectangle.h"
 #include "Cube.h"
+#include "SyntaxParser.h"
 #include "Util.h"
+#include "Puddi.h"
 #include <iostream>
 
 using namespace puddi;
@@ -23,7 +25,7 @@ namespace grumpy
         currentTokenStartPos = vec4(0.0f, 0.0f, 0.0f, 1.0f);
         skipVelocity = 0.0f;
         readVelocity = 0.0f;
-        state = LEXER_STATE_SKIPPING;
+        state = LEXER_STATE_WAITING;
 
         scanBarColor = vec4(1.0f, 1.0f, 0.0f, 0.0f);
 
@@ -43,7 +45,10 @@ namespace grumpy
         // get current token in token stream
         LexToken currentToken = lTokens[currentTokenIndex];
 
-        if (state == LEXER_STATE_SKIPPING)
+		if (state == LEXER_STATE_WAITING)
+		{
+		}
+        else if (state == LEXER_STATE_SKIPPING)
         {
             // get current glyph in character stream
             DrawableObject *targetGlyph = sourceCode->glyphs[currentCharacterIndex];
@@ -108,12 +113,14 @@ namespace grumpy
                 scanBar->SetEmissionColor(scanBarColor);
                 scanBar->SetScaleX(0.0f);
                 scanBar->SetPosition(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-                state = LEXER_STATE_SKIPPING;
+                state = LEXER_STATE_WAITING;
 
                 for (;currentCharacterIndex <= currentToken.end; currentCharacterIndex++)
                 {
                     sourceCode->glyphs[currentCharacterIndex]->Cull();
                 }
+
+				parser->AddToken(new Token(Puddi::GetRootObject(), lTokens[currentTokenIndex]));
 
                 currentTokenIndex++;
             }
@@ -146,6 +153,16 @@ namespace grumpy
     {
         readVelocity = v;
     }
+
+	void Lexer::SetParser(SyntaxParser *pars)
+	{
+		parser = pars;
+	}
+
+	void Lexer::Lex()
+	{
+		state = LEXER_STATE_SKIPPING;
+	}
 
     // PRIVATE
 }

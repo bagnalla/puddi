@@ -57,6 +57,8 @@ namespace puddi
 
 		static void RenderAll();
 
+		static void ForceModelUpdate();
+
 		// only enables full screen atm
 		static void ToggleFullScreen();
 

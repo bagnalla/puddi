@@ -1,5 +1,5 @@
-#ifndef PARSER_H
-#define PARSER_H
+#ifndef SYNTAXPARSER_H
+#define SYNTAXPARSER_H
 
 #include "DrawableObject.h"
 #include "Schematic.h"
@@ -10,6 +10,8 @@
 
 namespace grumpy
 {
+	class Lexer;
+
     enum SyntaxParserState : int
     {
         SYNTAXPARSER_STATE_WAITING,
@@ -20,8 +22,8 @@ namespace grumpy
     class SyntaxParser : public puddi::DrawableObject
     {
     public:
-		SyntaxParser(Object* par, ASTNode *root);
-		SyntaxParser(Object* par, ASTNode *root, puddi::SchematicNode *schematic);
+		SyntaxParser(Object* par, Lexer *lex, ASTNode *root);
+		SyntaxParser(Object* par, Lexer *lex, ASTNode *root, puddi::SchematicNode *schematic);
 
         void Update();
 
@@ -33,6 +35,7 @@ namespace grumpy
 		void AddToken(Token *t);
 
     private:
+		Lexer *lexer;
         ASTNode *astRoot;
         std::vector<ASTNode*> nodesVector;
         int currentNodeIndex;
@@ -42,7 +45,7 @@ namespace grumpy
 
         std::vector<Token*> tokenQueue;
 
-		void init(ASTNode *root);
+		void init(Lexer *lex, ASTNode *root);
         void createNodesVector();
         void addToNodesVectorRecursive(ASTNode *node);
     };

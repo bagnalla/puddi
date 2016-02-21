@@ -262,7 +262,7 @@ void reset()
 
 	/*parser = new SyntaxParser(Puddi::GetRootObject(), ast);
     parser->AddVertexMesh(new VertexMesh(VertexMesh::GetVertexMeshPrototypeByName("cube")));*/
-	parser = new SyntaxParser(Puddi::GetRootObject(), ast, Schematic::GetSchematicByName("rounded_cube"));
+	parser = new SyntaxParser(Puddi::GetRootObject(), lexer, ast, Schematic::GetSchematicByName("rounded_cube"));
     parser->SetTexture(Texture::GetTextureByName("shrek"));
 //    parser->SetEmissive(true);
 //    parser->SetEmissionColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -271,10 +271,12 @@ void reset()
     parser->SetHomePosition(ast->GetPosition() + vec4(0.0f, 0.0f, 5.0f, 1.0f));
     parser->SetPosition(vec4(20.0f, 0.0f, 0.0f, 1.0f));
 
-    for (auto it = lTokens.begin(); it != lTokens.end(); ++it)
-        parser->AddToken(new Token(Puddi::GetRootObject(), *it));
+    //for (auto it = lTokens.begin(); it != lTokens.end(); ++it)
+    //    parser->AddToken(new Token(Puddi::GetRootObject(), *it));
 //    for (int i = 0; i < lTokens.size() / 2; ++i)
 //        parser->AddToken(new Token(Puddi::GetRootObject(), lTokens[i]));
+
+	lexer->SetParser(parser);
 }
 
 //----------------------------------------------------------------------------

@@ -73,8 +73,8 @@ namespace puddi
 		if (SDL_SetRelativeMouseMode(SDL_TRUE) == -1)
 			std::cerr << "unable to set relative mouse mode.\n";
 
-        // default render graph
-        renderGraphs.push_back(new RenderGraph());
+		// default render graph
+		renderGraphs.push_back(new RenderGraph());
 
 		Rectangle::Init();
 		Cube::Init();
@@ -95,17 +95,17 @@ namespace puddi
 
 		glEnable(GL_DEPTH_TEST);
 
-        glEnable(GL_BLEND);
+		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		//glBlendFunc(GL_ZERO, GL_SRC_COLOR);
 		//glBlendFunc(GL_ONE, GL_ONE);
 
-        if(GLEW_VERSION_3_1)
-        {
-            glEnable(GL_PRIMITIVE_RESTART);
-            glPrimitiveRestartIndex(UINT_MAX);
-        }
+		if (GLEW_VERSION_3_1)
+		{
+			glEnable(GL_PRIMITIVE_RESTART);
+			glPrimitiveRestartIndex(UINT_MAX);
+		}
 
 		Puddi::ViewDistance = Puddi::WorldSize * 1.6f;
 
@@ -137,8 +137,8 @@ namespace puddi
 		sendVertexDataToGPU();
 
 		// call post-init functions
-        for (auto it = postInitFunctions.begin(); it != postInitFunctions.end(); ++it)
-            (*it)();
+		for (auto it = postInitFunctions.begin(); it != postInitFunctions.end(); ++it)
+			(*it)();
 
 		int status_code;
 
@@ -157,10 +157,10 @@ namespace puddi
 			}
 
 			// call pre-draw functions
-            for (auto it = preDrawFunctions.begin(); it != preDrawFunctions.end(); ++it)
-                (*it)();
+			for (auto it = preDrawFunctions.begin(); it != preDrawFunctions.end(); ++it)
+				(*it)();
 
-            preDraw();
+			preDraw();
 
 			draw();
 		}
@@ -180,29 +180,33 @@ namespace puddi
 		return rootObject;
 	}
 
-    RenderGraph* Puddi::GetDefaultRenderGraph()
-    {
-        return renderGraphs[0];
-    }
+	RenderGraph* Puddi::GetDefaultRenderGraph()
+	{
+		return renderGraphs[0];
+	}
 
-    RenderGraph* Puddi::GetRenderGraph(size_t index)
-    {
-        if (index >= renderGraphs.size())
-            return nullptr;
-        return renderGraphs[index];
-    }
+	RenderGraph* Puddi::GetRenderGraph(size_t index)
+	{
+		if (index >= renderGraphs.size())
+			return nullptr;
+		return renderGraphs[index];
+	}
 
-    size_t Puddi::AddRenderGraph()
-    {
-        renderGraphs.push_back(new RenderGraph());
-        return renderGraphs.size() - 1;
-    }
+	size_t Puddi::AddRenderGraph()
+	{
+		renderGraphs.push_back(new RenderGraph());
+		return renderGraphs.size() - 1;
+	}
 
-    void Puddi::RenderAll()
-    {
-        for (auto it = renderGraphs.begin(); it != renderGraphs.end(); ++it)
-            (*it)->Render();
-    }
+	void Puddi::RenderAll()
+	{
+		for (auto it = renderGraphs.begin(); it != renderGraphs.end(); ++it)
+			(*it)->Render();
+	}
+
+	void ForceModelUpdate()
+	{
+	}
 
 	void Puddi::ToggleFullScreen()
 	{
@@ -278,9 +282,9 @@ namespace puddi
 
 		SDL_SetWindowTitle(window, Util::ToString(FpsTracker::GetFps()).c_str());
 
-		rootUpdateNode->Update();
-
 		rootModelNode->Update();
+
+		rootUpdateNode->Update();
 		//std::cout << rootModelNode->children.size() << std::endl;
 
 		return 0;

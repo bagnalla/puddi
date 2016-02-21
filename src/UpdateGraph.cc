@@ -17,6 +17,7 @@ namespace puddi
 		parent = par;
 		object = o;
 		parallel = false;
+		removed = false;
 
 		if (parent != NULL)
 			parent->AddChild(this);
@@ -24,13 +25,17 @@ namespace puddi
 
 	UpdateNode::~UpdateNode()
 	{
-		//for (auto it = children.begin(); it != children.end(); ++it)
-		//	delete *it;
-		for (; 0 < children.size();)
-			delete children[0];
+		/*for (auto it = children.begin(); it != children.end(); ++it)
+			delete *it;*/
+		for (size_t i = 0; i < children.size(); ++i)
+			if (!children[i]->removed)
+				delete children[i];
+		//while (children.size())
+		//	delete children[0];
 
-		if (parent != NULL)
-			parent->RemoveChild(this);
+		//if (parent != NULL)
+		//	parent->RemoveChild(this);
+		removed = true;
 	}
 
 	void UpdateNode::Update()
@@ -56,14 +61,33 @@ namespace puddi
 			{
 				//if (omp_get_num_threads() != 1)
 				//	std::cout << "i = " << i << ", threads = " << omp_get_num_threads() << std::endl;
-				children[i]->Update();
+				auto child = children[i];
+				//if (child != nullptr)
+				if (!child->removed)
+					child->Update();
 			}
 		}
 		else
 		{
 			// update children sequentially
-			for (auto it = children.begin(); it != children.end(); ++it)
-				(*it)->Update();
+			//for (auto it = children.begin(); it != children.end(); ++it)
+			for (size_t i = 0; i < children.size(); ++i)
+			{
+				auto child = children[i];
+				//if (child != nullptr)
+				if (child->object != nullptr && !child->removed)
+					child->Update();
+			}
+		}
+
+		// remove null children
+		for (size_t i = 0; i < children.size();)
+		{
+			//if (children[i] == nullptr)
+			if (children[i]->object == nullptr || children[i]->removed)
+				children.erase(children.begin() + i);
+			else
+				++i;
 		}
 	}
 
@@ -72,10 +96,11 @@ namespace puddi
 		children.push_back(child);
 	}
 
-	void UpdateNode::RemoveChild(UpdateNode *child)
-	{
-		auto it = std::find(children.begin(), children.end(), child);
-		if (it != children.end())
-			children.erase(it);
-	}
+	//void UpdateNode::RemoveChild(UpdateNode *child)
+	//{
+	//	auto it = std::find(children.begin(), children.end(), child);
+	//	if (it != children.end())
+	//		*it = nullptr;
+	//		//children.erase(it);
+	//}
 }

@@ -8,9 +8,11 @@
 namespace grumpy
 {
     class SourceCode;
+	class SyntaxParser;
 
     enum LexerState : int
     {
+		LEXER_STATE_WAITING,
         LEXER_STATE_SKIPPING,
         LEXER_STATE_READING
     };
@@ -28,9 +30,13 @@ namespace grumpy
         float GetReadVelocity() const;
         void SetReadVelocity(float v);
 
-    private:
+		void SetParser(SyntaxParser *pars);
 
+		void Lex();
+
+    private:
         SourceCode *sourceCode;
+		SyntaxParser *parser;
         std::vector<LexToken> lTokens;
         int currentCharacterIndex;
         int currentTokenIndex;

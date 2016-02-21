@@ -1,6 +1,7 @@
 #include "SyntaxParser.h"
 #include "FpsTracker.h"
 #include "Util.h"
+#include "Lexer.h"
 #include <iostream>
 #include <algorithm>
 
@@ -11,14 +12,14 @@ namespace grumpy
 {
     // PUBLIC
 
-	SyntaxParser::SyntaxParser(Object *par, ASTNode *root) : DrawableObject(par)
+	SyntaxParser::SyntaxParser(Object *par, Lexer *lex, ASTNode *root) : DrawableObject(par)
     {
-		init(root);
+		init(lex, root);
     }
 
-	SyntaxParser::SyntaxParser(Object* par, ASTNode *root, SchematicNode *schematic) : DrawableObject(par, schematic)
+	SyntaxParser::SyntaxParser(Object* par, Lexer *lex, ASTNode *root, SchematicNode *schematic) : DrawableObject(par, schematic)
 	{
-		init(root);
+		init(lex, root);
 	}
 
     void SyntaxParser::Update()
@@ -49,7 +50,7 @@ namespace grumpy
             int tokensNeeded = 0;
             for (auto it = requiredTokens.begin(); it != requiredTokens.end(); ++it)
             {
-                tokensNeeded += std::any_of(tokenQueue.begin(), tokenQueue.end(), [&](Token *t) { return t->LToken.number == *it; });
+                tokensNeeded += !std::any_of(tokenQueue.begin(), tokenQueue.end(), [&](Token *t) { return t->LToken.number == *it; });
             }
             if (!tokensNeeded)
             {
@@ -88,6 +89,7 @@ namespace grumpy
                     return;
                 }
 
+				targetNode = nodesVector[currentNodeIndex];
 				auto requiredTokens = targetNode->GetRequiredTokenNumbers();
                 int tokensNeeded = 0;
                 for (auto it = requiredTokens.begin(); it != requiredTokens.end(); ++it)
@@ -97,8 +99,9 @@ namespace grumpy
                 if (tokensNeeded)
                 {
                     cout << "parser waiting on " << tokensNeeded << " tokens from the lexer. tokenQueue size = " << tokenQueue.size() << "\n";
+					state = SYNTAXPARSER_STATE_WAITING;
                     // request x number of tokens from lexer
-                    state = SYNTAXPARSER_STATE_WAITING;
+					lexer->Lex();
                 }
 			});
         }
@@ -125,8 +128,9 @@ namespace grumpy
 
     // PRIVATE
 
-	void SyntaxParser::init(ASTNode *root)
+	void SyntaxParser::init(Lexer *lex, ASTNode *root)
 	{
+		lexer = lex;
 		astRoot = root;
 		currentNodeIndex = 0;
 		velocity = 0.0f;
