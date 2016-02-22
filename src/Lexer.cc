@@ -127,18 +127,7 @@ namespace grumpy
                     sourceCode->glyphs[currentCharacterIndex]->Cull();
                 }
 
-                Token *t = new Token(Puddi::GetRootObject(), lTokens[currentTokenIndex], parser, Schematic::GetSchematicByName("rounded_cube"));
-                Token *parserTokenTail = parser->GetTokenTail();
-                t->SetNext(parserTokenTail);
-                if (parserTokenTail != nullptr)
-                    parserTokenTail->SetPrevious(t);
-                t->SetVelocity(0.1f);
-                t->SetMaterial(Material::Medium(vec4(0.0f, 1.0f, 1.0f, 1.0f)));
-                t->SetBumpMap(Texture::GetBumpMapByName("rough4"));
-                t->SetPosition(position);
-                Puddi::ForceModelUpdate();
-                tokensProduced.push_back(t);
-				//parser->AddToken(new Token(Puddi::GetRootObject(), lTokens[currentTokenIndex]));
+				produceToken();
 
                 currentTokenIndex++;
             }
@@ -179,11 +168,26 @@ namespace grumpy
 
 	void Lexer::Lex()
 	{
-        if (currentTokenIndex == lTokens.size() - 1)
-            parser->AddToken(new Token(Puddi::GetRootObject(), lTokens[currentTokenIndex], parser));
+		if (currentTokenIndex == lTokens.size() - 1)
+			produceToken();
         else
             state = LEXER_STATE_SKIPPING;
 	}
 
     // PRIVATE
+
+	void Lexer::produceToken()
+	{
+		Token *t = new Token(Puddi::GetRootObject(), lTokens[currentTokenIndex], parser, Schematic::GetSchematicByName("rounded_cube"));
+		Token *parserTokenTail = parser->GetTokenTail();
+		t->SetNext(parserTokenTail);
+		if (parserTokenTail != nullptr)
+			parserTokenTail->SetPrevious(t);
+		t->SetVelocity(0.1f);
+		t->SetMaterial(Material::Medium(vec4(0.0f, 1.0f, 1.0f, 1.0f)));
+		t->SetBumpMap(Texture::GetBumpMapByName("rough4"));
+		t->SetPosition(position);
+		Puddi::ForceModelUpdate();
+		tokensProduced.push_back(t);
+	}
 }

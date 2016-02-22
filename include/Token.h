@@ -41,16 +41,20 @@ namespace grumpy
 
         void Update();
 
-        glm::vec4 GetTokenConnectionPoint() const;
+		glm::vec4 GetTokenConnectionHead() const;
+        glm::vec4 GetTokenConnectionTail() const;
 
     private:
         SyntaxParser *parser;
         Token *next;
         Token *previous;
         float velocity;
+		float rotationVelocity;
         bool addedToParser;
 
         void init(const LexToken &lTok, SyntaxParser *pars);
+
+		void rotateToward(const glm::vec4 &point);
     };
 }
 

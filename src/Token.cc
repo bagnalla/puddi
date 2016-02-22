@@ -67,41 +67,78 @@ namespace grumpy
 
     void Token::Update()
     {
-        vec4 targetPosition;
-        if (next != nullptr)
-            targetPosition = next->GetTokenConnectionPoint();
-        else
-        {
-            //targetPosition = parser->GetWorldPosition();
-            targetPosition = parser->GetWorldPosition() + normalize(GetWorldPosition() - parser->GetWorldPosition()) * parser->GetScaleX();
-        }
+  //      vec4 targetPosition;
+  //      if (next != nullptr)
+  //          targetPosition = next->GetTokenConnectionTail();
+  //      else
+  //      {
+  //          //targetPosition = parser->GetWorldPosition();
+  //          targetPosition = parser->GetWorldPosition() + normalize(GetWorldPosition() - parser->GetWorldPosition()) * parser->GetScaleX();
+  //      }
 
-        float moveAmount = velocity * FpsTracker::GetFrameTimeMs();
+  //      float moveAmount = velocity * FpsTracker::GetFrameTimeMs();
 
-        vec4 displacement = targetPosition - position;
-        if (length(displacement) <= moveAmount)
-        {
-            SetPosition(targetPosition);
+  //      vec4 displacement = targetPosition - position;
 
-            if (!addedToParser)
-            {
-                addedToParser = true;
+		//if (next != nullptr)
+		//	targetPosition += -normalize(displacement) * scale.x / 2.0f;
 
-                parser->AddToken(this);
-            }
-        }
-        else
-        {
-            if (next != nullptr)
-                LookAt(targetPosition);
-            else
-                LookAt(parser->GetWorldPosition());
+		//displacement = targetPosition - position;
+		//float len = length(displacement);
 
-            Translate(normalize(displacement) * moveAmount);
-        }
+		//if (len)
+		//{
+		//	rotateToward(next != nullptr ? targetPosition : parser->GetWorldPosition());
+		//}
+
+  //      if (length(displacement) <= moveAmount)
+  //      {
+  //          SetPosition(targetPosition);
+
+  //          if (!addedToParser)
+  //          {
+  //              addedToParser = true;
+
+  //              parser->AddToken(this);
+  //          }
+  //      }
+  //      else
+  //      {
+  //          Translate(normalize(displacement) * moveAmount);
+  //      }
+
+		Object *target;
+		if (next != nullptr)
+			target = next;
+		else
+			target = parser;
+
+		float moveAmount = velocity * FpsTracker::GetFrameTimeMs();
+
+		vec4 displacement = target->GetPosition() - GetPosition();
+
+		if (length(displacement) <= scale.x / 2.0f + target->GetScaleX() / 2.0f)
+		{
+			SetPosition(target->GetPosition() + normalize(-displacement) * (scale.x / 2.0f + target->GetScaleX() / 2.0f));
+
+			if (!addedToParser)
+			{
+				addedToParser = true;
+				parser->AddToken(this);
+			}
+		}
+		else
+			Translate(normalize(displacement) * moveAmount);
+
+		LookAt(target->GetPosition());
     }
 
-    vec4 Token::GetTokenConnectionPoint() const
+	vec4 Token::GetTokenConnectionHead() const
+	{
+		return parentModel * model * vec4(scale.x / 2.0f, 0.0f, 0.0f, 1.0f);
+	}
+
+    vec4 Token::GetTokenConnectionTail() const
     {
         return parentModel * model * vec4(-scale.x / 2.0f, 0.0f, 0.0f, 1.0f);
     }
@@ -114,7 +151,25 @@ namespace grumpy
         parser = pars;
         next = nullptr;
         previous = nullptr;
-        velocity = 0.0f;
+        velocity = 1.0f;
+		rotationVelocity = 1.0f;
         addedToParser = false;
     }
+
+	void Token::rotateToward(const vec4 &point)
+	{
+		vec4 displacement = point - position;
+
+		vec4 lookDirection = finalModel * vec4(1.0f, 0.0f, 0.0f, 0.0f);
+
+		vec3 crossProduct = cross(vec3(lookDirection.x, lookDirection.y, 0.0f), vec3(displacement.x, displacement.y, 0.0f));
+
+		if (crossProduct.z > 0.0f)
+			RotateZ(rotationVelocity * FpsTracker::GetFrameTimeMs());
+		else
+			RotateZ(-rotationVelocity * FpsTracker::GetFrameTimeMs());
+
+		//SetRotationZ(atan2(-displacement.y, displacement.x));
+		//SetRotationY(atan2(displacement.z, length(vec2(displacement))));
+	}
 }

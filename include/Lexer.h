@@ -52,6 +52,8 @@ namespace grumpy
 
         glm::vec4 scanBarColor;
         DrawableObject *scanBar;
+
+		void produceToken();
     };
 }
 
