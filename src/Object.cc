@@ -192,7 +192,7 @@ namespace puddi
 	{
 		vec4 displacement = point - (parentModel * position);
 		//vec4 displacement = point - position;
-		SetRotationZ(atan2(displacement.y, displacement.x));
+		SetRotationZ(atan2(-displacement.y, displacement.x));
 		SetRotationY(-atan2(displacement.z, length(vec2(displacement))));
 	}
 

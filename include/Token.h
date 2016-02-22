@@ -6,6 +6,8 @@
 
 namespace grumpy
 {
+    class SyntaxParser;
+
     struct LexToken
     {
         int number;
@@ -21,11 +23,34 @@ namespace grumpy
     class Token : public puddi::DrawableObject
     {
     public:
-        Token(puddi::Object *par, const LexToken &lTok);
+        Token(puddi::Object *par, const LexToken &lTok, SyntaxParser *pars);
+
+        Token(puddi::Object *par, const LexToken &lTok, SyntaxParser *pars, puddi::SchematicNode *schematic);
 
         LexToken LToken;
 
+        Token* GetNext() const;
+        void SetNext(Token *t);
+
+        Token* GetPrevious() const;
+        void SetPrevious(Token *t);
+
+        void SetVelocity(float v);
+
+        void Consume();
+
+        void Update();
+
+        glm::vec4 GetTokenConnectionPoint() const;
+
     private:
+        SyntaxParser *parser;
+        Token *next;
+        Token *previous;
+        float velocity;
+        bool addedToParser;
+
+        void init(const LexToken &lTok, SyntaxParser *pars);
     };
 }
 

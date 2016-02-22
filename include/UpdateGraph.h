@@ -13,7 +13,7 @@ namespace puddi
 		std::vector<UpdateNode*> children;
 		Object *object;
 		bool parallel;
-		bool removed;
+		bool dead;
 
 		UpdateNode(UpdateNode *par, Object *o);
 
@@ -23,7 +23,7 @@ namespace puddi
 
 		void AddChild(UpdateNode *child);
 
-		//void RemoveChild(UpdateNode *child);
+		void RemoveChild(UpdateNode *child);
 	};
 }
 

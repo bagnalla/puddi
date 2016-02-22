@@ -34,6 +34,8 @@ namespace grumpy
 
 		void AddToken(Token *t);
 
+		Token* GetTokenTail();
+
     private:
 		Lexer *lexer;
         ASTNode *astRoot;

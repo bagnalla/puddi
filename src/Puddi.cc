@@ -204,8 +204,9 @@ namespace puddi
 			(*it)->Render();
 	}
 
-	void ForceModelUpdate()
+	void Puddi::ForceModelUpdate()
 	{
+        rootModelNode->Update();
 	}
 
 	void Puddi::ToggleFullScreen()

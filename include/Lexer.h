@@ -22,6 +22,8 @@ namespace grumpy
     public:
         Lexer(Object* par, SourceCode *code, const std::vector<LexToken> &lToks);
 
+        ~Lexer();
+
         void Update();
 
         float GetSkipVelocity() const;
@@ -38,6 +40,7 @@ namespace grumpy
         SourceCode *sourceCode;
 		SyntaxParser *parser;
         std::vector<LexToken> lTokens;
+        std::vector<Token*> tokensProduced;
         int currentCharacterIndex;
         int currentTokenIndex;
         glm::vec4 currentTokenStartPos;

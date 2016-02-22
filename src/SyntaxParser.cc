@@ -83,6 +83,25 @@ namespace grumpy
 				nodesVector[currentNodeIndex]->Show();
 				astRoot->Resize();
 
+				auto requiredTokens = targetNode->GetRequiredTokenNumbers();
+				for (auto it = requiredTokens.begin(); it != requiredTokens.end(); ++it)
+				{
+                    auto tNum = *it;
+                    for (size_t i = 0; i < tokenQueue.size();)
+                    {
+                        if (tokenQueue[i]->LToken.number == tNum)
+                        {
+                            auto tok = tokenQueue[i];
+                            tok->Consume();
+                            tokenQueue.erase(tokenQueue.begin() + i);
+                            tok->Cull();
+                            break;
+                        }
+                        else
+                            ++i;
+                    }
+				}
+
 				if (++currentNodeIndex >= nodesVector.size())
                 {
                     state = SYNTAXPARSER_STATE_DONE;
@@ -90,11 +109,13 @@ namespace grumpy
                 }
 
 				targetNode = nodesVector[currentNodeIndex];
-				auto requiredTokens = targetNode->GetRequiredTokenNumbers();
+				requiredTokens = targetNode->GetRequiredTokenNumbers();
                 int tokensNeeded = 0;
                 for (auto it = requiredTokens.begin(); it != requiredTokens.end(); ++it)
                 {
                     tokensNeeded += !std::any_of(tokenQueue.begin(), tokenQueue.end(), [&](Token *t) { return t->LToken.number == *it; });
+                    if (!std::any_of(tokenQueue.begin(), tokenQueue.end(), [&](Token *t) { return t->LToken.number == *it; }))
+                        cout << "parser needs token " << *it << endl;
                 }
                 if (tokensNeeded)
                 {
@@ -124,6 +145,30 @@ namespace grumpy
 	void SyntaxParser::AddToken(Token *t)
 	{
         tokenQueue.push_back(t);
+        cout << "adding token " << t->LToken.number << " to parser\n";
+
+        ASTNode *targetNode = nodesVector[currentNodeIndex];
+        auto requiredTokens = targetNode->GetRequiredTokenNumbers();
+        int tokensNeeded = 0;
+        for (auto it = requiredTokens.begin(); it != requiredTokens.end(); ++it)
+        {
+            tokensNeeded += !std::any_of(tokenQueue.begin(), tokenQueue.end(), [&](Token *t) { return t->LToken.number == *it; });
+        }
+        if (tokensNeeded)
+        {
+            cout << "parser waiting on " << tokensNeeded << " tokens from the lexer. tokenQueue size = " << tokenQueue.size() << "\n";
+            //state = SYNTAXPARSER_STATE_WAITING;
+            // request x number of tokens from lexer
+            lexer->Lex();
+        }
+	}
+
+	Token* SyntaxParser::GetTokenTail()
+	{
+        if (tokenQueue.size())
+            return tokenQueue[tokenQueue.size() - 1];
+        else
+            return nullptr;
 	}
 
     // PRIVATE
@@ -134,10 +179,12 @@ namespace grumpy
 		astRoot = root;
 		currentNodeIndex = 0;
 		velocity = 0.0f;
-		state = SYNTAXPARSER_STATE_MOVING;
+		state = SYNTAXPARSER_STATE_WAITING;
 		homePosition = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
 		createNodesVector();
+
+		lexer->Lex();
 	}
 
     void SyntaxParser::createNodesVector()

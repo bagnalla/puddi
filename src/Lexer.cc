@@ -7,6 +7,7 @@
 #include "SyntaxParser.h"
 #include "Util.h"
 #include "Puddi.h"
+#include "Texture.h"
 #include <iostream>
 
 using namespace puddi;
@@ -35,6 +36,12 @@ namespace grumpy
         scanBar->SetEmissionColor(scanBarColor);
         scanBar->Scale(1.0f);
         scanBar->SetRenderGraph(2);
+    }
+
+    Lexer::~Lexer()
+    {
+        for (size_t i = 0; i < tokensProduced.size(); ++i)
+            delete tokensProduced[i];
     }
 
     void Lexer::Update()
@@ -120,7 +127,18 @@ namespace grumpy
                     sourceCode->glyphs[currentCharacterIndex]->Cull();
                 }
 
-				parser->AddToken(new Token(Puddi::GetRootObject(), lTokens[currentTokenIndex]));
+                Token *t = new Token(Puddi::GetRootObject(), lTokens[currentTokenIndex], parser, Schematic::GetSchematicByName("rounded_cube"));
+                Token *parserTokenTail = parser->GetTokenTail();
+                t->SetNext(parserTokenTail);
+                if (parserTokenTail != nullptr)
+                    parserTokenTail->SetPrevious(t);
+                t->SetVelocity(0.1f);
+                t->SetMaterial(Material::Medium(vec4(0.0f, 1.0f, 1.0f, 1.0f)));
+                t->SetBumpMap(Texture::GetBumpMapByName("rough4"));
+                t->SetPosition(position);
+                Puddi::ForceModelUpdate();
+                tokensProduced.push_back(t);
+				//parser->AddToken(new Token(Puddi::GetRootObject(), lTokens[currentTokenIndex]));
 
                 currentTokenIndex++;
             }
@@ -161,7 +179,10 @@ namespace grumpy
 
 	void Lexer::Lex()
 	{
-		state = LEXER_STATE_SKIPPING;
+        if (currentTokenIndex == lTokens.size() - 1)
+            parser->AddToken(new Token(Puddi::GetRootObject(), lTokens[currentTokenIndex], parser));
+        else
+            state = LEXER_STATE_SKIPPING;
 	}
 
     // PRIVATE
