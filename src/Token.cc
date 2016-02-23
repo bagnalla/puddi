@@ -2,6 +2,7 @@
 #include "SyntaxParser.h"
 #include "FpsTracker.h"
 #include "Schematic.h"
+#include "Util.h"
 #include <iostream>
 
 using namespace puddi;
@@ -73,7 +74,7 @@ namespace grumpy
   //      else
   //      {
   //          //targetPosition = parser->GetWorldPosition();
-  //          targetPosition = parser->GetWorldPosition() + normalize(GetWorldPosition() - parser->GetWorldPosition()) * parser->GetScaleX();
+  //          targetPosition = parser->GetWorldPosition() + Util::Normalize(GetWorldPosition() - parser->GetWorldPosition()) * parser->GetScaleX();
   //      }
 
   //      float moveAmount = velocity * FpsTracker::GetFrameTimeMs();
@@ -81,17 +82,17 @@ namespace grumpy
   //      vec4 displacement = targetPosition - position;
 
 		//if (next != nullptr)
-		//	targetPosition += -normalize(displacement) * scale.x / 2.0f;
+		//	targetPosition += -Util::Normalize(displacement) * scale.x / 2.0f;
 
 		//displacement = targetPosition - position;
-		//float len = length(displacement);
+		//float len = Util::Length(displacement);
 
 		//if (len)
 		//{
 		//	rotateToward(next != nullptr ? targetPosition : parser->GetWorldPosition());
 		//}
 
-  //      if (length(displacement) <= moveAmount)
+  //      if (Util::Length(displacement) <= moveAmount)
   //      {
   //          SetPosition(targetPosition);
 
@@ -104,7 +105,7 @@ namespace grumpy
   //      }
   //      else
   //      {
-  //          Translate(normalize(displacement) * moveAmount);
+  //          Translate(Util::Normalize(displacement) * moveAmount);
   //      }
 
 		Object *target;
@@ -116,10 +117,12 @@ namespace grumpy
 		float moveAmount = velocity * FpsTracker::GetFrameTimeMs();
 
 		vec4 displacement = target->GetPosition() - GetPosition();
-
-		if (length(displacement) <= scale.x / 2.0f + target->GetScaleX() / 2.0f)
+		float len = Util::Length(displacement);
+		if (len <= scale.x / 2.0f + target->GetScaleX() / 2.0f)
 		{
-			SetPosition(target->GetPosition() + normalize(-displacement) * (scale.x / 2.0f + target->GetScaleX() / 2.0f));
+            if (len == 0.0f)
+                displacement = vec4(1.0f, 0.0f, 0.0f, 0.0f);
+			SetPosition(target->GetPosition() + Util::Normalize(-displacement) * (scale.x / 2.0f + target->GetScaleX() / 2.0f));
 
 			if (!addedToParser)
 			{
@@ -128,7 +131,12 @@ namespace grumpy
 			}
 		}
 		else
-			Translate(normalize(displacement) * moveAmount);
+		{
+            vec4 oldPos = position;
+			Translate(Util::Normalize(displacement) * moveAmount);
+			if(Util::Length(target->GetPosition() - GetPosition()) == 0.0f)
+                SetPosition(target->GetPosition() + Util::Normalize(target->GetPosition() - oldPos) * (scale.x / 2.0f + target->GetScaleX() / 2.0f));
+        }
 
 		LookAt(target->GetPosition());
     }
@@ -170,6 +178,6 @@ namespace grumpy
 			RotateZ(-rotationVelocity * FpsTracker::GetFrameTimeMs());
 
 		//SetRotationZ(atan2(-displacement.y, displacement.x));
-		//SetRotationY(atan2(displacement.z, length(vec2(displacement))));
+		//SetRotationY(atan2(displacement.z, Util::Length(vec2(displacement))));
 	}
 }

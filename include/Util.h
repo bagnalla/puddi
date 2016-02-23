@@ -28,7 +28,13 @@ namespace puddi
 		**********************************************************************/
 		static std::vector<vec4> TransformVertices(const std::vector<vec4>& vertices, const mat4& transform);
 
-		static float Length(const glm::vec4& v);
+        static float Length(const glm::vec2 &v);
+
+		static float Length(const glm::vec4 &v);
+
+		static glm::vec2 Normalize(const glm::vec2 &v);
+
+		static glm::vec4 Normalize(const glm::vec4 &v);
 
 		/**********************************************************************
 		Function:		Distance

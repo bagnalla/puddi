@@ -30,11 +30,39 @@ namespace puddi
 		return transformedVertices;
 	}
 
-    float Util::Length(const vec4& v)
+    float Util::Length(const vec2& v)
     {
-        if (v.x != 0.0f || v.y != 0.0f || v.z != 0.0f || v.w != 0.0f)
+        if (v.x != 0.0f || v.y != 0.0f)
             return length(v);
         return 0.0f;
+    }
+
+    float Util::Length(const vec4& v)
+    {
+//        if (v.x != 0.0f || v.y != 0.0f || v.z != 0.0f || v.w != 0.0f)
+//            return length(v);
+//        return 0.0f;
+        float l = length(v);
+        if (l == l)
+            return l;
+        else
+            return 0.0f;
+    }
+
+    glm::vec2 Util::Normalize(const glm::vec2 &v)
+    {
+        if (v.x != 0.0f || v.y != 0.0f)
+            return normalize(v);
+        else
+            return vec2(0.0f, 0.0f);
+    }
+
+    glm::vec4 Util::Normalize(const glm::vec4 &v)
+    {
+        if (v.x != 0.0f || v.y != 0.0f || v.z != 0.0f || v.w != 0.0f)
+            return normalize(v);
+        else
+            return vec4(0.0f, 0.0f, 0.0f, 0.0f);
     }
 
 	float Util::Distance(const vec4& p1, const vec4& p2)
