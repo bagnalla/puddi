@@ -13,22 +13,20 @@ DrawableObject.o EnvironmentMap.o FpsTracker.o Puddi.o Geometry.o \
 HeightMap.o HeightMapTerrain.o InitShader.o LightSource.o Material.o \
 ModelGraph.o Object.o Rectangle.o RenderGraph.o RenderNode.o \
 Schematic.o SDLUtil.o Shader.o Shadow.o Skybox.o Sphere.o \
-TerrainVertexMesh.o Texture.o UpdateGraph.o Util.o VertexMesh.o Font.o \
-SourceCode.o Token.o Lexer.o AST.o SyntaxParser.o )
+TerrainVertexMesh.o Texture.o UpdateGraph.o Util.o VertexMesh.o Font.o )
 
 debugobjects = $(addprefix $(DEBUGDIR)/$(OBJDIR)/, Camera.o CRSpline.o Cube.o \
 DrawableObject.o EnvironmentMap.o FpsTracker.o Puddi.o Geometry.o \
 HeightMap.o HeightMapTerrain.o InitShader.o LightSource.o Material.o \
 ModelGraph.o Object.o Rectangle.o RenderGraph.o RenderNode.o \
 Schematic.o SDLUtil.o Shader.o Shadow.o Skybox.o Sphere.o \
-TerrainVertexMesh.o Texture.o UpdateGraph.o Util.o VertexMesh.o Font.o \
-SourceCode.o Token.o Lexer.o AST.o SyntaxParser.o )
+TerrainVertexMesh.o Texture.o UpdateGraph.o Util.o VertexMesh.o Font.o )
 
-Release: $(SRCDIR)/main.cc releasedirs $(releaseobjects)
-	$(CC) $(SRCDIR)/main.cc $(releaseobjects) -I$(INCLUDEDIR) $(OPTIONS) $(LDLIBS) -o $(RELEASEDIR)/puddi
+Release: releasedirs $(releaseobjects)
+	ar rcs $(RELEASEDIR)/libpuddi.a $(releaseobjects)
 
-Debug: $(SRCDIR)/main.cc debugdirs $(debugobjects)
-	$(CC) $(SRCDIR)/main.cc $(debugobjects) -I$(INCLUDEDIR) $(DEBUGOPTIONS) $(LDLIBS) -o $(DEBUGDIR)/puddi
+Debug: debugdirs $(debugobjects)
+	ar rcs $(DEBUGDIR)/libpuddi.a $(debugobjects)
 
 $(RELEASEDIR)/$(OBJDIR)/%.o: $(SRCDIR)/%.cc $(INCLUDEDIR)/%.h
 	$(CC) $< -c $(OPTIONS) -I$(INCLUDEDIR) $(LDLIBS) -o $@
@@ -47,7 +45,7 @@ debugdirs:
 clean: cleanRelease cleanDebug
 
 cleanRelease:
-	rm $(RELEASEDIR)/puddi $(releaseobjects)
+	rm -f $(RELEASEDIR)/libpuddi.a $(releaseobjects)
 
 cleanDebug:
-	rm $(DEBUGDIR)/puddi $(debugobjects)
+	rm -f $(DEBUGDIR)/libpuddi.a $(debugobjects)
