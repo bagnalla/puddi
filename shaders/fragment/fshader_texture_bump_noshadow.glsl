@@ -1,40 +1,20 @@
 varying vec3 N;
 varying vec3 L;
 varying vec3 E;
-varying vec3 cubeMapCoord;
+varying vec2 fTextureCoord;
 varying mat4 inverseTBN;
-varying vec3 shadowCoordDepth;
-varying vec3 vPositionLight;
 
 uniform vec4 materialAmbient, materialDiffuse, materialSpecular;
 uniform float materialShininess;
 uniform mat4 lightSource;
 uniform mat4 model;
-uniform samplerCube cubeMap;
-uniform samplerCube bumpCubeMap;
-uniform sampler2DShadow shadowTex;
-uniform samplerCubeShadow shadowCubeMap;
+uniform sampler2D tex;
+uniform sampler2D bumpTex;
 uniform bool textureBlend;
-uniform int shadowMode;
-uniform vec2 shadowZRange;
-uniform mat4 lightProjection;
-
-// http://stackoverflow.com/questions/21293726/opengl-project-shadow-cubemap-onto-scene
-float vecToDepth (vec3 Vec)
-{
-  vec3  AbsVec     = abs (Vec);
-  float LocalZcomp = max (AbsVec.x, max (AbsVec.y, AbsVec.z));
-
-  float n = shadowZRange [0]; // Near plane when the shadow map was built
-  float f = shadowZRange [1]; // Far plane when the shadow map was built
-
-  float NormZComp = (f+n) / (f-n) - (2.0*f*n)/(f-n)/LocalZcomp;
-  return (NormZComp + 1.0) * 0.5;
-}
 
 void main()
 {
-	vec4 bump = texture(bumpCubeMap, cubeMapCoord);
+	vec4 bump = texture2D(bumpTex, fTextureCoord);
 	bump = normalize(2.0*bump-1.0);
 	bump = model * inverseTBN * bump;
 	//vec3 NN = normalize(normalize(bump.xyz) + normalize(N));
@@ -42,7 +22,10 @@ void main()
 
 	vec3 EE = normalize(E);
 
-	vec4 texColor = texture(cubeMap, cubeMapCoord);
+	vec4 texColor = texture2D(tex, fTextureCoord);
+
+	//float d = (2.0 * shadowZRange.x) / (shadowZRange.y + shadowZRange.x - texColor * (shadowZRange.y - shadowZRange.x));
+	//texColor *= d;
 
 	vec4 ambientProduct, diffuseProduct, specularProduct;
 	float shininess;
@@ -52,6 +35,9 @@ void main()
 		diffuseProduct = mix(materialDiffuse, texColor, 0.5) * lightSource[1];
 		specularProduct = mix(materialSpecular, texColor, 0.5) * lightSource[2];
 		shininess = materialShininess;
+		/*ambientProduct = texColor * materialAmbient * lightSource[0];
+		diffuseProduct = texColor * materialDiffuse * lightSource[1];
+		specularProduct = texColor * materialSpecular * lightSource[2];*/
 	}
 	else
 	{
@@ -88,21 +74,5 @@ void main()
 	else
 		specular = Ks*specularProduct;
 
-	if (shadowMode == 1)
-	{
-		vec3 coordDepth = vec3((vPositionLight.x + 1.0) / 2.0, (vPositionLight.y + 1.0) / 2.0, (vPositionLight.z + 1.0) / 2.0);
-		float shadowVal = shadow2D(shadowTex, shadowCoordDepth).x;
-		diffuse = diffuse * shadowVal;
-		specular = specular * shadowVal;
-	}
-	else if (shadowMode == 2)
-	{
-		vec3 lightDir = -L;
-		float d = vecToDepth(lightDir) - 0.002;
-		float shadowVal = shadowCube(shadowCubeMap, vec4(lightDir, d)).x;
-		diffuse = diffuse * shadowVal;
-		specular = specular * shadowVal;
-	}
-
-	gl_FragColor = vec4((ambient + diffuse + specular).xyz, 1.0);
+	gl_FragColor = vec4((ambient + diffuse + specular).xyz, texColor.w);
 }

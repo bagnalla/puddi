@@ -67,7 +67,7 @@ namespace puddi
 		// terrain uniforms
 		static void SetGroundCoordZ(float z);
 		static void SetTerrainScaleZ(float z);
-		static void SetTerrainMaxHeight(int z);
+		static void SetTerrainMaxHeight(float z);
 		static void SetTexHeights(const vec4& texHeights);
 
 		// either depth texture or depth cubemap
@@ -86,6 +86,7 @@ namespace puddi
 		static mat4 lightProjection;
 		static ShadowMode shadowMode;
 		static vec2 shadowZRange;
+		static float shaderVersion;
 
 		static std::unordered_map<std::string, GLuint> nameToProgramMap;
 		static std::unordered_map<GLuint, GLuint> programToVaoMap;
@@ -105,7 +106,7 @@ namespace puddi
 
 		static GLuint getUniform(GLuint program, std::string name);
 
-		static int getUniformFromCurrentProgram(std::string uniformName);
+		static GLuint getUniformFromCurrentProgram(std::string uniformName);
 	};
 }
 

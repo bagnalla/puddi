@@ -4,6 +4,7 @@
 #include "Shadow.h"
 #include <iostream>
 #include <string>
+#include <climits>
 
 namespace puddi
 {
@@ -19,6 +20,8 @@ namespace puddi
 
 	void Shader::Init()
 	{
+        shaderVersion = atof(reinterpret_cast<char const*>(glGetString(GL_SHADING_LANGUAGE_VERSION)));
+
 		// set up vertex buffer
 		if (Vertices.size())
 		{
@@ -98,23 +101,23 @@ namespace puddi
 			SetProjection(projection);
 
 			GLuint loc = getUniformFromCurrentProgram("lightSource");
-			if (loc != -1)
+			if (loc != UINT_MAX)
 				glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(lightSource));
 
 			loc = getUniformFromCurrentProgram("cameraPosition");
-			if (loc != -1)
+			if (loc != UINT_MAX)
 				glUniform4fv(loc, 1, value_ptr(cameraPosition));
 
 			loc = getUniformFromCurrentProgram("lightProjection");
-			if (loc != -1)
+			if (loc != UINT_MAX)
 				glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(lightProjection));
 
 			loc = getUniformFromCurrentProgram("shadowMode");
-			if (loc != -1)
+			if (loc != UINT_MAX)
 				glUniform1i(loc, shadowMode);
 
 			loc = getUniformFromCurrentProgram("shadowZRange");
-			if (loc != -1)
+			if (loc != UINT_MAX)
 				glUniform2fv(loc, 1, value_ptr(shadowZRange));
 		}
 	}
@@ -265,7 +268,7 @@ namespace puddi
 		glUniform1f(loc, z);
 	}
 
-	void Shader::SetTerrainMaxHeight(int z)
+	void Shader::SetTerrainMaxHeight(float z)
 	{
 		GLuint loc = programToUniformMap[currentProgram]["terrainMaxHeight"];
 		glUniform1f(loc, z);
@@ -314,6 +317,7 @@ namespace puddi
 	mat4 Shader::lightProjection;
 	ShadowMode Shader::shadowMode;
 	vec2 Shader::shadowZRange;
+	float Shader::shaderVersion;
 
 	std::unordered_map<std::string, GLuint> Shader::nameToProgramMap;
 	std::unordered_map<GLuint, GLuint> Shader::programToVaoMap;
@@ -456,7 +460,11 @@ namespace puddi
 
 	void Shader::initMaterialProgram()
 	{
-		GLuint program = InitShader("puddi/shaders/vertex/vshader_material.glsl", "puddi/shaders/fragment/fshader_material.glsl");
+        GLuint program;
+        if (shaderVersion >= 2.0f)
+            program = InitShader("puddi/shaders/vertex/vshader_material.glsl", "puddi/shaders/fragment/fshader_material.glsl");
+        else
+            program = InitShader("puddi/shaders/vertex/vshader_material.glsl", "puddi/shaders/fragment/fshader_material_noshadow.glsl");
 		nameToProgramMap.emplace("material", program);
 
 		// create a vertex array object
@@ -483,29 +491,39 @@ namespace puddi
 		uniformMap.emplace("projection", getUniform(program, "projection"));
 		uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
 		uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
-		uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
 		uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
 		uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
 		uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
 		uniformMap.emplace("materialShininess", getUniform(program, "materialShininess"));
-		uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
-		uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
-		uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
-		uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+		if (shaderVersion >= 2.0f)
+		{
+            uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
+            uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
+            uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
+            uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
+            uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+		}
 
 		// copy uniform map to program uniform map
 		programToUniformMap.emplace(program, uniformMap);
 
 		// initialize uniforms
 		glUseProgram(program);
-		glUniform1i(uniformMap["shadowMode"], 0);
-		glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
-		glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
+		if (shaderVersion >= 2.0f)
+		{
+            glUniform1i(uniformMap["shadowMode"], 0);
+            glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
+            glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
+		}
 	}
 
 	void Shader::initMaterialBumpProgram()
 	{
-		GLuint program = InitShader("puddi/shaders/vertex/vshader_texture_bump.glsl", "puddi/shaders/fragment/fshader_material_bump.glsl");
+		GLuint program;
+		if (shaderVersion >= 2.0f)
+            program = InitShader("puddi/shaders/vertex/vshader_texture_bump.glsl", "puddi/shaders/fragment/fshader_material_bump.glsl");
+        else
+            program = InitShader("puddi/shaders/vertex/vshader_texture_bump.glsl", "puddi/shaders/fragment/fshader_material_bump_noshadow.glsl");
 		nameToProgramMap.emplace("material_bump", program);
 
 		// create a vertex array object
@@ -544,16 +562,19 @@ namespace puddi
 		uniformMap.emplace("projection", getUniform(program, "projection"));
 		uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
 		uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
-		uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
 		uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
 		uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
 		uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
 		uniformMap.emplace("materialShininess", getUniform(program, "materialShininess"));
 		uniformMap.emplace("bumpTex", getUniform(program, "bumpTex"));
-		uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
-		uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
-		uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
-		uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+		if (shaderVersion >= 2.0f)
+		{
+            uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
+            uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
+            uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
+            uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
+            uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+		}
 
 		// copy uniform map to program uniform map
 		programToUniformMap.emplace(program, uniformMap);
@@ -561,14 +582,21 @@ namespace puddi
 		// initialize uniforms
 		glUseProgram(program);
 		glUniform1i(uniformMap["bumpTex"], TEXTURE_2D_BUMP);
-		glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
-		glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
-		glUniform1i(uniformMap["shadowMode"], 0);
+		if (shaderVersion >= 2.0f)
+		{
+            glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
+            glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
+            glUniform1i(uniformMap["shadowMode"], 0);
+		}
 	}
 
 	void Shader::initTextureProgram()
 	{
-		GLuint program = InitShader("puddi/shaders/vertex/vshader_texture.glsl", "puddi/shaders/fragment/fshader_texture.glsl");
+		GLuint program;
+		if (shaderVersion >= 2.0f)
+            program = InitShader("puddi/shaders/vertex/vshader_texture.glsl", "puddi/shaders/fragment/fshader_texture.glsl");
+        else
+            program = InitShader("puddi/shaders/vertex/vshader_texture.glsl", "puddi/shaders/fragment/fshader_texture_noshadow.glsl");
 		nameToProgramMap.emplace("texture", program);
 
 		// create a vertex array object
@@ -599,17 +627,20 @@ namespace puddi
 		uniformMap.emplace("projection", getUniform(program, "projection"));
 		uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
 		uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
-		uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
 		uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
 		uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
 		uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
 		uniformMap.emplace("materialShininess", getUniform(program, "materialShininess"));
 		uniformMap.emplace("tex", getUniform(program, "tex"));
 		uniformMap.emplace("textureBlend", getUniform(program, "textureBlend"));
-		uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
-		uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
-		uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
-		uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+		if (shaderVersion >= 2.0f)
+		{
+            uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
+            uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
+            uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
+            uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
+            uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+		}
 
 		// copy uniform map to program uniform map
 		programToUniformMap.emplace(program, uniformMap);
@@ -618,14 +649,21 @@ namespace puddi
 		glUseProgram(program);
 		glUniform1i(uniformMap["tex"], TEXTURE_2D);
 		glUniform1i(uniformMap["textureBlend"], 1);
-		glUniform1i(uniformMap["shadowMode"], 0);
-		glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
-		glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
+		if (shaderVersion >= 2.0f)
+		{
+            glUniform1i(uniformMap["shadowMode"], 0);
+            glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
+            glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
+		}
 	}
 
 	void Shader::initTextureBumpProgram()
 	{
-		GLuint program = InitShader("puddi/shaders/vertex/vshader_texture_bump.glsl", "puddi/shaders/fragment/fshader_texture_bump.glsl");
+		GLuint program;
+		if (shaderVersion >= 2.0f)
+            program = InitShader("puddi/shaders/vertex/vshader_texture_bump.glsl", "puddi/shaders/fragment/fshader_texture_bump.glsl");
+        else
+            program = InitShader("puddi/shaders/vertex/vshader_texture_bump.glsl", "puddi/shaders/fragment/fshader_texture_bump_noshadow.glsl");
 		nameToProgramMap.emplace("texture_bump", program);
 
 		// create a vertex array object
@@ -664,7 +702,6 @@ namespace puddi
 		uniformMap.emplace("projection", getUniform(program, "projection"));
 		uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
 		uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
-		uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
 		uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
 		uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
 		uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
@@ -672,10 +709,14 @@ namespace puddi
 		uniformMap.emplace("tex", getUniform(program, "tex"));
 		uniformMap.emplace("textureBlend", getUniform(program, "textureBlend"));
 		uniformMap.emplace("bumpTex", getUniform(program, "bumpTex"));
-		uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
-		uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
-		uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
-		uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+		if (shaderVersion >= 2.0f)
+		{
+            uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
+            uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
+            uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
+            uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
+            uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+		}
 
 		// copy uniform map to program uniform map
 		programToUniformMap.emplace(program, uniformMap);
@@ -685,14 +726,21 @@ namespace puddi
 		glUniform1i(uniformMap["tex"], TEXTURE_2D);
 		glUniform1i(uniformMap["textureBlend"], 1);
 		glUniform1i(uniformMap["bumpTex"], TEXTURE_2D_BUMP);
-		glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
-		glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
-		glUniform1i(uniformMap["shadowMode"], 0);
+		if (shaderVersion >= 2.0f)
+		{
+            glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
+            glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
+            glUniform1i(uniformMap["shadowMode"], 0);
+		}
 	}
 
 	void Shader::initCubeMapProgram()
 	{
-		GLuint program = InitShader("puddi/shaders/vertex/vshader_cubemap.glsl", "puddi/shaders/fragment/fshader_cubemap.glsl");
+		GLuint program;
+		if (shaderVersion >= 2.0f)
+            program = InitShader("puddi/shaders/vertex/vshader_cubemap.glsl", "puddi/shaders/fragment/fshader_cubemap.glsl");
+        else
+            program = InitShader("puddi/shaders/vertex/vshader_cubemap.glsl", "puddi/shaders/fragment/fshader_cubemap_noshadow.glsl");
 		nameToProgramMap.emplace("cubemap", program);
 
 		// create a vertex array object
@@ -719,18 +767,21 @@ namespace puddi
 		uniformMap.emplace("projection", getUniform(program, "projection"));
 		uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
 		uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
-		uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
 		uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
 		uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
 		uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
 		uniformMap.emplace("materialShininess", getUniform(program, "materialShininess"));
 		uniformMap.emplace("cubeMap", getUniform(program, "cubeMap"));
 		uniformMap.emplace("textureBlend", getUniform(program, "textureBlend"));
-		uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
-		uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
 		uniformMap.emplace("reflectiveCubeMap", getUniform(program, "reflective"));
-		uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
-		uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+		if (shaderVersion >= 2.0f)
+		{
+            uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
+            uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
+            uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
+            uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
+            uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+		}
 
 		// copy uniform map to program uniform map
 		programToUniformMap.emplace(program, uniformMap);
@@ -739,15 +790,22 @@ namespace puddi
 		glUseProgram(program);
 		glUniform1i(uniformMap["cubeMap"], TEXTURE_CUBE);
 		glUniform1i(uniformMap["textureBlend"], 1);
-		glUniform1i(uniformMap["shadowMode"], 0);
-		glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
 		glUniform1i(uniformMap["reflectiveCubeMap"], 0);
-		glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
+		if (shaderVersion >= 2.0f)
+		{
+            glUniform1i(uniformMap["shadowMode"], 0);
+            glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
+            glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
+		}
 	}
 
 	void Shader::initCubeMapBumpProgram()
 	{
-		GLuint program = InitShader("puddi/shaders/vertex/vshader_cubemap_bump.glsl", "puddi/shaders/fragment/fshader_cubemap_bump.glsl");
+		GLuint program;
+		if (shaderVersion >= 2.0f)
+            program = InitShader("puddi/shaders/vertex/vshader_cubemap_bump.glsl", "puddi/shaders/fragment/fshader_cubemap_bump.glsl");
+        else
+            program = InitShader("puddi/shaders/vertex/vshader_cubemap_bump.glsl", "puddi/shaders/fragment/fshader_cubemap_bump_noshadow.glsl");
 		nameToProgramMap.emplace("cubemap_bump", program);
 
 		// create a vertex array object
@@ -782,7 +840,6 @@ namespace puddi
 		uniformMap.emplace("projection", getUniform(program, "projection"));
 		uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
 		uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
-		uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
 		uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
 		uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
 		uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
@@ -790,11 +847,15 @@ namespace puddi
 		uniformMap.emplace("cubeMap", getUniform(program, "cubeMap"));
 		uniformMap.emplace("bumpCubeMap", getUniform(program, "bumpCubeMap"));
 		uniformMap.emplace("textureBlend", getUniform(program, "textureBlend"));
-		uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
-		uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
 		uniformMap.emplace("reflectiveCubeMap", getUniform(program, "reflective"));
-		uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
-		uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+		if (shaderVersion >= 2.0f)
+        {
+            uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
+            uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
+            uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
+            uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
+            uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+		}
 
 		// copy uniform map to program uniform map
 		programToUniformMap.emplace(program, uniformMap);
@@ -804,15 +865,22 @@ namespace puddi
 		glUniform1i(uniformMap["cubeMap"], TEXTURE_CUBE);
 		glUniform1i(uniformMap["textureBlend"], 1);
 		glUniform1i(uniformMap["bumpCubeMap"], TEXTURE_CUBE_BUMP);
-		glUniform1i(uniformMap["shadowMode"], 0);
-		glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
 		glUniform1i(uniformMap["reflectiveCubeMap"], 0);
-		glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
+		if (shaderVersion >= 2.0f)
+		{
+            glUniform1i(uniformMap["shadowMode"], 0);
+            glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
+            glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
+		}
 	}
 
 	void Shader::initTerrainTextureBumpProgram()
 	{
-		GLuint program = InitShader("puddi/shaders/vertex/vshader_terrain_texture_bump.glsl", "puddi/shaders/fragment/fshader_terrain_texture_bump.glsl");
+		GLuint program;
+		if (shaderVersion >= 2.0f)
+            program = InitShader("puddi/shaders/vertex/vshader_terrain_texture_bump.glsl", "puddi/shaders/fragment/fshader_terrain_texture_bump.glsl");
+        else
+            program = InitShader("puddi/shaders/vertex/vshader_terrain_texture_bump.glsl", "puddi/shaders/fragment/fshader_terrain_texture_bump_noshadow.glsl");
 		nameToProgramMap.emplace("terrain_texture_bump", program);
 
 		// create a vertex array object
@@ -851,16 +919,11 @@ namespace puddi
 		uniformMap.emplace("projection", getUniform(program, "projection"));
 		uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
 		uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
-		uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
 		uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
 		uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
 		uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
 		uniformMap.emplace("materialShininess", getUniform(program, "materialShininess"));
 		uniformMap.emplace("textureBlend", getUniform(program, "textureBlend"));
-		uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
-		uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
-		uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
-		uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
 		uniformMap.emplace("groundCoordZ", getUniform(program, "groundCoordZ"));
 		uniformMap.emplace("terrainScaleZ", getUniform(program, "terrainScaleZ"));
 		uniformMap.emplace("terrainMaxHeight", getUniform(program, "terrainMaxHeight"));
@@ -873,6 +936,14 @@ namespace puddi
 		uniformMap.emplace("bumpTex2", getUniform(program, "bumpTex2"));
 		uniformMap.emplace("bumpTex3", getUniform(program, "bumpTex3"));
 		uniformMap.emplace("bumpTex4", getUniform(program, "bumpTex4"));
+		if (shaderVersion >= 2.0f)
+		{
+            uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
+            uniformMap.emplace("shadowTex", getUniform(program, "shadowTex"));
+            uniformMap.emplace("shadowMode", getUniform(program, "shadowMode"));
+            uniformMap.emplace("shadowCubeMap", getUniform(program, "shadowCubeMap"));
+            uniformMap.emplace("lightProjection", getUniform(program, "lightProjection"));
+		}
 
 		// copy uniform map to program uniform map
 		programToUniformMap.emplace(program, uniformMap);
@@ -880,9 +951,6 @@ namespace puddi
 		// initialize uniforms
 		glUseProgram(program);
 		glUniform1i(uniformMap["textureBlend"], 0);
-		glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
-		glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
-		glUniform1i(uniformMap["shadowMode"], 0);
 		glUniform1i(uniformMap["tex1"], TEXTURE_TERRAIN_1);
 		glUniform1i(uniformMap["tex2"], TEXTURE_TERRAIN_2);
 		glUniform1i(uniformMap["tex3"], TEXTURE_TERRAIN_3);
@@ -891,22 +959,28 @@ namespace puddi
 		glUniform1i(uniformMap["bumpTex2"], TEXTURE_TERRAIN_BUMP_2);
 		glUniform1i(uniformMap["bumpTex3"], TEXTURE_TERRAIN_BUMP_3);
 		glUniform1i(uniformMap["bumpTex4"], TEXTURE_TERRAIN_BUMP_4);
+		if (shaderVersion >= 2.0f)
+		{
+            glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
+            glUniform1i(uniformMap["shadowCubeMap"], TEXTURE_SHADOW_CUBE);
+            glUniform1i(uniformMap["shadowMode"], 0);
+		}
 	}
 
 	GLuint Shader::getUniform(GLuint program, std::string name)
 	{
 		GLuint loc = glGetUniformLocation(program, name.c_str());
-		if (loc == -1)
+		if (loc == UINT_MAX)
 			std::cerr << "unable to get " << name << " parameter from shader program\n";
 		return loc;
 	}
 
-	int Shader::getUniformFromCurrentProgram(std::string uniformName)
+	GLuint Shader::getUniformFromCurrentProgram(std::string uniformName)
 	{
 		auto it = programToUniformMap[currentProgram].find(uniformName);
 		if (it != programToUniformMap[currentProgram].end())
 			return programToUniformMap[currentProgram][uniformName];
 		else
-			return -1;
+			return UINT_MAX;
 	}
 }
