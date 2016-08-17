@@ -10,6 +10,7 @@ namespace puddi
 {
     struct Bone
     {
+        int index;
         std::string name;
         glm::mat4 bindPose;
         glm::mat4 bindPoseInverse;
@@ -17,11 +18,9 @@ namespace puddi
         Bone *parent;
         std::vector<Bone*> children;
 
-        Bone(const std::string& n, const glm::mat4& bPose, Bone *par)
-            : name(n), bindPose(bPose), parent(par)
-        {
-            bindPoseInverse = inverse(bindPose);
-        }
+        Bone(const std::string& n, Bone *par) : name(n), parent(par) {}
+
+        void SetBindPose(const glm::mat4& bPose);
     };
 
     namespace Skeleton
@@ -33,6 +32,10 @@ namespace puddi
         int LoadSkeleton(const char *filepath, const std::string& name, const std::string& subdirectory = "");
 
         Bone* GetSkeletonByName(const std::string& name);
+
+        Bone* GetBoneByName(const std::string& name);
+
+        Bone* GetBoneByIndex(int i);
     }
 }
 

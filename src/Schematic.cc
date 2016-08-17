@@ -1,4 +1,5 @@
 #include "Schematic.h"
+#include "Skeleton.h"
 #include "Shader.h"
 #include "VertexMesh.h"
 #include "Material.h"
@@ -33,7 +34,6 @@ namespace puddi
                 node->mTransformation.Decompose(scaling, rotation, position);*/
 
                 // TRANSFORM
-                // WARNING: THIS CONSTRUCTOR MIGHT NOT BEHAVE THE WAY WE WANT
                 schematicNode->transform = mat4(
                     vec4(node->mTransformation.a1, node->mTransformation.a2, node->mTransformation.a3, node->mTransformation.a4),
                     vec4(node->mTransformation.b1, node->mTransformation.b2, node->mTransformation.b3, node->mTransformation.b4),
@@ -115,6 +115,71 @@ namespace puddi
                     Shader::TextureCoordinates.insert(Shader::TextureCoordinates.end(), textureCoordinates.begin(), textureCoordinates.end());
                     textureCoordinates.clear();
                     textureCoordinates.shrink_to_fit();
+
+                    // map vertices to bone (index, weight) pairs
+                    vector<vector<pair<int, float> > > vertexBones(vertices.size());
+
+                    // vertex bone indices and weights
+                    std::vector<vec4> boneIndices;
+                    std::vector<vec4> boneWeights;
+                    if (mesh->HasBones())
+                    {
+                        // for each bone
+                        for (size_t j = 0; j < mesh->mNumBones; ++j)
+                        {
+                            auto aiBone = mesh->mBones[j];
+                            auto bone = Skeleton::GetBoneByName(aiBone->mName.C_Str());
+
+                            // set the bone's bindpose
+                            bone->SetBindPose(mat4(
+                                vec4(aiBone->mOffsetMatrix.a1, aiBone->mOffsetMatrix.a2, aiBone->mOffsetMatrix.a3, aiBone->mOffsetMatrix.a4),
+                                vec4(aiBone->mOffsetMatrix.b1, aiBone->mOffsetMatrix.b2, aiBone->mOffsetMatrix.b3, aiBone->mOffsetMatrix.b4),
+                                vec4(aiBone->mOffsetMatrix.c1, aiBone->mOffsetMatrix.c2, aiBone->mOffsetMatrix.c3, aiBone->mOffsetMatrix.c4),
+                                vec4(aiBone->mOffsetMatrix.d1, aiBone->mOffsetMatrix.d2, aiBone->mOffsetMatrix.d3, aiBone->mOffsetMatrix.d4)
+                            ));
+
+                            // add the (index, weight) pair for this bone for each vertex it influences
+                            for (size_t k = 0; k < aiBone->mNumWeights; ++k)
+                            {
+                                auto vertexWeight = aiBone->mWeights[k];
+                                vertexBones[vertexWeight.mVertexId].push_back(make_pair(bone->index, vertexWeight.mWeight));
+                            }
+                        }
+
+                        // iterate over the vertex->bone mapping and create the vec4s to put in the vertex attribute array
+                        for (auto it = vertexBones.begin(); it != vertexBones.end(); ++it)
+                        {
+                            vec4 vBoneIndices = vec4(-1.0f, -1.0f, -1.0f, -1.0f);
+                            vec4 vBoneWeights = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+                            // up to four bones
+                            for (size_t k = 0; k < 4; ++k)
+                            {
+                                if (it->size() > k)
+                                {
+                                    vBoneIndices[k] = (*it)[k].first;
+                                    vBoneWeights[k] = (*it)[k].second;
+                                }
+                            }
+                            boneIndices.push_back(vBoneIndices);
+                            boneWeights.push_back(vBoneWeights);
+                        }
+                    }
+                    else
+                    {
+                        // no bones for this mesh
+                        for (size_t j = 0; j < mesh->mNumVertices; ++j)
+                        {
+                            boneIndices.push_back(vec4(-1.0f, -1.0f, -1.0f, -1.0f));
+                            boneWeights.push_back(vec4(0.0f, 0.0f, 0.0f, 0.0f));
+                        }
+                    }
+                    // add to global array
+                    Shader::BoneIndices.insert(Shader::BoneIndices.end(), boneIndices.begin(), boneIndices.end());
+                    boneIndices.clear();
+                    boneIndices.shrink_to_fit();
+                    Shader::BoneWeights.insert(Shader::BoneWeights.end(), boneWeights.begin(), boneWeights.end());
+                    boneWeights.clear();
+                    boneWeights.shrink_to_fit();
 
                     // mesh indices
                     std::vector<uint> indices;
