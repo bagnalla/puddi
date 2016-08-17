@@ -27,8 +27,50 @@ namespace puddi
             unordered_map<string, Bone*> boneMap;
             vector<Bone*> bones;
 
-            Bone* buildSkeleton(const aiScene *scene, aiNode *node, std::string subdirectory)
+            vector<string> collectBoneNames(const aiScene *scene)
             {
+                vector<string> boneNames;
+
+                if (scene->HasMeshes())
+                {
+                    for (size_t i = 0; i < scene->mNumMeshes; ++i)
+                    {
+                        auto mesh = scene->mMeshes[i];
+                        if (mesh->HasBones())
+                        {
+                            for (size_t j = 0; j < mesh->mNumBones; ++j)
+                            {
+                                auto bone = mesh->mBones[j];
+                                boneNames.push_back(bone->mName.C_Str());
+                            }
+                        }
+                    }
+                }
+
+                return boneNames;
+            }
+
+            aiNode* findSkeleton(aiNode *root, const vector<string>& boneNames)
+            {
+                if (find(boneNames.begin(), boneNames.end(), root->mName.C_Str()) != boneNames.end())
+                    return root;
+
+                if (!root->mNumChildren)
+                    return nullptr;
+
+                for (int i = 0; i < root->mNumChildren; ++i)
+                {
+                    auto skeleton = findSkeleton(root->mChildren[i], boneNames);
+                    if (skeleton != nullptr)
+                        return skeleton;
+                }
+
+                return nullptr;
+            }
+
+            Bone* buildSkeleton(aiNode *root)
+            {
+
             }
 
             void addBonesToMapAndArray(Bone *skeleton)
@@ -64,7 +106,9 @@ namespace puddi
 
             if ((scene = aiImportFile(filepath, aiProcessPreset_TargetRealtime_MaxQuality)) != NULL)
             {
-                Bone *skeleton = buildSkeleton(scene, scene->mRootNode, subdirectory);
+                auto boneNames = collectBoneNames(scene);
+                aiNode *skeletonNode = findSkeleton(scene->mRootNode, boneNames);
+                Bone *skeleton = buildSkeleton(skeletonNode);
 
                 addBonesToMapAndArray(skeleton);
 
