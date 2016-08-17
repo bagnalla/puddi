@@ -420,6 +420,14 @@ namespace puddi
                 glEnableVertexAttribArray(vTextureCoordinateLoc);
                 glVertexAttribPointer(vTextureCoordinateLoc, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size()));
 
+                GLuint vBoneIndicesLoc = glGetAttribLocation(program, "vBoneIndices");
+                glEnableVertexAttribArray(vBoneIndicesLoc);
+                glVertexAttribPointer(vBoneIndicesLoc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec2)*TextureCoordinates.size()));
+
+                GLuint vBoneWeightsLoc = glGetAttribLocation(program, "vBoneWeights");
+                glEnableVertexAttribArray(vBoneWeightsLoc);
+                glVertexAttribPointer(vBoneWeightsLoc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec2)*TextureCoordinates.size() + sizeof(vec4)*BoneIndices.size()));
+
                 // get uniform locations
                 std::unordered_map<std::string, GLuint> uniformMap;
                 uniformMap.emplace("model", getUniform(program, "model"));
@@ -700,6 +708,8 @@ namespace puddi
 		std::vector<vec4> Tangents;
 		std::vector<vec4> Binormals;
 		std::vector<vec2> TextureCoordinates;
+		std::vector<vec4> BoneIndices;
+		std::vector<vec4> BoneWeights;
 
 		std::vector<uint> VertexIndices;
 
@@ -712,12 +722,14 @@ namespace puddi
             {
                 glGenBuffers(1, &vertexBuffer);
                 glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-                glBufferData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec4)*TextureCoordinates.size(), NULL, GL_STATIC_DRAW);
+                glBufferData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec4)*TextureCoordinates.size() + sizeof(vec4)*BoneIndices.size() + sizeof(vec4)*BoneWeights.size(), NULL, GL_STATIC_DRAW);
                 glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vec4)*Vertices.size(), &Vertices[0]);
                 glBufferSubData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size(), sizeof(vec4)*Normals.size(), &Normals[0]);
                 glBufferSubData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size(), sizeof(vec4)*Tangents.size(), &Tangents[0]);
                 glBufferSubData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size(), sizeof(vec4)*Binormals.size(), &Binormals[0]);
                 glBufferSubData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size(), sizeof(vec2)*TextureCoordinates.size(), &TextureCoordinates[0]);
+                glBufferSubData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec2)*TextureCoordinates.size(), sizeof(vec4)*BoneIndices.size(), &TextureCoordinates[0]);
+                glBufferSubData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec2)*TextureCoordinates.size() + sizeof(vec4)*BoneIndices.size(), sizeof(vec4)*BoneWeights.size(), &TextureCoordinates[0]);
             }
 
             if (VertexIndices.size())

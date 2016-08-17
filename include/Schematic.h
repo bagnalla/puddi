@@ -5,9 +5,7 @@
 #include "VertexMesh.h"
 #include <GL/glew.h>
 #include <glm/mat4x4.hpp>
-#include <assimp/scene.h>
 #include <vector>
-#include <unordered_map>
 #include <string>
 
 namespace puddi
@@ -20,21 +18,15 @@ namespace puddi
 		std::vector<SchematicNode*> children;
 	};
 
-	class Schematic
+	namespace Schematic
 	{
-	public:
-		static void Init();
+        void Init();
 
-		static void Cleanup();
+        void Cleanup();
 
-		static int InitSchematic(const char *filepath, std::string name, std::string subdirectory = "");
+        int LoadSchematic(const char *filepath, const std::string& name, const std::string& subdirectory = "");
 
-		static SchematicNode* GetSchematicByName(std::string name);
-
-	private:
-		static std::unordered_map<std::string, SchematicNode*> schematicNodeMap;
-
-		static SchematicNode* buildSchematic(const aiScene *scene, aiNode *node, std::string subdirectory);
+        SchematicNode* GetSchematicByName(const std::string& name);
 	};
 }
 

@@ -9,6 +9,7 @@
 #include "Shadow.h"
 #include "EnvironmentMap.h"
 #include "Schematic.h"
+#include "Skeleton.h"
 #include "Shader.h"
 #include "Util.h"
 #include "FpsTracker.h"
@@ -86,6 +87,7 @@ namespace puddi
             int cleanup(int status_code)
             {
                 Schematic::Cleanup();
+                Skeleton::Cleanup();
 
                 SDL_GL_DeleteContext(glcontext);
                 SDL_DestroyWindow(window);

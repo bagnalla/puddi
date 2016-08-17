@@ -17,6 +17,7 @@ namespace puddi
         }
 
         // PUBLIC
+
         void Update()
         {
             // calculate milliseconds elapsed since last call

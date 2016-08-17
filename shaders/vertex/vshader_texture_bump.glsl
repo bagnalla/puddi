@@ -3,6 +3,8 @@ attribute vec4 vNormal;
 attribute vec4 vTangent;
 attribute vec4 vBinormal;
 attribute vec2 vTextureCoordinate;
+attribute vec4 vBoneIndices;
+attribute vec4 vBoneWeights;
 
 varying vec3 N;
 varying vec3 L;

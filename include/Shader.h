@@ -39,6 +39,8 @@ namespace puddi
 		extern std::vector<vec4> Tangents;
 		extern std::vector<vec4> Binormals;
 		extern std::vector<vec2> TextureCoordinates;
+		extern std::vector<vec4> BoneIndices;
+		extern std::vector<vec4> BoneWeights;
 
 		extern std::vector<uint> VertexIndices;
 

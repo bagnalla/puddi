@@ -142,6 +142,8 @@ namespace puddi
 		int GetNumberOfChildren() const;
 
 	protected:
+	    mat4 baseTransform;
+
 		vec4 position; // position of the object in world space
 		vec4 oldPosition;
 		mat4 translationMatrix; // current translation matrix

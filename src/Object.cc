@@ -10,10 +10,11 @@ namespace puddi
 {
 	// PUBLIC
 
-	Object::Object(Object *parent) : Object(parent, false, false) {}
+	Object::Object(Object *parent) : Object(parent, false, false) { baseTransform = mat4(); }
 
 	Object::Object(Object *parent, bool childrenUpdateInParallel, bool childrenModelUpdateInParallel)
 	{
+        baseTransform = mat4();
 		position = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 		oldPosition = position;
 		centerOfRotation = position;
@@ -449,12 +450,12 @@ namespace puddi
 
 					if (!useCenterOfRotation)
 					{
-						model = translationMatrix * rotationMatrix * scaleMatrix;
+						model = baseTransform * translationMatrix * rotationMatrix * scaleMatrix;
 						//inverseModel = scaleInverseMatrix * rotationInverseMatrix * translationInverseMatrix;
 					}
 					else
 					{
-						model = translationMatrix * rotationMatrix * centerOfRotationTranslationMatrix * scaleMatrix;
+						model = baseTransform * translationMatrix * rotationMatrix * centerOfRotationTranslationMatrix * scaleMatrix;
 						//inverseModel = scaleInverseMatrix * Util::InverseTranslation(centerOfRotationTranslationMatrix) * rotationInverseMatrix * translationInverseMatrix;
 					}
 				}

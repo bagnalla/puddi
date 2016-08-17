@@ -73,6 +73,8 @@ namespace puddi
 
 	void DrawableObject::BuildFromSchematic(SchematicNode *schematic)
 	{
+        baseTransform = schematic->transform;
+
         for (auto it = schematic->vertexMeshes.begin(); it != schematic->vertexMeshes.end(); ++it)
 		{
 			vertexMeshes.push_back(new VertexMesh(*it));

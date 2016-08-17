@@ -13,14 +13,16 @@ DrawableObject.o EnvironmentMap.o FpsTracker.o Puddi.o Geometry.o \
 HeightMapTerrain.o InitShader.o LightSource.o Material.o \
 ModelGraph.o Object.o Rectangle.o RenderGraph.o RenderNode.o \
 Schematic.o SDLUtil.o Shader.o Shadow.o Skybox.o Sphere.o \
-TerrainVertexMesh.o Texture.o UpdateGraph.o Util.o VertexMesh.o Font.o )
+TerrainVertexMesh.o Texture.o UpdateGraph.o Util.o VertexMesh.o Font.o \
+Skeleton.o )
 
 debugobjects = $(addprefix $(DEBUGDIR)/$(OBJDIR)/, Camera.o CRSpline.o Cube.o \
 DrawableObject.o EnvironmentMap.o FpsTracker.o Puddi.o Geometry.o \
 HeightMapTerrain.o InitShader.o LightSource.o Material.o \
 ModelGraph.o Object.o Rectangle.o RenderGraph.o RenderNode.o \
 Schematic.o SDLUtil.o Shader.o Shadow.o Skybox.o Sphere.o \
-TerrainVertexMesh.o Texture.o UpdateGraph.o Util.o VertexMesh.o Font.o )
+TerrainVertexMesh.o Texture.o UpdateGraph.o Util.o VertexMesh.o Font.o \
+Skeleton.o )
 
 Release: releasedirs $(releaseobjects)
 	ar rcs $(RELEASEDIR)/libpuddi.a $(releaseobjects)
