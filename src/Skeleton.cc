@@ -64,7 +64,7 @@ namespace puddi
 							boneNames.push_back(nodeAnim->mNodeName.C_Str());
 						}
 					}
-				}
+                }
 
                 return boneNames;
             }
