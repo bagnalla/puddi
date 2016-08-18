@@ -112,11 +112,11 @@ namespace puddi
 
             void addBonesToMapAndArray(const string& skeletonName, Bone *b)
             {
-				auto boneMap = skeletonBoneMap[skeletonName];
-				auto boneArray = skeletonBoneArrays[skeletonName];
-                b->index = boneArray.size();
-				boneArray.push_back(b);
-				boneMap.emplace(b->name, b);
+				auto *boneMap = &skeletonBoneMap[skeletonName];
+				auto *boneArray = &skeletonBoneArrays[skeletonName];
+                b->index = boneArray->size();
+				boneArray->push_back(b);
+				boneMap->emplace(b->name, b);
                 for (auto it = b->children.begin(); it != b->children.end(); ++it)
                 {
                     addBonesToMapAndArray(skeletonName, *it);
@@ -150,6 +150,9 @@ namespace puddi
                 Bone *skeleton = buildSkeleton(skeletonNode, nullptr);
 
                 addBonesToMapAndArray(name, skeleton);
+
+				auto sdfsdf = skeletonBoneArrays;
+				auto sdfsdfg = skeletonBoneMap;
 
                 skeletonMap.emplace(name, skeleton);
             }
