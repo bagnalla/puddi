@@ -728,8 +728,8 @@ namespace puddi
                 glBufferSubData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size(), sizeof(vec4)*Tangents.size(), &Tangents[0]);
                 glBufferSubData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size(), sizeof(vec4)*Binormals.size(), &Binormals[0]);
                 glBufferSubData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size(), sizeof(vec2)*TextureCoordinates.size(), &TextureCoordinates[0]);
-                glBufferSubData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec2)*TextureCoordinates.size(), sizeof(vec4)*BoneIndices.size(), &TextureCoordinates[0]);
-                glBufferSubData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec2)*TextureCoordinates.size() + sizeof(vec4)*BoneIndices.size(), sizeof(vec4)*BoneWeights.size(), &TextureCoordinates[0]);
+                glBufferSubData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec2)*TextureCoordinates.size(), sizeof(vec4)*BoneIndices.size(), &BoneIndices[0]);
+                glBufferSubData(GL_ARRAY_BUFFER, sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec2)*TextureCoordinates.size() + sizeof(vec4)*BoneIndices.size(), sizeof(vec4)*BoneWeights.size(), &BoneWeights[0]);
             }
 
             if (VertexIndices.size())

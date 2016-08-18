@@ -11,6 +11,7 @@
 #include <assimp/postprocess.h>
 #include <unordered_map>
 #include <iostream>
+#include <set>
 
 using namespace std;
 
@@ -23,7 +24,7 @@ namespace puddi
         {
             std::unordered_map<string, SchematicNode*> schematicNodeMap;
 
-            SchematicNode* buildSchematic(const aiScene *scene, aiNode *node, std::string subdirectory)
+            SchematicNode* buildSchematic(const aiScene *scene, aiNode *node, const string& schematicName, const string& subdirectory)
             {
                 SchematicNode *schematicNode = new SchematicNode();
 
@@ -31,7 +32,7 @@ namespace puddi
                 aiQuaterniont<float> rotation;
                 aiVector3D position;
 
-                node->mTransformation.Decompose(scaling, rotation, position);*/
+                node->mTransformation.DecomposeB(scaling, rotation, position);*/
 
                 // TRANSFORM
                 schematicNode->transform = mat4(
@@ -128,15 +129,15 @@ namespace puddi
                         for (size_t j = 0; j < mesh->mNumBones; ++j)
                         {
                             auto aiBone = mesh->mBones[j];
-                            auto bone = Skeleton::GetBoneByName(aiBone->mName.C_Str());
+                            auto bone = Skeleton::GetBoneByName(schematicName, aiBone->mName.C_Str());
 
                             // set the bone's bindpose
-                            bone->SetBindPose(mat4(
+                            bone->bindPoseInverse = mat4(
                                 vec4(aiBone->mOffsetMatrix.a1, aiBone->mOffsetMatrix.a2, aiBone->mOffsetMatrix.a3, aiBone->mOffsetMatrix.a4),
                                 vec4(aiBone->mOffsetMatrix.b1, aiBone->mOffsetMatrix.b2, aiBone->mOffsetMatrix.b3, aiBone->mOffsetMatrix.b4),
                                 vec4(aiBone->mOffsetMatrix.c1, aiBone->mOffsetMatrix.c2, aiBone->mOffsetMatrix.c3, aiBone->mOffsetMatrix.c4),
                                 vec4(aiBone->mOffsetMatrix.d1, aiBone->mOffsetMatrix.d2, aiBone->mOffsetMatrix.d3, aiBone->mOffsetMatrix.d4)
-                            ));
+                            );
 
                             // add the (index, weight) pair for this bone for each vertex it influences
                             for (size_t k = 0; k < aiBone->mNumWeights; ++k)
@@ -237,14 +238,16 @@ namespace puddi
                     // CREATE AND ADD MESH OBJECT TO SCHEMATIC
                     //VertexMesh vMesh(NULL, Material::Rubber(vec4(1.0f, 1.0f, 1.0f, 1.0f)), indexOffset, indexCount, false);
                     VertexMesh vMesh(NULL, Material::None(), indexOffset, indexCount, false);
-                    std::string texName = texturePath.C_Str();
+					set<char> delims = { '\\', '/' };
+					string texName = Util::splitpath(texturePath.C_Str(), delims).back();
+					string bumpName = Util::splitpath(bumpMapPath.C_Str(), delims).back();
                     if (texName != "")
                     {
-                        std::string texPath = "textures/" + (subdirectory != "" ? subdirectory + "/" : "") + texName;
-                        std::string bumpPath = "bumpmaps/" + (subdirectory != "" ? subdirectory + "/" : "") + std::string(bumpMapPath.C_Str());
+                        string texPath = "textures/" + (subdirectory != "" ? subdirectory + "/" : "") + texName;
+                        string bumpPath = "bumpmaps/" + (subdirectory != "" ? subdirectory + "/" : "") + bumpName;
                         GLuint texture = 0;
                         if (texName != "")
-                            texture = Texture::LoadTexture(texName.c_str(), texPath.c_str(), (bumpMapPath.length != 0 ? bumpPath.c_str() : nullptr));
+                            texture = Texture::LoadTexture(texName.c_str(), texPath.c_str(), (bumpName.size() != 0 ? bumpPath.c_str() : nullptr));
                         else
                             vMesh.SetMaterial(mat);
                         vMesh.SetTexture(texture);
@@ -256,7 +259,7 @@ namespace puddi
                 // recursively build children schematic nodes
                 for (uint i = 0; i < node->mNumChildren; ++i)
                 {
-                    SchematicNode *childNode = buildSchematic(scene, node->mChildren[i], subdirectory);
+                    SchematicNode *childNode = buildSchematic(scene, node->mChildren[i], schematicName, subdirectory);
                     if (childNode != nullptr)
                         schematicNode->children.push_back(childNode);
                 }
@@ -302,7 +305,7 @@ namespace puddi
             if ((scene = aiImportFile(filepath, aiProcessPreset_TargetRealtime_MaxQuality)) != NULL)
             //if ((scene = aiImportFile("model\\Millennium_Falcon.obj", aiProcessPreset_TargetRealtime_Fast)) != NULL)
             {
-                SchematicNode *schematic = buildSchematic(scene, scene->mRootNode, subdirectory);
+                SchematicNode *schematic = buildSchematic(scene, scene->mRootNode, name, subdirectory);
 
                 schematicNodeMap.emplace(name, schematic);
             }

@@ -20,7 +20,7 @@ namespace puddi
 
         Bone(const std::string& n, Bone *par) : name(n), parent(par) {}
 
-        void SetBindPose(const glm::mat4& bPose);
+       /* void SetBindPose(const glm::mat4& bPose) */
     };
 
     namespace Skeleton
@@ -31,11 +31,13 @@ namespace puddi
 
         int LoadSkeleton(const char *filepath, const std::string& name, const std::string& subdirectory = "");
 
+		void PrintSkeleton(Bone *skeleton);
+
         Bone* GetSkeletonByName(const std::string& name);
 
-        Bone* GetBoneByName(const std::string& name);
+        Bone* GetBoneByName(const std::string& skeletonName, const std::string& boneName);
 
-        Bone* GetBoneByIndex(int i);
+        Bone* GetBoneByIndex(const std::string& skeletonName, int i);
     }
 }
 

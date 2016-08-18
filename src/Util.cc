@@ -265,5 +265,32 @@ namespace puddi
 
             return vec4(1 - val, 1 - val, 1 - val, alpha);
         }
+
+		vector<string> splitpath(const string& str, const set<char> delimiters)
+		{
+			vector<string> result;
+
+			char const* pch = str.c_str();
+			char const* start = pch;
+			for (; *pch; ++pch)
+			{
+				if (delimiters.find(*pch) != delimiters.end())
+				{
+					if (start != pch)
+					{
+						string str(start, pch);
+						result.push_back(str);
+					}
+					else
+					{
+						result.push_back("");
+					}
+					start = pch + 1;
+				}
+			}
+			result.push_back(start);
+
+			return result;
+		}
     }
 }

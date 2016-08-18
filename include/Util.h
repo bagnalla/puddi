@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <vector>
+#include <set>
 #include <GL/glew.h>
 #include "GlmHeaders.h"
 #include <SDL2/SDL.h>
@@ -150,6 +151,8 @@ namespace puddi
 		bool FileExists(const std::string& name);
 
 		glm::vec4 InterpolateRainbow(float val, float alpha);
+
+		std::vector<std::string> splitpath(const std::string& str, const std::set<char> delimiters);
 	};
 }
 
