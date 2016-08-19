@@ -31,6 +31,9 @@ namespace puddi
             unordered_map<string, vector<Bone> > skeletonBoneArrays;
 			unordered_map<string, vector<ObjectAnimation> > animationMap;
 
+			GLuint boneTransformBuffer;
+			GLuint boneTransformTexture;
+
             vector<string> collectBoneNames(const aiScene *scene)
             {
                 vector<string> boneNames;
@@ -183,7 +186,22 @@ namespace puddi
 
         // PUBLIC
 
-        void Init() {}
+        void Init()
+		{
+			// create and bind buffer
+			glGenBuffers(1, &boneTransformBuffer);
+			glBindBuffer(GL_TEXTURE_BUFFER, boneTransformBuffer);
+			glBufferData(GL_TEXTURE_BUFFER, GL_MAX_TEXTURE_BUFFER_SIZE, nullptr, GL_DYNAMIC_DRAW);
+
+			// create and bind texture
+			glGenTextures(1, &boneTransformTexture);
+			glBindTexture(GL_TEXTURE_BUFFER, boneTransformTexture);
+
+			// associate texture with buffer
+			glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, boneTransformBuffer);
+
+			// use glSubBufferData to write to subregions of the buffer
+		}
 
         void Cleanup()
         {
