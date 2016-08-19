@@ -20,5 +20,6 @@
 #include <glm/gtx/transform.hpp>
 //#include <glm/gtx/fast_trigonometry.hpp> // for wrapAngle, not there on linux
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 using namespace glm;

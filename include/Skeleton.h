@@ -3,11 +3,25 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include <glm/mat4x4.hpp>
 #include <glm/matrix.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 namespace puddi
 {
+	struct ObjectAnimation;
+
+	struct BoneAnimation
+	{
+		std::string name;
+		std::vector<std::pair<float, glm::vec4> > positionKeys;
+		std::vector<std::pair<float, glm::quat> > rotationKeys;
+		std::vector<std::pair<float, glm::vec4> > scaleKeys;
+
+		BoneAnimation(std::string n) : name(n) {}
+	};
+
     struct Bone
     {
         int index;
@@ -15,10 +29,11 @@ namespace puddi
         glm::mat4 bindPose;
         glm::mat4 bindPoseInverse;
         glm::mat4 animateTransform;
-        Bone *parent;
-        std::vector<Bone*> children;
+        std::vector<Bone> children;
+		std::unordered_map<std::string, BoneAnimation> animations;
 
-        Bone(const std::string& n, Bone *par) : name(n), parent(par) {}
+		Bone() {}
+        Bone(const std::string& n) : name(n) {}
 
        /* void SetBindPose(const glm::mat4& bPose) */
     };
@@ -29,15 +44,19 @@ namespace puddi
 
         void Cleanup();
 
-        int LoadSkeleton(const char *filepath, const std::string& name, const std::string& subdirectory = "");
+        int LoadSkeleton(const std::string& filepath, const std::string& name, const std::string& subdirectory = "");
 
-		void PrintSkeleton(Bone *skeleton);
+		void PrintSkeleton(const Bone& skeleton);
 
-        Bone* GetSkeletonByName(const std::string& name);
+        Bone GetSkeletonByName(const std::string& name);
 
-        Bone* GetBoneByName(const std::string& skeletonName, const std::string& boneName);
+        Bone GetBoneByName(const std::string& skeletonName, const std::string& boneName);
 
-        Bone* GetBoneByIndex(const std::string& skeletonName, int i);
+        Bone GetBoneByIndex(const std::string& skeletonName, int i);
+
+		void SetBoneBindPoseInverse(const std::string& skeletonName, const std::string& boneName, const glm::mat4& bPose);
+
+		std::vector<ObjectAnimation> GetAnimationsBySkeletonName(const std::string& skeletonName);
     }
 }
 

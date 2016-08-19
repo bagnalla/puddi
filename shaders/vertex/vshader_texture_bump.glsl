@@ -20,6 +20,7 @@ uniform mat4 lightSource;
 uniform vec4 cameraPosition;
 uniform int shadowMode;
 uniform mat4 lightProjection;
+uniform samplerBuffer boneTransformSampler;
 
 void main()
 {

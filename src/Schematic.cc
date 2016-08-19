@@ -132,18 +132,18 @@ namespace puddi
                             auto bone = Skeleton::GetBoneByName(schematicName, aiBone->mName.C_Str());
 
                             // set the bone's bindpose
-                            bone->bindPoseInverse = mat4(
+                            Skeleton::SetBoneBindPoseInverse(schematicName, bone.name, mat4(
                                 vec4(aiBone->mOffsetMatrix.a1, aiBone->mOffsetMatrix.a2, aiBone->mOffsetMatrix.a3, aiBone->mOffsetMatrix.a4),
                                 vec4(aiBone->mOffsetMatrix.b1, aiBone->mOffsetMatrix.b2, aiBone->mOffsetMatrix.b3, aiBone->mOffsetMatrix.b4),
                                 vec4(aiBone->mOffsetMatrix.c1, aiBone->mOffsetMatrix.c2, aiBone->mOffsetMatrix.c3, aiBone->mOffsetMatrix.c4),
                                 vec4(aiBone->mOffsetMatrix.d1, aiBone->mOffsetMatrix.d2, aiBone->mOffsetMatrix.d3, aiBone->mOffsetMatrix.d4)
-                            );
+                            ));
 
                             // add the (index, weight) pair for this bone for each vertex it influences
                             for (size_t k = 0; k < aiBone->mNumWeights; ++k)
                             {
                                 auto vertexWeight = aiBone->mWeights[k];
-                                vertexBones[vertexWeight.mVertexId].push_back(make_pair(bone->index, vertexWeight.mWeight));
+                                vertexBones[vertexWeight.mVertexId].push_back(make_pair(bone.index, vertexWeight.mWeight));
                             }
                         }
 
