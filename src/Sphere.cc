@@ -28,6 +28,7 @@ namespace puddi
 		std::vector<vec4> binormals;
 		std::vector<vec4> sphere = Geometry::CreateSphere(15.0f, tangents, binormals);
 		std::vector<vec4> normals = Geometry::CreateSphereNormals(sphere);
+		std::vector<vec4> empty = std::vector<vec4>(sphere.size());
 
 		// sphere texture coordinates
 		std::vector<vec2> texCoords;
@@ -53,6 +54,8 @@ namespace puddi
 		Shader::Binormals.insert(Shader::Binormals.end(), binormals.begin(), binormals.end());
 		Shader::TextureCoordinates.insert(Shader::TextureCoordinates.end(), texCoords.begin(), texCoords.end());
 		Shader::VertexIndices.insert(Shader::VertexIndices.end(), indices.begin(), indices.end());
+		Shader::BoneIndices.insert(Shader::BoneIndices.end(), empty.begin(), empty.end());
+		Shader::BoneWeights.insert(Shader::BoneWeights.end(), empty.begin(), empty.end());
 
 		VertexMesh::AddVertexMeshPrototype("sphere", Material::Plastic(vec4(0.0, 0.0, 0.0, 1.0)), indexOffset, indexCount, true);
 	}

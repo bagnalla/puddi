@@ -10,7 +10,7 @@
     #define M_PI    3.14159265358979323846264338327950288
 #endif
 
-//#include <glm/glm.hpp>
+#include <glm/glm.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>

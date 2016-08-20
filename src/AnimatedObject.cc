@@ -37,8 +37,15 @@ namespace puddi
 		if (animationActive)
 		{
 			animationTime += FpsTracker::GetFrameTimeMs() % static_cast<int>(animations[activeAnimation.name].trueDuration * 1000.0f);
-			updateBoneTransforms(skeleton);
+			computeBoneTransforms(skeleton);
+			concatenateBindPoseInverses(skeleton);
 		}
+	}
+
+	void AnimatedObject::SendTransformToGPU()
+	{
+		Skeleton::SendBoneTransformsToGPU(boneTransforms);
+		DrawableObject::SendTransformToGPU();
 	}
 
 	void AnimatedObject::EnableAnimation()
@@ -67,9 +74,11 @@ namespace puddi
 	{
 		animationActive = false;
 		animationTime = 0.0f;
-		/*skeleton = copySkeleton(skel, nullptr);*/
+		skeleton = skel;
 		for (auto it = anims.begin(); it != anims.end(); ++it)
 			animations.emplace(it->name, *it);
+		// size of boneTransforms = number of bones
+		boneTransforms = vector<mat4>(Skeleton::count_bones(skeleton));
 	}
 
 	/*Bone* AnimatedObject::copySkeleton(Bone *skel, Bone *parent)
@@ -82,21 +91,39 @@ namespace puddi
 		return copy;
 	}*/
 
-	void updateBoneTransformsHelper(Bone& b)
+	void AnimatedObject::updateBoneTransformsHelper(Bone& b)
 	{
 		// update transform and recursive call on each child
 		for (auto it = b.children.begin(); it != b.children.end(); ++it)
 		{
-			// update child transform
+			boneTransforms[it->index] = boneTransforms[b.index] * it->bindPose;
 			updateBoneTransformsHelper(*it);
 		}
 	}
 
-	void AnimatedObject::updateBoneTransforms(Bone& b)
+	void AnimatedObject::computeBoneTransforms(Bone& b)
 	{
-		// update b transform and write to buffer
+		// compute b transform and write to buffer
+		boneTransforms[b.index] = b.bindPose;
+
+		/*vec4 pos = b.animations[""].positionKeys[0].second;
+		mat4 t = translate(vec3(pos.x, pos.y, pos.z));
+
+		quat rot = b.animations[""].rotationKeys[0].second;
+		mat4 r = mat4_cast(rot);
+
+		vec4 scal = b.animations[""].positionKeys[0].second;
+		mat4 s = glm::scale(vec3(scal.x, scal.y, scal.z));
+
+		boneTransforms[b.index] = t * r * s;*/
 
 		updateBoneTransformsHelper(b);
 	}
 	
+	void AnimatedObject::concatenateBindPoseInverses(Bone& b)
+	{
+		boneTransforms[b.index] = boneTransforms[b.index] * b.bindPoseInverse; /*inverse(b.bindPose);*/
+		for (auto it = b.children.begin(); it != b.children.end(); ++it)
+			concatenateBindPoseInverses(*it);
+	}
 }

@@ -8,6 +8,7 @@
 #include <set>
 #include <GL/glew.h>
 #include "GlmHeaders.h"
+#include <assimp/scene.h>
 #include <SDL2/SDL.h>
 
 const GLdouble DegreesToRadians = M_PI / 180.0;
@@ -153,6 +154,8 @@ namespace puddi
 		glm::vec4 InterpolateRainbow(float val, float alpha);
 
 		std::vector<std::string> splitpath(const std::string& str, const std::set<char> delimiters);
+
+		glm::mat4 Mat4OfAiMat4(const aiMatrix4x4& aiMat);
 	};
 }
 

@@ -35,12 +35,7 @@ namespace puddi
                 node->mTransformation.DecomposeB(scaling, rotation, position);*/
 
                 // TRANSFORM
-                schematicNode->transform = mat4(
-                    vec4(node->mTransformation.a1, node->mTransformation.a2, node->mTransformation.a3, node->mTransformation.a4),
-                    vec4(node->mTransformation.b1, node->mTransformation.b2, node->mTransformation.b3, node->mTransformation.b4),
-                    vec4(node->mTransformation.c1, node->mTransformation.c2, node->mTransformation.c3, node->mTransformation.c4),
-                    vec4(node->mTransformation.d1, node->mTransformation.d2, node->mTransformation.d3, node->mTransformation.d4)
-                );
+				schematicNode->transform = Util::Mat4OfAiMat4(node->mTransformation);
 
                 // may be multiple meshes per node (transform shared among them)
                 for (uint i = 0; i < node->mNumMeshes; ++i)
@@ -131,13 +126,8 @@ namespace puddi
                             auto aiBone = mesh->mBones[j];
                             auto bone = Skeleton::GetBoneByName(schematicName, aiBone->mName.C_Str());
 
-                            // set the bone's bindpose
-                            Skeleton::SetBoneBindPoseInverse(schematicName, bone.name, mat4(
-                                vec4(aiBone->mOffsetMatrix.a1, aiBone->mOffsetMatrix.a2, aiBone->mOffsetMatrix.a3, aiBone->mOffsetMatrix.a4),
-                                vec4(aiBone->mOffsetMatrix.b1, aiBone->mOffsetMatrix.b2, aiBone->mOffsetMatrix.b3, aiBone->mOffsetMatrix.b4),
-                                vec4(aiBone->mOffsetMatrix.c1, aiBone->mOffsetMatrix.c2, aiBone->mOffsetMatrix.c3, aiBone->mOffsetMatrix.c4),
-                                vec4(aiBone->mOffsetMatrix.d1, aiBone->mOffsetMatrix.d2, aiBone->mOffsetMatrix.d3, aiBone->mOffsetMatrix.d4)
-                            ));
+                            // set the bone's inverse bindpose
+                            Skeleton::SetBoneBindPoseInverse(schematicName, bone.name, Util::Mat4OfAiMat4(aiBone->mOffsetMatrix));
 
                             // add the (index, weight) pair for this bone for each vertex it influences
                             for (size_t k = 0; k < aiBone->mNumWeights; ++k)
@@ -150,7 +140,7 @@ namespace puddi
                         // iterate over the vertex->bone mapping and create the vec4s to put in the vertex attribute array
                         for (auto it = vertexBones.begin(); it != vertexBones.end(); ++it)
                         {
-                            vec4 vBoneIndices = vec4(-1.0f, -1.0f, -1.0f, -1.0f);
+                            vec4 vBoneIndices = vec4(-1, -1, -1, -1);
                             vec4 vBoneWeights = vec4(0.0f, 0.0f, 0.0f, 0.0f);
                             // up to four bones
                             for (size_t k = 0; k < 4; ++k)

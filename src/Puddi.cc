@@ -184,6 +184,7 @@ namespace puddi
             Shadow::Init();
             EnvironmentMap::Init();
             Schematic::Init();
+			Skeleton::Init();
             Font::Init();
 
             rootUpdateNode = rootObject->GetUpdateNode();

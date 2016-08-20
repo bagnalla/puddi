@@ -36,7 +36,7 @@ namespace puddi
 
 		//virtual void Draw() const;
 
-		void SendTransformToGPU();
+		virtual void SendTransformToGPU();
 
 		void AddVertexMesh(VertexMesh *vertexMesh);
 

@@ -19,6 +19,7 @@ namespace puddi
 		std::vector<std::pair<float, glm::quat> > rotationKeys;
 		std::vector<std::pair<float, glm::vec4> > scaleKeys;
 
+		BoneAnimation() {}
 		BoneAnimation(std::string n) : name(n) {}
 	};
 
@@ -28,7 +29,6 @@ namespace puddi
         std::string name;
         glm::mat4 bindPose;
         glm::mat4 bindPoseInverse;
-        glm::mat4 animateTransform;
         std::vector<Bone> children;
 		std::unordered_map<std::string, BoneAnimation> animations;
 
@@ -57,6 +57,10 @@ namespace puddi
 		void SetBoneBindPoseInverse(const std::string& skeletonName, const std::string& boneName, const glm::mat4& bPose);
 
 		std::vector<ObjectAnimation> GetAnimationsBySkeletonName(const std::string& skeletonName);
+
+		size_t count_bones(const Bone& skel);
+
+		void SendBoneTransformsToGPU(const std::vector<glm::mat4>& boneTransforms);
     }
 }
 

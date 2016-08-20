@@ -1,5 +1,7 @@
 #include "Skeleton.h"
 #include "AnimatedObject.h"
+#include "Shader.h"
+#include "Util.h"
 #include <glm/vec4.hpp>
 #include <glm/mat4x4.hpp>
 #include <assimp/scene.h>
@@ -21,41 +23,41 @@ namespace puddi
         bindPoseInverse = inverse(bPose);
     }*/
 
-    namespace Skeleton
-    {
-        // PRIVATE
-        namespace
-        {
-            unordered_map<string, Bone> skeletonMap;
+	namespace Skeleton
+	{
+		// PRIVATE
+		namespace
+		{
+			unordered_map<string, Bone> skeletonMap;
 			unordered_map<string, unordered_map<string, Bone> > skeletonBoneMap;
-            unordered_map<string, vector<Bone> > skeletonBoneArrays;
+			unordered_map<string, vector<Bone> > skeletonBoneArrays;
 			unordered_map<string, vector<ObjectAnimation> > animationMap;
 
 			GLuint boneTransformBuffer;
 			GLuint boneTransformTexture;
 
-            vector<string> collectBoneNames(const aiScene *scene)
-            {
-                vector<string> boneNames;
+			vector<string> collectBoneNames(const aiScene *scene)
+			{
+				vector<string> boneNames;
 
 				// this doesn't necessarily get all the bone names because some bones
 				// only exist for the sake of hierarchical transforms but don't directly
 				// influence any meshes
-                /*if (scene->HasMeshes())
-                {
-                    for (size_t i = 0; i < scene->mNumMeshes; ++i)
-                    {
-                        auto mesh = scene->mMeshes[i];
-                        if (mesh->HasBones())
-                        {
-                            for (size_t j = 0; j < mesh->mNumBones; ++j)
-                            {
-                                auto bone = mesh->mBones[j];
-                                boneNames.push_back(bone->mName.C_Str());
-                            }
-                        }
-                    }
-                }*/
+				/*if (scene->HasMeshes())
+				{
+					for (size_t i = 0; i < scene->mNumMeshes; ++i)
+					{
+						auto mesh = scene->mMeshes[i];
+						if (mesh->HasBones())
+						{
+							for (size_t j = 0; j < mesh->mNumBones; ++j)
+							{
+								auto bone = mesh->mBones[j];
+								boneNames.push_back(bone->mName.C_Str());
+							}
+						}
+					}
+				}*/
 
 				// this seems to get all of the bones.
 				if (scene->HasAnimations())
@@ -69,51 +71,47 @@ namespace puddi
 							boneNames.push_back(nodeAnim->mNodeName.C_Str());
 						}
 					}
-                }
+				}
 
-                return boneNames;
-            }
+				return boneNames;
+			}
 
 			// assumes only one skeleton exists, so the first bone node we encounter by
 			// doing a depth-first traversal should be the root of the skeleton
-            aiNode* findSkeleton(aiNode *root, const vector<string>& boneNames)
-            {
+			aiNode* findSkeleton(aiNode *root, const vector<string>& boneNames)
+			{
 				// if current node is a bone, return it as the root of the skeleton
-                if (find(boneNames.begin(), boneNames.end(), root->mName.C_Str()) != boneNames.end())
-                    return root;
+				if (find(boneNames.begin(), boneNames.end(), root->mName.C_Str()) != boneNames.end())
+					return root;
 
 				// else, if no children, there is no skeleton
-                if (!root->mNumChildren)
-                    return nullptr;
+				if (!root->mNumChildren)
+					return nullptr;
 
 				// if there are children, recursively search them for a bone
-                for (int i = 0; i < root->mNumChildren; ++i)
-                {
-                    auto skeleton = findSkeleton(root->mChildren[i], boneNames);
-                    if (skeleton != nullptr)
-                        return skeleton;
-                }
+				for (int i = 0; i < root->mNumChildren; ++i)
+				{
+					auto skeleton = findSkeleton(root->mChildren[i], boneNames);
+					if (skeleton != nullptr)
+						return skeleton;
+				}
 
 				// if no bone found in children, there is no skeleton
-                return nullptr;
-            }
+				return nullptr;
+			}
 
-            Bone buildSkeleton(aiNode *aiRoot)
-            {
+			Bone buildSkeleton(aiNode *aiRoot, size_t& index)
+			{
 				Bone bone = Bone(aiRoot->mName.C_Str());
+				bone.index = index++;
 
-				bone.bindPose = mat4(
-					vec4(aiRoot->mTransformation.a1, aiRoot->mTransformation.a2, aiRoot->mTransformation.a3, aiRoot->mTransformation.a4),
-					vec4(aiRoot->mTransformation.b1, aiRoot->mTransformation.b2, aiRoot->mTransformation.b3, aiRoot->mTransformation.b4),
-					vec4(aiRoot->mTransformation.c1, aiRoot->mTransformation.c2, aiRoot->mTransformation.c3, aiRoot->mTransformation.c4),
-					vec4(aiRoot->mTransformation.d1, aiRoot->mTransformation.d2, aiRoot->mTransformation.d3, aiRoot->mTransformation.d4)
-					);
+				bone.bindPose = Util::Mat4OfAiMat4(aiRoot->mTransformation);
 
 				for (int i = 0; i < aiRoot->mNumChildren; ++i)
-					bone.children.push_back(buildSkeleton(aiRoot->mChildren[i]));
+					bone.children.push_back(buildSkeleton(aiRoot->mChildren[i], index));
 
 				return bone;
-            }
+			}
 
 			void loadKeyFrames(const aiScene *scene, Bone& b)
 			{
@@ -170,75 +168,75 @@ namespace puddi
 				animationMap.emplace(skeletonName, animations);
 			}
 
-            void addBonesToMapAndArray(const string& skeletonName, Bone b)
-            {
+			void addBonesToMapAndArray(const string& skeletonName, Bone b)
+			{
 				auto *boneMap = &skeletonBoneMap[skeletonName];
 				auto *boneArray = &skeletonBoneArrays[skeletonName];
-                b.index = boneArray->size();
+				b.index = boneArray->size();
 				boneArray->push_back(b);
 				boneMap->emplace(b.name, b);
-                for (auto it = b.children.begin(); it != b.children.end(); ++it)
-                {
-                    addBonesToMapAndArray(skeletonName, *it);
-                }
-            }
-        }
+				for (auto it = b.children.begin(); it != b.children.end(); ++it)
+				{
+					addBonesToMapAndArray(skeletonName, *it);
+				}
+			}
+		}
 
-        // PUBLIC
+		// PUBLIC
 
-        void Init()
+		void Init()
 		{
 			// create and bind buffer
 			glGenBuffers(1, &boneTransformBuffer);
 			glBindBuffer(GL_TEXTURE_BUFFER, boneTransformBuffer);
-			glBufferData(GL_TEXTURE_BUFFER, GL_MAX_TEXTURE_BUFFER_SIZE, nullptr, GL_DYNAMIC_DRAW);
+			glBufferData(GL_TEXTURE_BUFFER, pow(2, 20), nullptr, GL_DYNAMIC_DRAW);
 
 			// create and bind texture
 			glGenTextures(1, &boneTransformTexture);
+			glActiveTexture(GL_TEXTURE0 + TEXTURE_BONE_TRANSFORM);
 			glBindTexture(GL_TEXTURE_BUFFER, boneTransformTexture);
 
 			// associate texture with buffer
 			glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, boneTransformBuffer);
-
-			// use glSubBufferData to write to subregions of the buffer
 		}
 
-        void Cleanup()
-        {
-            aiDetachAllLogStreams();
-        }
+		void Cleanup()
+		{
+			aiDetachAllLogStreams();
+		}
 
-        int LoadSkeleton(const string& filepath, const string& name, const string& subdirectory)
-        {
-            if (skeletonMap.find(name) != skeletonMap.end())
-            {
-                std::cerr << "skeleton with name " << name << ". already exists\n";
-                return -1;
-            }
+		int LoadSkeleton(const string& filepath, const string& name, const string& subdirectory)
+		{
+			if (skeletonMap.find(name) != skeletonMap.end())
+			{
+				std::cerr << "skeleton with name " << name << ". already exists\n";
+				return -1;
+			}
 
-            const aiScene *scene = NULL;
+			const aiScene *scene = NULL;
 
-            if ((scene = aiImportFile(filepath.c_str(), aiProcessPreset_TargetRealtime_MaxQuality)) != NULL)
-            {
-                auto boneNames = collectBoneNames(scene);
-                aiNode *skeletonNode = findSkeleton(scene->mRootNode, boneNames);
-                Bone skeleton = buildSkeleton(skeletonNode);
+			if ((scene = aiImportFile(filepath.c_str(), aiProcessPreset_TargetRealtime_MaxQuality)) != NULL)
+			{
+				auto boneNames = collectBoneNames(scene);
+				aiNode *skeletonNode = findSkeleton(scene->mRootNode, boneNames);
+				size_t index = 0;
+				Bone skeleton = buildSkeleton(skeletonNode, index);
 				loadKeyFrames(scene, skeleton);
 				loadAnimations(scene, name);
 
-                addBonesToMapAndArray(name, skeleton);
+				addBonesToMapAndArray(name, skeleton);
 
-                skeletonMap.emplace(name, skeleton);
-            }
-            else
-            {
-                std::cerr << aiGetErrorString() << std::endl;
-                return -2;
-            }
+				skeletonMap.emplace(name, skeleton);
+			}
+			else
+			{
+				std::cerr << aiGetErrorString() << std::endl;
+				return -2;
+			}
 
-            aiReleaseImport(scene);
-            return 0;
-        }
+			aiReleaseImport(scene);
+			return 0;
+		}
 
 		void PrintSkeleton(const Bone& skeleton)
 		{
@@ -248,19 +246,19 @@ namespace puddi
 		}
 
 		Bone GetSkeletonByName(const string& name)
-        {
-            return skeletonMap[name];
-        }
+		{
+			return skeletonMap[name];
+		}
 
-        Bone GetBoneByName(const string& skeletonName, const string& boneName)
-        {
-            return skeletonBoneMap[skeletonName][boneName];
-        }
+		Bone GetBoneByName(const string& skeletonName, const string& boneName)
+		{
+			return skeletonBoneMap[skeletonName][boneName];
+		}
 
-        Bone GetBoneByIndex(const string& skeletonName, int i)
-        {
-            return skeletonBoneArrays[skeletonName][i];
-        }
+		Bone GetBoneByIndex(const string& skeletonName, int i)
+		{
+			return skeletonBoneArrays[skeletonName][i];
+		}
 
 		void SetBoneBindPoseInverse(const string& skeletonName, const string& boneName, const mat4& bPose)
 		{
@@ -270,6 +268,23 @@ namespace puddi
 		vector<ObjectAnimation> GetAnimationsBySkeletonName(const string& skeletonName)
 		{
 			return animationMap[skeletonName];
+		}
+
+		size_t count_bones(const Bone& skel)
+		{
+			size_t children_count = 0;
+			for (auto it = skel.children.begin(); it != skel.children.end(); ++it)
+				children_count += count_bones(*it);
+			return 1 + children_count;
+		}
+
+		void SendBoneTransformsToGPU(const vector<mat4>& boneTransforms)
+		{
+			glBindBuffer(GL_TEXTURE_BUFFER, boneTransformBuffer);
+			glActiveTexture(GL_TEXTURE0 + TEXTURE_BONE_TRANSFORM);
+			glBindTexture(GL_TEXTURE_BUFFER, boneTransformTexture);
+			glBufferSubData(GL_TEXTURE_BUFFER, 0, boneTransforms.size() * sizeof(mat4), &boneTransforms[0]);
+			//glBufferData(GL_TEXTURE_BUFFER, boneTransforms.size() * sizeof(mat4), &boneTransforms[0], GL_STATIC_DRAW);
 		}
     }
 }

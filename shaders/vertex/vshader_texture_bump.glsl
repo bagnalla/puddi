@@ -20,10 +20,12 @@ uniform mat4 lightSource;
 uniform vec4 cameraPosition;
 uniform int shadowMode;
 uniform mat4 lightProjection;
-uniform samplerBuffer boneTransformSampler;
+uniform samplerBuffer boneTransformTex;
 
 void main()
 {
+	mat4 boneTransform1 = mat4(texelFetch(boneTransformTex, (int)vBoneIndices.x + 0), texelFetch(boneTransformTex, 1), texelFetch(boneTransformTex, 2), texelFetch(boneTransformTex, 3));
+
 	// compute vPosition in world space
 	vec4 vPositionWorld = model * vPosition;
 

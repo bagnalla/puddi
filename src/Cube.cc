@@ -42,6 +42,7 @@ namespace puddi
 		std::vector<vec4> tangents = Geometry::CreateCubeTangents();
 		std::vector<vec4> binormals = Geometry::CreateCubeBiNormals();
 		std::vector<vec2> texCoords = Geometry::CreateCubeTextureCoordinates();
+		std::vector<vec4> empty = std::vector<vec4>(cube.size());
 
 		int vertexOffset = Shader::Vertices.size();
 		int indexOffset = Shader::VertexIndices.size();
@@ -57,6 +58,8 @@ namespace puddi
 		Shader::Binormals.insert(Shader::Binormals.end(), binormals.begin(), binormals.end());
 		Shader::TextureCoordinates.insert(Shader::TextureCoordinates.end(), texCoords.begin(), texCoords.end());
 		Shader::VertexIndices.insert(Shader::VertexIndices.end(), indices.begin(), indices.end());
+		Shader::BoneIndices.insert(Shader::BoneIndices.end(), empty.begin(), empty.end());
+		Shader::BoneWeights.insert(Shader::BoneWeights.end(), empty.begin(), empty.end());
 
 		VertexMesh::AddVertexMeshPrototype("cube", Material::Plastic(vec4(0.0, 0.0, 0.0, 1.0)), indexOffset, indexCount, false);
 	}

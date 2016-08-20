@@ -24,6 +24,7 @@ namespace puddi
 		AnimatedObject(Object *par, SchematicNode *schematic, Bone skel, const std::vector<ObjectAnimation>& anims);
 
 		void Update();
+		void SendTransformToGPU();
 
 		void EnableAnimation();
 		void DisableAnimation();
@@ -38,12 +39,15 @@ namespace puddi
 		ObjectAnimation activeAnimation;
 		std::unordered_map<std::string, ObjectAnimation> animations;
 		Bone skeleton;
+		std::vector<glm::mat4> boneTransforms;
 
 		void init(Bone& skel, const std::vector<ObjectAnimation>& anims);
 
 		/*Bone* copySkeleton(Bone skel, Bone *parent);*/
 
-		void updateBoneTransforms(Bone& b);
+		void updateBoneTransformsHelper(Bone& b);
+		void computeBoneTransforms(Bone& b);
+		void concatenateBindPoseInverses(Bone& b);
 	};
 }
 

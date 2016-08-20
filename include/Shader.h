@@ -30,6 +30,7 @@ namespace puddi
 		TEXTURE_TERRAIN_BUMP_3,
 		TEXTURE_TERRAIN_4,
 		TEXTURE_TERRAIN_BUMP_4,
+		TEXTURE_BONE_TRANSFORM
 	};
 
 	namespace Shader
