@@ -28,7 +28,7 @@ namespace puddi
         int index;
         std::string name;
         glm::mat4 bindPose;
-        glm::mat4 bindPoseInverse;
+        glm::mat4 inverseBindPose;
         std::vector<Bone> children;
 		std::unordered_map<std::string, BoneAnimation> animations;
 
@@ -54,7 +54,7 @@ namespace puddi
 
         Bone GetBoneByIndex(const std::string& skeletonName, int i);
 
-		void SetBoneBindPoseInverse(const std::string& skeletonName, const std::string& boneName, const glm::mat4& bPose);
+		/*void SetBoneBindPoseInverse(const std::string& skeletonName, const std::string& boneName, const glm::mat4& bPose);*/
 
 		std::vector<ObjectAnimation> GetAnimationsBySkeletonName(const std::string& skeletonName);
 

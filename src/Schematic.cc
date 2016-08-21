@@ -127,7 +127,7 @@ namespace puddi
                             auto bone = Skeleton::GetBoneByName(schematicName, aiBone->mName.C_Str());
 
                             // set the bone's inverse bindpose
-                            Skeleton::SetBoneBindPoseInverse(schematicName, bone.name, Util::Mat4OfAiMat4(aiBone->mOffsetMatrix));
+                            //Skeleton::SetBoneBindPoseInverse(schematicName, bone.name, Util::Mat4OfAiMat4(aiBone->mOffsetMatrix));
 
                             // add the (index, weight) pair for this bone for each vertex it influences
                             for (size_t k = 0; k < aiBone->mNumWeights; ++k)

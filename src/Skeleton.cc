@@ -100,15 +100,27 @@ namespace puddi
 				return nullptr;
 			}
 
-			Bone buildSkeleton(aiNode *aiRoot, size_t& index)
+			Bone buildSkeleton(aiNode *aiRoot, size_t& index, Bone *parent)
 			{
 				Bone bone = Bone(aiRoot->mName.C_Str());
 				bone.index = index++;
 
-				bone.bindPose = Util::Mat4OfAiMat4(aiRoot->mTransformation);
+				//bone.bindPose = Util::Mat4OfAiMat4(aiRoot->mTransformation);
+				if (parent == nullptr)
+				{
+					bone.bindPose = Util::Mat4OfAiMat4(aiRoot->mTransformation);
+					bone.inverseBindPose = inverse(bone.bindPose);
+				}
+				else
+				{
+					bone.bindPose = parent->bindPose * Util::Mat4OfAiMat4(aiRoot->mTransformation);
+					bone.inverseBindPose = inverse(bone.bindPose);
+					//bone.inverseBindPose = inverse(parent->bindPose * bone.bindPose);
+					//bone.inverseBindPose = inverse(bone.bindPose) * inverse(parent->bindPose);
+				}
 
 				for (int i = 0; i < aiRoot->mNumChildren; ++i)
-					bone.children.push_back(buildSkeleton(aiRoot->mChildren[i], index));
+					bone.children.push_back(buildSkeleton(aiRoot->mChildren[i], index, &bone));
 
 				return bone;
 			}
@@ -220,7 +232,7 @@ namespace puddi
 				auto boneNames = collectBoneNames(scene);
 				aiNode *skeletonNode = findSkeleton(scene->mRootNode, boneNames);
 				size_t index = 0;
-				Bone skeleton = buildSkeleton(skeletonNode, index);
+				Bone skeleton = buildSkeleton(skeletonNode, index, nullptr);
 				loadKeyFrames(scene, skeleton);
 				loadAnimations(scene, name);
 
@@ -260,10 +272,10 @@ namespace puddi
 			return skeletonBoneArrays[skeletonName][i];
 		}
 
-		void SetBoneBindPoseInverse(const string& skeletonName, const string& boneName, const mat4& bPose)
+		/*void SetBoneBindPoseInverse(const string& skeletonName, const string& boneName, const mat4& bPose)
 		{
-			skeletonBoneMap[skeletonName][boneName].bindPoseInverse = bPose;
-		}
+			skeletonBoneMap[skeletonName][boneName].inverseBindPose = bPose;
+		}*/
 
 		vector<ObjectAnimation> GetAnimationsBySkeletonName(const string& skeletonName)
 		{

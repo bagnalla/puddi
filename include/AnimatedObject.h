@@ -16,6 +16,8 @@ namespace puddi
 
 		ObjectAnimation();
 		ObjectAnimation(const std::string& n, float d, float tps);
+
+		void SetTicksPerSecond(float tps);
 	};
 
 	class AnimatedObject : public DrawableObject
@@ -35,7 +37,7 @@ namespace puddi
 
 	private:
 		bool animationActive;
-		unsigned int animationTime;
+		float animationTicks;
 		ObjectAnimation activeAnimation;
 		std::unordered_map<std::string, ObjectAnimation> animations;
 		Bone skeleton;
@@ -43,9 +45,7 @@ namespace puddi
 
 		void init(Bone& skel, const std::vector<ObjectAnimation>& anims);
 
-		/*Bone* copySkeleton(Bone skel, Bone *parent);*/
-
-		void updateBoneTransformsHelper(Bone& b);
+		void computeBoneTransformsHelper(Bone& b);
 		void computeBoneTransforms(Bone& b);
 		void concatenateBindPoseInverses(Bone& b);
 	};
