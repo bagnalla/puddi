@@ -8,107 +8,107 @@
 
 namespace puddi
 {
-	class VertexMesh;
-	class TerrainVertexMesh;
+    class VertexMesh;
+    class TerrainVertexMesh;
 
-	struct RenderNode
-	{
-		std::vector<VertexMesh*> meshes;
+    struct RenderNode
+    {
+        std::vector<VertexMesh*> meshes;
 
-		virtual void Render() const;
+        virtual void Render() const;
 
     // prevent instantiation of the base struct
     protected: RenderNode() {};
-	};
+    };
 
-	struct EmissiveNode : public RenderNode
-	{
-		vec4 emissionColor;
+    struct EmissiveNode : public RenderNode
+    {
+        vec4 emissionColor;
 
-		EmissiveNode(const vec4& emissionCol) { emissionColor = emissionCol; }
+        EmissiveNode(const vec4& emissionCol) { emissionColor = emissionCol; }
 
-		void Render() const;
-	};
+        void Render() const;
+    };
 
-	struct MaterialNode : public RenderNode
-	{
-		Material material;
+    struct MaterialNode : public RenderNode
+    {
+        Material material;
 
-		MaterialNode(const Material& mat) { material = mat; }
+        MaterialNode(const Material& mat) { material = mat; }
 
-		void Render() const;
-	};
+        void Render() const;
+    };
 
-	struct MaterialBumpNode : public RenderNode
-	{
-		GLuint bumpmap;
-		std::unordered_map<Material, MaterialNode*> materialNodeMap;
+    struct MaterialBumpNode : public RenderNode
+    {
+        GLuint bumpmap;
+        std::unordered_map<Material, MaterialNode*> materialNodeMap;
 
-		MaterialBumpNode(GLuint bump) { bumpmap = bump; }
+        MaterialBumpNode(GLuint bump) { bumpmap = bump; }
 
-		void Render() const;
-	};
+        void Render() const;
+    };
 
-	struct TextureBumpNode : public RenderNode
-	{
-		GLuint texture;
-		GLuint bumpmap;
-		std::unordered_map<Material, MaterialNode*> materialNodeMap;
+    struct TextureBumpNode : public RenderNode
+    {
+        GLuint texture;
+        GLuint bumpmap;
+        std::unordered_map<Material, MaterialNode*> materialNodeMap;
 
-		TextureBumpNode(GLuint tex, GLuint bump) { texture = tex; bumpmap = bump; }
+        TextureBumpNode(GLuint tex, GLuint bump) { texture = tex; bumpmap = bump; }
 
-		void Render() const;
-	};
+        void Render() const;
+    };
 
-	struct TextureNode : public RenderNode
-	{
-		GLuint texture;
-		std::unordered_map<Material, MaterialNode*> materialNodeMap;
+    struct TextureNode : public RenderNode
+    {
+        GLuint texture;
+        std::unordered_map<Material, MaterialNode*> materialNodeMap;
 
-		TextureNode(GLuint tex) { texture = tex; }
+        TextureNode(GLuint tex) { texture = tex; }
 
-		void Render() const;
-	};
+        void Render() const;
+    };
 
-	struct TextureEmissiveNode : public RenderNode
-	{
-		GLuint texture;
+    struct TextureEmissiveNode : public RenderNode
+    {
+        GLuint texture;
 
-		TextureEmissiveNode(GLuint tex) { texture = tex; }
+        TextureEmissiveNode(GLuint tex) { texture = tex; }
 
-		void Render() const;
-	};
+        void Render() const;
+    };
 
-	struct CubeMapNode : public RenderNode
-	{
-		GLuint cubeMap;
+    struct CubeMapNode : public RenderNode
+    {
+        GLuint cubeMap;
 
-		std::unordered_map<Material, MaterialNode*> materialNodeMap;
+        std::unordered_map<Material, MaterialNode*> materialNodeMap;
 
-		CubeMapNode(GLuint cubeM) { cubeMap = cubeM; }
+        CubeMapNode(GLuint cubeM) { cubeMap = cubeM; }
 
-		void Render() const;
-	};
+        void Render() const;
+    };
 
-	struct CubeMapBumpNode : public RenderNode
-	{
-		GLuint cubeMap;
-		GLuint bumpMap;
-		std::unordered_map<Material, MaterialNode*> materialNodeMap;
+    struct CubeMapBumpNode : public RenderNode
+    {
+        GLuint cubeMap;
+        GLuint bumpMap;
+        std::unordered_map<Material, MaterialNode*> materialNodeMap;
 
-		CubeMapBumpNode(GLuint cubeM, GLuint bump) { cubeMap = cubeM; bumpMap = bump; }
+        CubeMapBumpNode(GLuint cubeM, GLuint bump) { cubeMap = cubeM; bumpMap = bump; }
 
-		void Render() const;
-	};
+        void Render() const;
+    };
 
-	struct CubeMapEmissiveNode : public RenderNode
-	{
-		GLuint cubeMap;
+    struct CubeMapEmissiveNode : public RenderNode
+    {
+        GLuint cubeMap;
 
-		CubeMapEmissiveNode(GLuint cubeM) { cubeMap = cubeM; }
+        CubeMapEmissiveNode(GLuint cubeM) { cubeMap = cubeM; }
 
-		void Render() const;
-	};
+        void Render() const;
+    };
 }
 
 #endif

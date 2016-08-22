@@ -5,19 +5,19 @@
 
 namespace puddi
 {
-	class Sphere : public DrawableObject
-	{
-	public:
-		static void Init();
+    class Sphere : public DrawableObject
+    {
+    public:
+        static void Init();
 
-		Sphere(Object *par);
+        Sphere(Object *par);
 
-		//void Draw() const;
+        //void Draw() const;
 
-	private:
+    private:
 
-		static void createPrototypeVertices();
-	};
+        static void createPrototypeVertices();
+    };
 }
 
 #endif

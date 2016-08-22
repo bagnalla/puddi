@@ -13,19 +13,19 @@
 
 namespace puddi
 {
-	class Cube : public DrawableObject
-	{
-	public:
-		static void Init();
+    class Cube : public DrawableObject
+    {
+    public:
+        static void Init();
 
-		Cube(Object *par);
+        Cube(Object *par);
 
-		bool ContainsPoint(const vec4& p) const;
+        bool ContainsPoint(const vec4& p) const;
 
-	private:
+    private:
 
-		static void createPrototypeVertices();
-	};
+        static void createPrototypeVertices();
+    };
 }
 
 #endif

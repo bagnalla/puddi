@@ -1,13 +1,13 @@
 /*************************************************************************************
 
-Program:			CS 4250 Final Project
+Program:            CS 4250 Final Project
 
-Author:				Alexander Bagnall
-Email:				ab667712@ohio.edu
+Author:             Alexander Bagnall
+Email:              ab667712@ohio.edu
 
-Description:		Implementation file for the Util class.
+Description:        Implementation file for the Util class.
 
-Date:				December 9, 2015
+Date:               December 9, 2015
 
 *************************************************************************************/
 
@@ -266,41 +266,41 @@ namespace puddi
             return vec4(1 - val, 1 - val, 1 - val, alpha);
         }
 
-		vector<string> splitpath(const string& str, const set<char> delimiters)
-		{
-			vector<string> result;
+        vector<string> splitpath(const string& str, const set<char> delimiters)
+        {
+            vector<string> result;
 
-			char const* pch = str.c_str();
-			char const* start = pch;
-			for (; *pch; ++pch)
-			{
-				if (delimiters.find(*pch) != delimiters.end())
-				{
-					if (start != pch)
-					{
-						string str(start, pch);
-						result.push_back(str);
-					}
-					else
-					{
-						result.push_back("");
-					}
-					start = pch + 1;
-				}
-			}
-			result.push_back(start);
+            char const* pch = str.c_str();
+            char const* start = pch;
+            for (; *pch; ++pch)
+            {
+                if (delimiters.find(*pch) != delimiters.end())
+                {
+                    if (start != pch)
+                    {
+                        string str(start, pch);
+                        result.push_back(str);
+                    }
+                    else
+                    {
+                        result.push_back("");
+                    }
+                    start = pch + 1;
+                }
+            }
+            result.push_back(start);
 
-			return result;
-		}
+            return result;
+        }
 
-		glm::mat4 Mat4OfAiMat4(const aiMatrix4x4& aiMat)
-		{
-			return mat4(
-				aiMat.a1, aiMat.b1, aiMat.c1, aiMat.d1,
-				aiMat.a2, aiMat.b2, aiMat.c2, aiMat.d2,
-				aiMat.a3, aiMat.b3, aiMat.c3, aiMat.d3,
-				aiMat.a4, aiMat.b4, aiMat.c4, aiMat.d4
-				);
-		}
+        glm::mat4 Mat4OfAiMat4(const aiMatrix4x4& aiMat)
+        {
+            return mat4(
+                aiMat.a1, aiMat.b1, aiMat.c1, aiMat.d1,
+                aiMat.a2, aiMat.b2, aiMat.c2, aiMat.d2,
+                aiMat.a3, aiMat.b3, aiMat.c3, aiMat.d3,
+                aiMat.a4, aiMat.b4, aiMat.c4, aiMat.d4
+                );
+        }
     }
 }

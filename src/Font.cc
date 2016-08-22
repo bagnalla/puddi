@@ -29,7 +29,7 @@ namespace puddi
             std::vector<vec4> normals({ vec4(0.0, 0.0, 1.0, 0.0), vec4(0.0, 0.0, 1.0, 0.0), vec4(0.0, 0.0, 1.0, 0.0), vec4(0.0, 0.0, 1.0, 0.0) });
             std::vector<vec4> tangents({ vec4(1.0, 0.0, 0.0, 0.0), vec4(1.0, 0.0, 0.0, 0.0), vec4(1.0, 0.0, 0.0, 0.0), vec4(1.0, 0.0, 0.0, 0.0) });
             std::vector<vec4> binormals({ vec4(0.0, 1.0, 0.0, 0.0), vec4(0.0, 1.0, 0.0, 0.0), vec4(0.0, 1.0, 0.0, 0.0), vec4(0.0, 1.0, 0.0, 0.0) });
-			std::vector<vec4> empty = std::vector<vec4>(rect.size(), vec4(-1, -1, -1, -1));
+            std::vector<vec4> empty = std::vector<vec4>(rect.size(), vec4(-1, -1, -1, -1));
 
             int rows = 10;
             int cols = 10;
@@ -61,8 +61,8 @@ namespace puddi
                     Shader::Binormals.insert(Shader::Binormals.end(), binormals.begin(), binormals.end());
                     Shader::TextureCoordinates.insert(Shader::TextureCoordinates.end(), texCoords.begin(), texCoords.end());
                     Shader::VertexIndices.insert(Shader::VertexIndices.end(), indices.begin(), indices.end());
-					Shader::BoneIndices.insert(Shader::BoneIndices.end(), empty.begin(), empty.end());
-					Shader::BoneWeights.insert(Shader::BoneWeights.end(), empty.begin(), empty.end());
+                    Shader::BoneIndices.insert(Shader::BoneIndices.end(), empty.begin(), empty.end());
+                    Shader::BoneWeights.insert(Shader::BoneWeights.end(), empty.begin(), empty.end());
 
                     //std::cout << "adding " << std::string(1, i * cols + j + 32) << std::endl;
                     VertexMesh::AddVertexMeshPrototype(std::string(1, i * cols + j + 32), /*Material::None()*/Material::Plastic(vec4(1.0f, 1.0f, 1.0f, 1.0f)), indexOffset, indexCount, true);

@@ -9,234 +9,234 @@ using namespace std;
 
 namespace puddi
 {
-	// ObjectAnimation PUBLIC
+    // ObjectAnimation PUBLIC
 
-	ObjectAnimation::ObjectAnimation()
-	{
-		name = "";
-		duration = ticksPerSecond = trueDuration = 0.0f;
-	}
+    ObjectAnimation::ObjectAnimation()
+    {
+        name = "";
+        duration = ticksPerSecond = trueDuration = 0.0f;
+    }
 
-	ObjectAnimation::ObjectAnimation(const string& n, float d, float tps)
-	{
-		name = n;
-		duration = d;
-		SetTicksPerSecond(tps);
-	}
+    ObjectAnimation::ObjectAnimation(const string& n, float d, float tps)
+    {
+        name = n;
+        duration = d;
+        SetTicksPerSecond(tps);
+    }
 
-	void ObjectAnimation::SetTicksPerSecond(float tps)
-	{
-		ticksPerSecond = tps;
-		trueDuration = duration / ticksPerSecond;
-	}
+    void ObjectAnimation::SetTicksPerSecond(float tps)
+    {
+        ticksPerSecond = tps;
+        trueDuration = duration / ticksPerSecond;
+    }
 
-	// AnimatedObject PUBLIC
+    // AnimatedObject PUBLIC
 
-	AnimatedObject::AnimatedObject(Object *par, SchematicNode *schematic, Bone skel, const vector<ObjectAnimation>& anims)
-		: DrawableObject(par, schematic)
-	{
-		init(skel, anims);
-	}
+    AnimatedObject::AnimatedObject(Object *par, SchematicNode *schematic, Bone skel, const vector<ObjectAnimation>& anims)
+        : DrawableObject(par, schematic)
+    {
+        init(skel, anims);
+    }
 
-	void AnimatedObject::Update()
-	{
-		if (animationActive)
-		{
-			animationTicks = fmodf(animationTicks + (FpsTracker::GetFrameTimeMs() / 1000.0f) * animations[activeAnimation.name].ticksPerSecond, animations[activeAnimation.name].duration);
-			computeBoneTransforms(skeleton);
-			concatenateBindPoseInverses(skeleton);
-		}
-	}
+    void AnimatedObject::Update()
+    {
+        if (animationActive)
+        {
+            animationTicks = fmodf(animationTicks + (FpsTracker::GetFrameTimeMs() / 1000.0f) * animations[activeAnimation.name].ticksPerSecond, animations[activeAnimation.name].duration);
+            computeBoneTransforms(skeleton);
+            concatenateBindPoseInverses(skeleton);
+        }
+    }
 
-	void AnimatedObject::SendTransformToGPU()
-	{
-		Skeleton::SendBoneTransformsToGPU(boneTransforms);
-		DrawableObject::SendTransformToGPU();
-	}
+    void AnimatedObject::SendTransformToGPU()
+    {
+        Skeleton::SendBoneTransformsToGPU(boneTransforms);
+        DrawableObject::SendTransformToGPU();
+    }
 
-	void AnimatedObject::EnableAnimation()
-	{
-		animationActive = true;
-	}
+    void AnimatedObject::EnableAnimation()
+    {
+        animationActive = true;
+    }
 
-	void AnimatedObject::DisableAnimation()
-	{
-		animationActive = false;
-	}
+    void AnimatedObject::DisableAnimation()
+    {
+        animationActive = false;
+    }
 
-	void AnimatedObject::SetActiveAnimation(const std::string& animationName)
-	{
-		activeAnimation = animations[animationName];
-	}
+    void AnimatedObject::SetActiveAnimation(const std::string& animationName)
+    {
+        activeAnimation = animations[animationName];
+    }
 
-	void AnimatedObject::SetAnimationTicksPerSecond(const std::string& animationName, float tps)
-	{
-		animations[animationName].SetTicksPerSecond(tps);
-	}
+    void AnimatedObject::SetAnimationTicksPerSecond(const std::string& animationName, float tps)
+    {
+        animations[animationName].SetTicksPerSecond(tps);
+    }
 
-	// AnimatedObject PRIVATE
+    // AnimatedObject PRIVATE
 
-	void AnimatedObject::init(Bone& skel, const vector<ObjectAnimation>& anims)
-	{
-		animationActive = false;
-		animationTicks = 0;
-		skeleton = skel;
-		for (auto it = anims.begin(); it != anims.end(); ++it)
-			animations.emplace(it->name, *it);
-		// size of boneTransforms = number of bones
-		boneTransforms = vector<mat4>(Skeleton::count_bones(skeleton));
-	}
+    void AnimatedObject::init(Bone& skel, const vector<ObjectAnimation>& anims)
+    {
+        animationActive = false;
+        animationTicks = 0;
+        skeleton = skel;
+        for (auto it = anims.begin(); it != anims.end(); ++it)
+            animations.emplace(it->name, *it);
+        // size of boneTransforms = number of bones
+        boneTransforms = vector<mat4>(Skeleton::count_bones(skeleton));
+    }
 
-	template<typename T>
-	int findNearestKeyIndex(vector<pair<float, T> > keys, float ticks)
-	{
-		int nearestKeyIndex = -1;
-		float smallestDistance = FLT_MAX;
-		for (size_t i = 0; i < keys.size(); ++i)
-		{
-			float dist = abs(keys[i].first - ticks);
-			if (dist < smallestDistance)
-			{
-				nearestKeyIndex = i;
-				smallestDistance = dist;
-			}
-		}
-		return nearestKeyIndex;
-	}
+    template<typename T>
+    int findNearestKeyIndex(vector<pair<float, T> > keys, float ticks)
+    {
+        int nearestKeyIndex = -1;
+        float smallestDistance = FLT_MAX;
+        for (size_t i = 0; i < keys.size(); ++i)
+        {
+            float dist = abs(keys[i].first - ticks);
+            if (dist < smallestDistance)
+            {
+                nearestKeyIndex = i;
+                smallestDistance = dist;
+            }
+        }
+        return nearestKeyIndex;
+    }
 
-	vec4 computeInterpolatedVec4Key(vector<pair<float, vec4> > keys, float ticks)
-	{
-		vec4 result;
+    vec4 computeInterpolatedVec4Key(vector<pair<float, vec4> > keys, float ticks)
+    {
+        vec4 result;
 
-		int nearestKeyIndex = findNearestKeyIndex(keys, ticks);
+        int nearestKeyIndex = findNearestKeyIndex(keys, ticks);
 
-		auto key = keys[nearestKeyIndex];
+        auto key = keys[nearestKeyIndex];
 
-		if (ticks <= key.first)
-		{
-			if (nearestKeyIndex == 0)
-				result = key.second;
-			else
-			{
-				auto predKey = keys[nearestKeyIndex - 1];
-				if (predKey.first == key.first)
-					result = predKey.second;
-				else
-				{
-					float a = (ticks - predKey.first) / (key.first - predKey.first);
-					result = mix(predKey.second, key.second, a);
-				}
-			}
-		}
-		else
-		{
-			if (nearestKeyIndex == keys.size() - 1)
-				result = key.second;
-			else
-			{
-				auto succKey = keys[nearestKeyIndex + 1];
-				if (succKey.first == key.first)
-					result = succKey.second;
-				else
-				{
-					float a = (ticks - key.first) / (succKey.first - key.first);
-					result = mix(key.second, succKey.second, a);
-				}
-			}
-		}
+        if (ticks <= key.first)
+        {
+            if (nearestKeyIndex == 0)
+                result = key.second;
+            else
+            {
+                auto predKey = keys[nearestKeyIndex - 1];
+                if (predKey.first == key.first)
+                    result = predKey.second;
+                else
+                {
+                    float a = (ticks - predKey.first) / (key.first - predKey.first);
+                    result = mix(predKey.second, key.second, a);
+                }
+            }
+        }
+        else
+        {
+            if (nearestKeyIndex == keys.size() - 1)
+                result = key.second;
+            else
+            {
+                auto succKey = keys[nearestKeyIndex + 1];
+                if (succKey.first == key.first)
+                    result = succKey.second;
+                else
+                {
+                    float a = (ticks - key.first) / (succKey.first - key.first);
+                    result = mix(key.second, succKey.second, a);
+                }
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	quat computeInterpolatedQuatKey(vector<pair<float, quat> > keys, float ticks)
-	{
-		quat result;
+    quat computeInterpolatedQuatKey(vector<pair<float, quat> > keys, float ticks)
+    {
+        quat result;
 
-		int nearestKeyIndex = findNearestKeyIndex(keys, ticks);
+        int nearestKeyIndex = findNearestKeyIndex(keys, ticks);
 
-		auto key = keys[nearestKeyIndex];
+        auto key = keys[nearestKeyIndex];
 
-		if (ticks <= key.first)
-		{
-			if (nearestKeyIndex == 0)
-				result = key.second;
-			else
-			{
-				auto predKey = keys[nearestKeyIndex - 1];
-				if (predKey.first == key.first)
-					result = predKey.second;
-				else
-				{
-					float a = (ticks - predKey.first) / (key.first - predKey.first);
-					result = lerp(predKey.second, key.second, a);
-				}
-			}
-		}
-		else
-		{
-			if (nearestKeyIndex == keys.size() - 1)
-				result = key.second;
-			else
-			{
-				auto succKey = keys[nearestKeyIndex + 1];
-				if (succKey.first == key.first)
-					result = succKey.second;
-				else
-				{
-					float a = (ticks - key.first) / (succKey.first - key.first);
-					result = lerp(key.second, succKey.second, a);
-				}
-			}
-		}
+        if (ticks <= key.first)
+        {
+            if (nearestKeyIndex == 0)
+                result = key.second;
+            else
+            {
+                auto predKey = keys[nearestKeyIndex - 1];
+                if (predKey.first == key.first)
+                    result = predKey.second;
+                else
+                {
+                    float a = (ticks - predKey.first) / (key.first - predKey.first);
+                    result = lerp(predKey.second, key.second, a);
+                }
+            }
+        }
+        else
+        {
+            if (nearestKeyIndex == keys.size() - 1)
+                result = key.second;
+            else
+            {
+                auto succKey = keys[nearestKeyIndex + 1];
+                if (succKey.first == key.first)
+                    result = succKey.second;
+                else
+                {
+                    float a = (ticks - key.first) / (succKey.first - key.first);
+                    result = lerp(key.second, succKey.second, a);
+                }
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	void AnimatedObject::computeBoneTransformsHelper(Bone& b)
-	{
-		// update transform and recursive call on each child
-		for (auto it = b.children.begin(); it != b.children.end(); ++it)
-		{
-			auto animation = it->animations[activeAnimation.name];
-			
-			auto pos = computeInterpolatedVec4Key(animation.positionKeys, animationTicks);
-			auto rot = computeInterpolatedQuatKey(animation.rotationKeys, animationTicks);
-			auto scal = computeInterpolatedVec4Key(animation.scaleKeys, animationTicks);
+    void AnimatedObject::computeBoneTransformsHelper(Bone& b)
+    {
+        // update transform and recursive call on each child
+        for (auto it = b.children.begin(); it != b.children.end(); ++it)
+        {
+            auto animation = it->animations[activeAnimation.name];
 
-			mat4 t = translate(vec3(pos.x, pos.y, pos.z));
-			mat4 r = mat4_cast(rot);
-			mat4 s = glm::scale(vec3(scal.x, scal.y, scal.z));
+            auto pos = computeInterpolatedVec4Key(animation.positionKeys, animationTicks);
+            auto rot = computeInterpolatedQuatKey(animation.rotationKeys, animationTicks);
+            auto scal = computeInterpolatedVec4Key(animation.scaleKeys, animationTicks);
 
-			boneTransforms[it->index] = boneTransforms[b.index] * (t * r * s);
+            mat4 t = translate(vec3(pos.x, pos.y, pos.z));
+            mat4 r = mat4_cast(rot);
+            mat4 s = glm::scale(vec3(scal.x, scal.y, scal.z));
 
-			computeBoneTransformsHelper(*it);
-		}
-	}
+            boneTransforms[it->index] = boneTransforms[b.index] * (t * r * s);
 
-	void AnimatedObject::computeBoneTransforms(Bone& b)
-	{
-		// compute b transform
+            computeBoneTransformsHelper(*it);
+        }
+    }
 
-		auto animation = b.animations[activeAnimation.name];
+    void AnimatedObject::computeBoneTransforms(Bone& b)
+    {
+        // compute b transform
 
-		auto pos = computeInterpolatedVec4Key(animation.positionKeys, animationTicks);
-		auto rot = computeInterpolatedQuatKey(animation.rotationKeys, animationTicks);
-		auto scal = computeInterpolatedVec4Key(animation.scaleKeys, animationTicks);
+        auto animation = b.animations[activeAnimation.name];
 
-		mat4 t = translate(vec3(pos.x, pos.y, pos.z));
-		mat4 r = mat4_cast(rot);
-		mat4 s = glm::scale(vec3(scal.x, scal.y, scal.z));
+        auto pos = computeInterpolatedVec4Key(animation.positionKeys, animationTicks);
+        auto rot = computeInterpolatedQuatKey(animation.rotationKeys, animationTicks);
+        auto scal = computeInterpolatedVec4Key(animation.scaleKeys, animationTicks);
 
-		boneTransforms[b.index] = t * r * s;
+        mat4 t = translate(vec3(pos.x, pos.y, pos.z));
+        mat4 r = mat4_cast(rot);
+        mat4 s = glm::scale(vec3(scal.x, scal.y, scal.z));
 
-		// recursively compute children bone transforms
-		computeBoneTransformsHelper(b);
-	}
-	
-	void AnimatedObject::concatenateBindPoseInverses(Bone& b)
-	{
-		boneTransforms[b.index] = boneTransforms[b.index] * b.inverseBindPose; /** inverse(b.bindPose);*/
-		for (auto it = b.children.begin(); it != b.children.end(); ++it)
-			concatenateBindPoseInverses(*it);
-	}
+        boneTransforms[b.index] = t * r * s;
+
+        // recursively compute children bone transforms
+        computeBoneTransformsHelper(b);
+    }
+
+    void AnimatedObject::concatenateBindPoseInverses(Bone& b)
+    {
+        boneTransforms[b.index] = boneTransforms[b.index] * b.inverseBindPose; /** inverse(b.bindPose);*/
+        for (auto it = b.children.begin(); it != b.children.end(); ++it)
+            concatenateBindPoseInverses(*it);
+    }
 }

@@ -12,16 +12,16 @@
 
 namespace puddi
 {
-	namespace FpsTracker
-	{
-		void Update();
+    namespace FpsTracker
+    {
+        void Update();
 
-		int GetFrameTimeMs();
+        int GetFrameTimeMs();
 
-		int GetFps();
+        int GetFps();
 
-		void Reset();
-	};
+        void Reset();
+    };
 }
 
 #endif

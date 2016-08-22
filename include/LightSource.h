@@ -18,33 +18,33 @@
 
 namespace puddi
 {
-	class LightSource
-	{
-	public:
-		static void Init();
+    class LightSource
+    {
+    public:
+        static void Init();
 
-		static LightSource* ObtainLightSource();
+        static LightSource* ObtainLightSource();
 
-		static void ReleaseLightSource(LightSource *l);
+        static void ReleaseLightSource(LightSource *l);
 
-		static void UpdateLightSourceMatricesInShaders();
+        static void UpdateLightSourceMatricesInShaders();
 
-		vec4 ambient;
-		vec4 diffuse;
-		vec4 specular;
-		vec4 position;
+        vec4 ambient;
+        vec4 diffuse;
+        vec4 specular;
+        vec4 position;
 
-		void UpdateMatrix();
+        void UpdateMatrix();
 
-	private:
-		static LightSource *lightSources[NUM_LIGHT_SOURCES];
-		static GLfloat lightSourceMatrices[NUM_LIGHT_SOURCES * 16];
+    private:
+        static LightSource *lightSources[NUM_LIGHT_SOURCES];
+        static GLfloat lightSourceMatrices[NUM_LIGHT_SOURCES * 16];
 
-		int index;
-		bool used;
+        int index;
+        bool used;
 
-		LightSource(int i);
-	};
+        LightSource(int i);
+    };
 }
 
 #endif

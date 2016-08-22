@@ -5,19 +5,19 @@
 
 namespace puddi
 {
-	class Skybox : public DrawableObject
-	{
-	public:
-		static void Init();
+    class Skybox : public DrawableObject
+    {
+    public:
+        static void Init();
 
-		Skybox(Object *par);
+        Skybox(Object *par);
 
-		//void Draw() const;
+        //void Draw() const;
 
-	private:
+    private:
 
-		static void createPrototypeVertices();
-	};
+        static void createPrototypeVertices();
+    };
 }
 
 #endif

@@ -19,25 +19,25 @@
 
 namespace puddi
 {
-	class Object;
+    class Object;
 
-	struct ModelNode
-	{
-		ModelNode *parent;
-		std::vector<ModelNode*> children;
-		Object *object;
-		bool parallel;
+    struct ModelNode
+    {
+        ModelNode *parent;
+        std::vector<ModelNode*> children;
+        Object *object;
+        bool parallel;
 
-		ModelNode(ModelNode *par, Object *o);
+        ModelNode(ModelNode *par, Object *o);
 
-		~ModelNode();
+        ~ModelNode();
 
-		void Update();
+        void Update();
 
-		void AddChild(ModelNode *child);
+        void AddChild(ModelNode *child);
 
-		void RemoveChild(ModelNode *child);
-	};
+        void RemoveChild(ModelNode *child);
+    };
 }
 
 #endif

@@ -5,19 +5,19 @@
 
 namespace puddi
 {
-	class Rectangle : public DrawableObject
-	{
-	public:
-		static void Init();
+    class Rectangle : public DrawableObject
+    {
+    public:
+        static void Init();
 
-		Rectangle(Object *par);
+        Rectangle(Object *par);
 
-		//void Draw() const;
+        //void Draw() const;
 
-	private:
+    private:
 
-		static void createPrototypeVertices();
-	};
+        static void createPrototypeVertices();
+    };
 }
 
 #endif

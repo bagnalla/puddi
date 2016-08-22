@@ -10,10 +10,10 @@ namespace puddi
         namespace
         {
             int last_frame_time, // timestamp of the previous frame
-			frame_counter, // frame counter for tracking fps
-			frame_time_accum, // time accumulator for tracking fps
-			fps, // frames per second
-			frameTimeMs; // elapsed milliseconds since previous frame
+            frame_counter, // frame counter for tracking fps
+            frame_time_accum, // time accumulator for tracking fps
+            fps, // frames per second
+            frameTimeMs; // elapsed milliseconds since previous frame
         }
 
         // PUBLIC

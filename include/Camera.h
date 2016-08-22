@@ -6,40 +6,40 @@
 
 namespace puddi
 {
-	class Player;
+    class Player;
 
-	class Camera : public Object
-	{
-	public:
-		Camera(Object *par);
+    class Camera : public Object
+    {
+    public:
+        Camera(Object *par);
 
-		void Update();
+        void Update();
 
-		float GetZoomOut() const;
+        float GetZoomOut() const;
 
-		void SetZoomOut(float z);
+        void SetZoomOut(float z);
 
-		vec4 GetLookDirection() const;
+        vec4 GetLookDirection() const;
 
-		void SetLookDirection(const vec3& lookDir);
+        void SetLookDirection(const vec3& lookDir);
 
-		void LookAt(const vec4& pos);
+        void LookAt(const vec4& pos);
 
-		void RotateX(float x);
+        void RotateX(float x);
 
-		void InputEvent(SDL_Event ev);
+        void InputEvent(SDL_Event ev);
 
-	private:
-		bool holdingW, holdingA, holdingS, holdingD, holdingZ, holdingSpace;
-		vec3 lookTheta; // rotation values of the camera
-		vec4 lookDirection; // look direction vector of the camera
-		mat4 lookRotation;
-		float zoomOut; // zoom out value
+    private:
+        bool holdingW, holdingA, holdingS, holdingD, holdingZ, holdingSpace;
+        vec3 lookTheta; // rotation values of the camera
+        vec4 lookDirection; // look direction vector of the camera
+        mat4 lookRotation;
+        float zoomOut; // zoom out value
 
-		void move();
+        void move();
 
-		void updateGameCamera();
-	};
+        void updateGameCamera();
+    };
 }
 
 #endif

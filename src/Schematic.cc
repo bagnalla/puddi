@@ -35,7 +35,7 @@ namespace puddi
                 node->mTransformation.DecomposeB(scaling, rotation, position);*/
 
                 // TRANSFORM
-				schematicNode->transform = Util::Mat4OfAiMat4(node->mTransformation);
+                schematicNode->transform = Util::Mat4OfAiMat4(node->mTransformation);
 
                 // may be multiple meshes per node (transform shared among them)
                 for (uint i = 0; i < node->mNumMeshes; ++i)
@@ -228,9 +228,9 @@ namespace puddi
                     // CREATE AND ADD MESH OBJECT TO SCHEMATIC
                     //VertexMesh vMesh(NULL, Material::Rubber(vec4(1.0f, 1.0f, 1.0f, 1.0f)), indexOffset, indexCount, false);
                     VertexMesh vMesh(NULL, Material::None(), indexOffset, indexCount, false);
-					set<char> delims = { '\\', '/' };
-					string texName = Util::splitpath(texturePath.C_Str(), delims).back();
-					string bumpName = Util::splitpath(bumpMapPath.C_Str(), delims).back();
+                    set<char> delims = { '\\', '/' };
+                    string texName = Util::splitpath(texturePath.C_Str(), delims).back();
+                    string bumpName = Util::splitpath(bumpMapPath.C_Str(), delims).back();
                     if (texName != "")
                     {
                         string texPath = "textures/" + (subdirectory != "" ? subdirectory + "/" : "") + texName;

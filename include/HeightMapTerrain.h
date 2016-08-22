@@ -10,12 +10,12 @@
 
 namespace puddi
 {
-	class TerrainVertexMesh;
+    class TerrainVertexMesh;
 
-	namespace HeightMapTerrain
-	{
-		TerrainVertexMesh CreateTerrainMeshFromFile(const char *fileName, float texWidth, float texHeight, float scaleZ);
-	};
+    namespace HeightMapTerrain
+    {
+        TerrainVertexMesh CreateTerrainMeshFromFile(const char *fileName, float texWidth, float texHeight, float scaleZ);
+    };
 }
 
 #endif

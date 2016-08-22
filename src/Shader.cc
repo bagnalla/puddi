@@ -345,13 +345,13 @@ namespace puddi
                 glEnableVertexAttribArray(vTextureCoordinateLoc);
                 glVertexAttribPointer(vTextureCoordinateLoc, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size()));
 
-				GLuint vBoneIndicesLoc = glGetAttribLocation(program, "vBoneIndices");
-				glEnableVertexAttribArray(vBoneIndicesLoc);
-				glVertexAttribPointer(vBoneIndicesLoc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec2)*TextureCoordinates.size()));
+                GLuint vBoneIndicesLoc = glGetAttribLocation(program, "vBoneIndices");
+                glEnableVertexAttribArray(vBoneIndicesLoc);
+                glVertexAttribPointer(vBoneIndicesLoc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec2)*TextureCoordinates.size()));
 
-				GLuint vBoneWeightsLoc = glGetAttribLocation(program, "vBoneWeights");
-				glEnableVertexAttribArray(vBoneWeightsLoc);
-				glVertexAttribPointer(vBoneWeightsLoc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec2)*TextureCoordinates.size() + sizeof(vec4)*BoneIndices.size()));
+                GLuint vBoneWeightsLoc = glGetAttribLocation(program, "vBoneWeights");
+                glEnableVertexAttribArray(vBoneWeightsLoc);
+                glVertexAttribPointer(vBoneWeightsLoc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vec4)*Vertices.size() + sizeof(vec4)*Normals.size() + sizeof(vec4)*Tangents.size() + sizeof(vec4)*Binormals.size() + sizeof(vec2)*TextureCoordinates.size() + sizeof(vec4)*BoneIndices.size()));
 
 
                 // get uniform locations
@@ -367,7 +367,7 @@ namespace puddi
                 uniformMap.emplace("materialShininess", getUniform(program, "materialShininess"));
                 uniformMap.emplace("tex", getUniform(program, "tex"));
                 uniformMap.emplace("textureBlend", getUniform(program, "textureBlend"));
-				uniformMap.emplace("boneTransformTex", getUniform(program, "boneTransformTex"));
+                uniformMap.emplace("boneTransformTex", getUniform(program, "boneTransformTex"));
                 if (shaderVersion >= 2.0f)
                 {
                     uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
@@ -384,7 +384,7 @@ namespace puddi
                 glUseProgram(program);
                 glUniform1i(uniformMap["tex"], TEXTURE_2D);
                 glUniform1i(uniformMap["textureBlend"], 1);
-				glUniform1i(uniformMap["boneTransformTex"], TEXTURE_BONE_TRANSFORM);
+                glUniform1i(uniformMap["boneTransformTex"], TEXTURE_BONE_TRANSFORM);
                 if (shaderVersion >= 2.0f)
                 {
                     glUniform1i(uniformMap["shadowMode"], 0);
@@ -452,8 +452,8 @@ namespace puddi
                 uniformMap.emplace("materialShininess", getUniform(program, "materialShininess"));
                 uniformMap.emplace("tex", getUniform(program, "tex"));
                 uniformMap.emplace("textureBlend", getUniform(program, "textureBlend"));
-				uniformMap.emplace("bumpTex", getUniform(program, "bumpTex"));
-				uniformMap.emplace("boneTransformTex", getUniform(program, "boneTransformTex"));
+                uniformMap.emplace("bumpTex", getUniform(program, "bumpTex"));
+                uniformMap.emplace("boneTransformTex", getUniform(program, "boneTransformTex"));
                 if (shaderVersion >= 2.0f)
                 {
                     uniformMap.emplace("shadowZRange", getUniform(program, "shadowZRange"));
@@ -470,8 +470,8 @@ namespace puddi
                 glUseProgram(program);
                 glUniform1i(uniformMap["tex"], TEXTURE_2D);
                 glUniform1i(uniformMap["textureBlend"], 1);
-				glUniform1i(uniformMap["bumpTex"], TEXTURE_2D_BUMP);
-				glUniform1i(uniformMap["boneTransformTex"], TEXTURE_BONE_TRANSFORM);
+                glUniform1i(uniformMap["bumpTex"], TEXTURE_2D_BUMP);
+                glUniform1i(uniformMap["boneTransformTex"], TEXTURE_BONE_TRANSFORM);
                 if (shaderVersion >= 2.0f)
                 {
                     glUniform1i(uniformMap["shadowTex"], TEXTURE_SHADOW_2D);
@@ -717,14 +717,14 @@ namespace puddi
         // PUBLIC
 
         std::vector<vec4> Vertices;
-		std::vector<vec4> Normals;
-		std::vector<vec4> Tangents;
-		std::vector<vec4> Binormals;
-		std::vector<vec2> TextureCoordinates;
-		std::vector<vec4> BoneIndices;
-		std::vector<vec4> BoneWeights;
+        std::vector<vec4> Normals;
+        std::vector<vec4> Tangents;
+        std::vector<vec4> Binormals;
+        std::vector<vec2> TextureCoordinates;
+        std::vector<vec4> BoneIndices;
+        std::vector<vec4> BoneWeights;
 
-		std::vector<uint> VertexIndices;
+        std::vector<uint> VertexIndices;
 
         void Init()
         {

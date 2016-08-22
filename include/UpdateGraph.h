@@ -5,25 +5,25 @@
 
 namespace puddi
 {
-	class Object;
+    class Object;
 
-	struct UpdateNode
-	{
-		UpdateNode *parent;
-		std::vector<UpdateNode*> children;
-		Object *object;
-		bool parallel;
+    struct UpdateNode
+    {
+        UpdateNode *parent;
+        std::vector<UpdateNode*> children;
+        Object *object;
+        bool parallel;
 
-		UpdateNode(UpdateNode *par, Object *o);
+        UpdateNode(UpdateNode *par, Object *o);
 
-		~UpdateNode();
+        ~UpdateNode();
 
-		void Update();
+        void Update();
 
-		void AddChild(UpdateNode *child);
+        void AddChild(UpdateNode *child);
 
-		void RemoveChild(UpdateNode *child);
-	};
+        void RemoveChild(UpdateNode *child);
+    };
 }
 
 #endif

@@ -10,16 +10,16 @@
 
 namespace puddi
 {
-	struct SchematicNode
-	{
-		mat4 transform;
-		std::vector<VertexMesh> vertexMeshes;
+    struct SchematicNode
+    {
+        mat4 transform;
+        std::vector<VertexMesh> vertexMeshes;
 
-		std::vector<SchematicNode*> children;
-	};
+        std::vector<SchematicNode*> children;
+    };
 
-	namespace Schematic
-	{
+    namespace Schematic
+    {
         void Init();
 
         void Cleanup();
@@ -27,7 +27,7 @@ namespace puddi
         int LoadSchematic(const char *filepath, const std::string& name, const std::string& subdirectory = "");
 
         SchematicNode* GetSchematicByName(const std::string& name);
-	};
+    };
 }
 
 #endif

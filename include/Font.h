@@ -19,12 +19,12 @@ namespace puddi
     class Object;
     class DrawableObject;
 
-	namespace Font
-	{
+    namespace Font
+    {
         void Init();
 
         std::vector<DrawableObject*> CreateGlyphString(Object *rootObject, std::string font, std::string str, float scale = 1.0f);
-	};
+    };
 }
 
 #endif

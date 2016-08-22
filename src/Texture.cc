@@ -23,44 +23,44 @@ namespace puddi
             std::unordered_map<std::string, GLuint> cubeMapFileMap;
             std::unordered_map<GLuint, GLuint> cubeBumpMapMap;
 
-        //	GLuint loadTexture(const char *path)
-        //	{
-        //		if (path == nullptr)
-        //			return 0;
+        //  GLuint loadTexture(const char *path)
+        //  {
+        //      if (path == nullptr)
+        //          return 0;
         //
-        //		SDL_Surface *surface = IMG_Load(path);
+        //      SDL_Surface *surface = IMG_Load(path);
         //
-        //		if (surface == NULL)
-        //		{
-        //			std::cerr << "unable to load file " << path << ". error: " << IMG_GetError() << std::endl;
-        //			return 0;
-        //		}
+        //      if (surface == NULL)
+        //      {
+        //          std::cerr << "unable to load file " << path << ". error: " << IMG_GetError() << std::endl;
+        //          return 0;
+        //      }
         //
-        //		GLint internalFormat = GL_RGB;
-        //		if (surface->format->BytesPerPixel == 4)
-        //			internalFormat = GL_RGBA;
+        //      GLint internalFormat = GL_RGB;
+        //      if (surface->format->BytesPerPixel == 4)
+        //          internalFormat = GL_RGBA;
         //
-        //		GLint format;
-        //		if (strcmp(strrchr(path, '.'), ".tga"))
-        //		{
-        //			format = GL_RGB;
-        //			if (surface->format->BytesPerPixel == 4)
-        //				format = GL_RGBA;
-        //		}
-        //		else
-        //		{
-        //			format = GL_BGR;
-        //			if (surface->format->BytesPerPixel == 4)
-        //				format = GL_BGRA;
-        //		}
+        //      GLint format;
+        //      if (strcmp(strrchr(path, '.'), ".tga"))
+        //      {
+        //          format = GL_RGB;
+        //          if (surface->format->BytesPerPixel == 4)
+        //              format = GL_RGBA;
+        //      }
+        //      else
+        //      {
+        //          format = GL_BGR;
+        //          if (surface->format->BytesPerPixel == 4)
+        //              format = GL_BGRA;
+        //      }
         //
-        //		GLuint tex = loadTextureFromSurface(surface, internalFormat, format);
+        //      GLuint tex = loadTextureFromSurface(surface, internalFormat, format);
         //
-        //		// free the surface resource
-        //		SDL_FreeSurface(surface);
+        //      // free the surface resource
+        //      SDL_FreeSurface(surface);
         //
-        //		return tex;
-        //	}
+        //      return tex;
+        //  }
 
         GLuint loadTexture(const char *path)
             {
@@ -131,43 +131,43 @@ namespace puddi
                 return texture;
             }
 
-        //	GLuint loadTextureFromSurface(SDL_Surface *surface, GLint internalFormat, GLint format)
-        //	{
-        //		GLuint texture;
+        //  GLuint loadTextureFromSurface(SDL_Surface *surface, GLint internalFormat, GLint format)
+        //  {
+        //      GLuint texture;
         //
-        //		glGenTextures(1, &texture);             // Generate a texture
-        //		glBindTexture(GL_TEXTURE_2D, texture); // Bind that texture temporarily
+        //      glGenTextures(1, &texture);             // Generate a texture
+        //      glBindTexture(GL_TEXTURE_2D, texture); // Bind that texture temporarily
         //
-        //		if (texture == 0)
-        //		{
-        //			std::cerr << "unable to get a free texture ID from opengl\n";
-        //			return texture;
-        //		}
+        //      if (texture == 0)
+        //      {
+        //          std::cerr << "unable to get a free texture ID from opengl\n";
+        //          return texture;
+        //      }
         //
-        //		//return createTextureFromBitmap(surface->pixels, surface->w, surface->h, format);
+        //      //return createTextureFromBitmap(surface->pixels, surface->w, surface->h, format);
         //
-        //		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, surface->w, surface->h, 0, format, GL_UNSIGNED_BYTE, surface->pixels);
+        //      glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, surface->w, surface->h, 0, format, GL_UNSIGNED_BYTE, surface->pixels);
         //
-        //		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        //		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        //		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-        //		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-        //		// When MAGnifying the image (no bigger mipmap available), use LINEAR filtering
-        //		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        //		// When MINifying the image, use a LINEAR blend of two mipmaps, each filtered LINEARLY too
-        //		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        //		// Generate mipmaps, by the way.
-        //		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-        //		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-        //		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        //		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        //		glGenerateMipmap(GL_TEXTURE_2D);
+        //      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        //      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        //      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+        //      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+        //      // When MAGnifying the image (no bigger mipmap available), use LINEAR filtering
+        //      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        //      // When MINifying the image, use a LINEAR blend of two mipmaps, each filtered LINEARLY too
+        //      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        //      // Generate mipmaps, by the way.
+        //      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        //      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+        //      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        //      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        //      glGenerateMipmap(GL_TEXTURE_2D);
         //
-        //		// Unbind the texture
-        //		glBindTexture(GL_TEXTURE_2D, 0);
+        //      // Unbind the texture
+        //      glBindTexture(GL_TEXTURE_2D, 0);
         //
-        //		return texture;
-        //	}
+        //      return texture;
+        //  }
 
             GLuint loadCubeMap(const char *path)
             {
@@ -183,22 +183,22 @@ namespace puddi
                 }
 
         //        GLint internalFormat = GL_RGB8;
-        //		if (surface->format->BytesPerPixel == 4)
-        //			internalFormat = GL_RGBA8;
+        //      if (surface->format->BytesPerPixel == 4)
+        //          internalFormat = GL_RGBA8;
 
-        //		GLint format;
-        //		if (strcmp(strrchr(path, '.'), ".tga"))
-        //		{
-        //			format = GL_RGB;
-        //			if (surface->format->BytesPerPixel == 4)
-        //				format = GL_RGBA;
-        //		}
-        //		else
-        //		{
-        //			format = GL_BGR;
-        //			if (surface->format->BytesPerPixel == 4)
-        //				format = GL_BGRA;
-        //		}
+        //      GLint format;
+        //      if (strcmp(strrchr(path, '.'), ".tga"))
+        //      {
+        //          format = GL_RGB;
+        //          if (surface->format->BytesPerPixel == 4)
+        //              format = GL_RGBA;
+        //      }
+        //      else
+        //      {
+        //          format = GL_BGR;
+        //          if (surface->format->BytesPerPixel == 4)
+        //              format = GL_BGRA;
+        //      }
 
                 GLuint cubeMap;
                 glGenTextures(1, &cubeMap);

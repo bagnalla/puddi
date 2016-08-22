@@ -118,13 +118,13 @@ namespace puddi
 
         // PUBLIC
 
-    	float WorldSize;
-    	float ViewDistance;
-    	float FOV = static_cast<float>(M_PI / 4.0f);
+        float WorldSize;
+        float ViewDistance;
+        float FOV = static_cast<float>(M_PI / 4.0f);
 
-    	mat4 ProjectionMatrix;
-    	mat4 CameraMatrix;
-    	vec4 CameraPosition;
+        mat4 ProjectionMatrix;
+        mat4 CameraMatrix;
+        vec4 CameraPosition;
 
         Camera* MainCamera;
 
@@ -163,7 +163,7 @@ namespace puddi
             glEnable(GL_MULTISAMPLE);
 
             //SDL_GL_MakeCurrent(window, glcontext);
-            //glewExperimental = GL_TRUE;
+            glewExperimental = GL_TRUE; // needed to use glTexBuffer on OpenGL 3.0 (for buffer texture)
             if (glewInit() != GLEW_OK)
             {
                 std::cerr << "GLEW failed to load.\n";
@@ -184,7 +184,7 @@ namespace puddi
             Shadow::Init();
             EnvironmentMap::Init();
             Schematic::Init();
-			Skeleton::Init();
+            Skeleton::Init();
             Font::Init();
 
             rootUpdateNode = rootObject->GetUpdateNode();
