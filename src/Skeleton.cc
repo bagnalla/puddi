@@ -201,7 +201,7 @@ namespace puddi
 			// create and bind buffer
 			glGenBuffers(1, &boneTransformBuffer);
 			glBindBuffer(GL_TEXTURE_BUFFER, boneTransformBuffer);
-			glBufferData(GL_TEXTURE_BUFFER, pow(2, 20), nullptr, GL_DYNAMIC_DRAW);
+			glBufferData(GL_TEXTURE_BUFFER, pow(2.0f, 20.0f), nullptr, GL_DYNAMIC_DRAW);
 
 			// create and bind texture
 			glGenTextures(1, &boneTransformTexture);
