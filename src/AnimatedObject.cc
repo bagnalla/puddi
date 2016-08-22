@@ -1,6 +1,7 @@
 #include "AnimatedObject.h"
 #include "Skeleton.h"
 #include "FpsTracker.h"
+#include <functional>
 
 #include <iostream>
 
@@ -87,10 +88,8 @@ namespace puddi
 	}
 
 	template<typename T>
-	T computeInterpolatedKey(vector<pair<float, T> > keys, float ticks)
+	int findNearestKeyIndex(vector<pair<float, T> > keys, float ticks)
 	{
-		T result;
-
 		int nearestKeyIndex = -1;
 		float smallestDistance = FLT_MAX;
 		for (size_t i = 0; i < keys.size(); ++i)
@@ -102,6 +101,14 @@ namespace puddi
 				smallestDistance = dist;
 			}
 		}
+		return nearestKeyIndex;
+	}
+
+	vec4 computeInterpolatedVec4Key(vector<pair<float, vec4> > keys, float ticks)
+	{
+		vec4 result;
+
+		int nearestKeyIndex = findNearestKeyIndex(keys, ticks);
 
 		auto key = keys[nearestKeyIndex];
 
@@ -141,16 +148,60 @@ namespace puddi
 		return result;
 	}
 
+	quat computeInterpolatedQuatKey(vector<pair<float, quat> > keys, float ticks)
+	{
+		quat result;
+
+		int nearestKeyIndex = findNearestKeyIndex(keys, ticks);
+
+		auto key = keys[nearestKeyIndex];
+
+		if (ticks <= key.first)
+		{
+			if (nearestKeyIndex == 0)
+				result = key.second;
+			else
+			{
+				auto predKey = keys[nearestKeyIndex - 1];
+				if (predKey.first == key.first)
+					result = predKey.second;
+				else
+				{
+					float a = (ticks - predKey.first) / (key.first - predKey.first);
+					result = lerp(predKey.second, key.second, a);
+				}
+			}
+		}
+		else
+		{
+			if (nearestKeyIndex == keys.size() - 1)
+				result = key.second;
+			else
+			{
+				auto succKey = keys[nearestKeyIndex + 1];
+				if (succKey.first == key.first)
+					result = succKey.second;
+				else
+				{
+					float a = (ticks - key.first) / (succKey.first - key.first);
+					result = lerp(key.second, succKey.second, a);
+				}
+			}
+		}
+
+		return result;
+	}
+
 	void AnimatedObject::computeBoneTransformsHelper(Bone& b)
 	{
 		// update transform and recursive call on each child
 		for (auto it = b.children.begin(); it != b.children.end(); ++it)
 		{
 			auto animation = it->animations[activeAnimation.name];
-
-			auto pos = computeInterpolatedKey(animation.positionKeys, animationTicks);
-			auto rot = computeInterpolatedKey(animation.rotationKeys, animationTicks);
-			auto scal = computeInterpolatedKey(animation.scaleKeys, animationTicks);
+			
+			auto pos = computeInterpolatedVec4Key(animation.positionKeys, animationTicks);
+			auto rot = computeInterpolatedQuatKey(animation.rotationKeys, animationTicks);
+			auto scal = computeInterpolatedVec4Key(animation.scaleKeys, animationTicks);
 
 			mat4 t = translate(vec3(pos.x, pos.y, pos.z));
 			mat4 r = mat4_cast(rot);
@@ -166,13 +217,14 @@ namespace puddi
 	{
 		// compute b transform
 
-		vec4 pos = b.animations[activeAnimation.name].positionKeys[0].second;
+		auto animation = b.animations[activeAnimation.name];
+
+		auto pos = computeInterpolatedVec4Key(animation.positionKeys, animationTicks);
+		auto rot = computeInterpolatedQuatKey(animation.rotationKeys, animationTicks);
+		auto scal = computeInterpolatedVec4Key(animation.scaleKeys, animationTicks);
+
 		mat4 t = translate(vec3(pos.x, pos.y, pos.z));
-
-		quat rot = b.animations[activeAnimation.name].rotationKeys[0].second;
 		mat4 r = mat4_cast(rot);
-
-		vec4 scal = b.animations[activeAnimation.name].scaleKeys[0].second;
 		mat4 s = glm::scale(vec3(scal.x, scal.y, scal.z));
 
 		boneTransforms[b.index] = t * r * s;
