@@ -24,10 +24,50 @@ uniform samplerBuffer boneTransformTex;
 
 void main()
 {
-	mat4 boneTransform1 = mat4(texelFetch(boneTransformTex, (int)vBoneIndices.x + 0), texelFetch(boneTransformTex, 1), texelFetch(boneTransformTex, 2), texelFetch(boneTransformTex, 3));
+	vec4 skinnedPos = vec4(0.0, 0.0, 0.0, 0.0);
+
+	if (int(vBoneIndices.x) >= 0)
+	{
+		mat4 boneTransform = mat4(	texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 0),
+									texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 1),
+									texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 2),
+									texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 3));
+		skinnedPos += vBoneWeights.x * boneTransform * vPosition;
+
+		if (int(vBoneIndices.y) >= 0)
+        {
+            mat4 boneTransform = mat4(	texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 0),
+                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 1),
+                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 2),
+                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 3));
+            skinnedPos += vBoneWeights.y * boneTransform * vPosition;
+        }
+
+        if (int(vBoneIndices.z) >= 0)
+        {
+            mat4 boneTransform = mat4(	texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 0),
+                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 1),
+                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 2),
+                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 3));
+            skinnedPos += vBoneWeights.z * boneTransform * vPosition;
+        }
+
+        if (int(vBoneIndices.w) >= 0)
+        {
+            mat4 boneTransform = mat4(	texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 0),
+                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 1),
+                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 2),
+                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 3));
+            skinnedPos += vBoneWeights.w * boneTransform * vPosition;
+        }
+	}
+	else
+	{
+		skinnedPos = vPosition;
+	}
 
 	// compute vPosition in world space
-	vec4 vPositionWorld = model * vPosition;
+	vec4 vPositionWorld = model * skinnedPos;
 
 	inverseTBN = mat4(vTangent, vBinormal, vNormal, vec4(0.0, 0.0, 0.0, 0.0));
 

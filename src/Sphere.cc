@@ -28,7 +28,7 @@ namespace puddi
 		std::vector<vec4> binormals;
 		std::vector<vec4> sphere = Geometry::CreateSphere(15.0f, tangents, binormals);
 		std::vector<vec4> normals = Geometry::CreateSphereNormals(sphere);
-		std::vector<vec4> empty = std::vector<vec4>(sphere.size());
+		std::vector<vec4> empty = std::vector<vec4>(sphere.size(), vec4(-1, -1, -1, -1));
 
 		// sphere texture coordinates
 		std::vector<vec2> texCoords;

@@ -39,7 +39,7 @@ namespace puddi
 		std::vector<vec4> tangents = Geometry::CreateCubeTangents();
 		std::vector<vec4> binormals = Geometry::CreateCubeBiNormals();
 		std::vector<vec2> texCoords = Geometry::CreateSkyboxTextureCoordinates();
-		std::vector<vec4> empty = std::vector<vec4>(cube.size());
+		std::vector<vec4> empty = std::vector<vec4>(cube.size(), vec4(-1, -1, -1, -1));
 
 		int vertexOffset = Shader::Vertices.size();
 		int indexOffset = Shader::VertexIndices.size();

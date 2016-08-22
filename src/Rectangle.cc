@@ -43,7 +43,7 @@ namespace puddi
 		std::vector<vec4> tangents({ vec4(1.0, 0.0, 0.0, 0.0), vec4(1.0, 0.0, 0.0, 0.0), vec4(1.0, 0.0, 0.0, 0.0), vec4(1.0, 0.0, 0.0, 0.0) });
 		std::vector<vec4> binormals({ vec4(0.0, 1.0, 0.0, 0.0), vec4(0.0, 1.0, 0.0, 0.0), vec4(0.0, 1.0, 0.0, 0.0), vec4(0.0, 1.0, 0.0, 0.0) });
 		std::vector<vec2> texCoords = Util::Vec4toVec2(Util::TransformVertices(rect, translate(vec3(0.5f, 0.5f, 0.0f)) * glm::scale(vec3(1.0, 1.0, 1.0))));
-		std::vector<vec4> empty = std::vector<vec4>(rect.size());
+		std::vector<vec4> empty = std::vector<vec4>(rect.size(), vec4(-1, -1, -1, -1));
 
 		int vertexOffset = Shader::Vertices.size();
 		int indexOffset = Shader::VertexIndices.size();
