@@ -134,6 +134,9 @@ namespace puddi
             Shader::Binormals.insert(Shader::Binormals.end(), binormals.begin(), binormals.end());
             Shader::TextureCoordinates.insert(Shader::TextureCoordinates.end(), textureCoords.begin(), textureCoords.end());
             Shader::VertexIndices.insert(Shader::VertexIndices.end(), indices.begin(), indices.end());
+            auto empty = std::vector<vec4>(vertices.size(), vec4(-1, -1, -1, -1));
+            Shader::BoneIndices.insert(Shader::BoneIndices.end(), empty.begin(), empty.end());
+            Shader::BoneWeights.insert(Shader::BoneWeights.end(), empty.begin(), empty.end());
 
             TerrainVertexMesh mesh = TerrainVertexMesh(Material::Plastic(vec4(0.5f, 0.5f, 0.5f, 1.0f)), indexOffset, indices.size());
             mesh.SetGroundCoordZ(0.0f);

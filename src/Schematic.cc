@@ -140,7 +140,7 @@ namespace puddi
                         // iterate over the vertex->bone mapping and create the vec4s to put in the vertex attribute array
                         for (auto it = vertexBones.begin(); it != vertexBones.end(); ++it)
                         {
-                            vec4 vBoneIndices = vec4(-1, -1, -1, -1);
+                            vec4 vBoneIndices = vec4(-1.0f, -1.0f, -1.0f, -1.0f);
                             vec4 vBoneWeights = vec4(0.0f, 0.0f, 0.0f, 0.0f);
                             // up to four bones
                             for (size_t k = 0; k < 4; ++k)
