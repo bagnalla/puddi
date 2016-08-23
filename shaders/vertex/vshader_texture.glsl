@@ -22,53 +22,69 @@ uniform samplerBuffer boneTransformTex;
 
 void main()
 {
+    // SKINNING
+
 	vec4 skinnedPos = vec4(0.0, 0.0, 0.0, 0.0);
+	vec4 skinnedNorm = vec4(0.0, 0.0, 0.0, 0.0);
 
 	if (int(vBoneIndices.x) >= 0)
 	{
-		mat4 boneTransform = mat4(	texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 0),
-									texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 1),
-									texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 2),
-									texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 3));
-		skinnedPos += vBoneWeights.x * boneTransform * vPosition;
+	    // need to try just summing up the transforms and applying to vPosition at the end.
+	    // it woud be faster I think but I'm not sure if it would actually work
+        mat4 boneTransform = vBoneWeights.x * mat4(
+            texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 0),
+            texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 1),
+            texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 2),
+            texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 3));
+        skinnedPos += boneTransform * vPosition;
+        skinnedNorm += boneTransform * vNormal;
 
 		if (int(vBoneIndices.y) >= 0)
         {
-            mat4 boneTransform = mat4(	texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 0),
-                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 1),
-                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 2),
-                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 3));
-            skinnedPos += vBoneWeights.y * boneTransform * vPosition;
+            mat4 boneTransform = vBoneWeights.y * mat4(
+                texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 0),
+                texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 1),
+                texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 2),
+                texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 3));
+            skinnedPos += boneTransform * vPosition;
+            skinnedNorm += boneTransform * vNormal;
         }
 
         if (int(vBoneIndices.z) >= 0)
         {
-            mat4 boneTransform = mat4(	texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 0),
-                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 1),
-                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 2),
-                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 3));
-            skinnedPos += vBoneWeights.z * boneTransform * vPosition;
+            mat4 boneTransform = vBoneWeights.z * mat4(
+                texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 0),
+                texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 1),
+                texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 2),
+                texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 3));
+            skinnedPos += boneTransform * vPosition;
+            skinnedNorm += boneTransform * vNormal;
         }
 
         if (int(vBoneIndices.w) >= 0)
         {
-            mat4 boneTransform = mat4(	texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 0),
-                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 1),
-                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 2),
-                                        texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 3));
-            skinnedPos += vBoneWeights.w * boneTransform * vPosition;
+            mat4 boneTransform = vBoneWeights.w * mat4(
+                texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 0),
+                texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 1),
+                texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 2),
+                texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 3));
+            skinnedPos += boneTransform * vPosition;
+            skinnedNorm += boneTransform * vNormal;
         }
 	}
 	else
 	{
 		skinnedPos = vPosition;
+		skinnedNorm = vNormal;
 	}
+
+	// END SKINNING
 
 	// compute vPosition in world space
 	vec4 vPositionWorld = model * skinnedPos;
 
 	// compute normal in world space
-	N = (model * vNormal).xyz;
+	N = (model * skinnedNorm).xyz;
 
 	// compute eye direction
 	E = (cameraPosition - vPositionWorld).xyz;
