@@ -1,3 +1,5 @@
+#version 140
+
 attribute vec4 vPosition;
 attribute vec4 vNormal;
 attribute vec2 vTextureCoordinate;
@@ -29,8 +31,6 @@ void main()
 
 	if (int(vBoneIndices.x) >= 0)
 	{
-	    // need to try just summing up the transforms and applying to vPosition at the end.
-	    // it woud be faster I think but I'm not sure if it would actually work
         mat4 boneTransform = vBoneWeights.x * mat4(
             texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 0),
             texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 1),
@@ -77,6 +77,52 @@ void main()
 		skinnedPos = vPosition;
 		skinnedNorm = vNormal;
 	}
+
+    // not sure if this works
+//	mat4 boneTransform = mat4(0.0);
+//
+//	if (int(vBoneIndices.x) >= 0)
+//	{
+//        boneTransform += vBoneWeights.x * mat4(
+//            texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 0),
+//            texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 1),
+//            texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 2),
+//            texelFetch(boneTransformTex, 4 * int(vBoneIndices.x) + 3));
+//
+//		if (int(vBoneIndices.y) >= 0)
+//        {
+//            boneTransform += vBoneWeights.y * mat4(
+//                texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 0),
+//                texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 1),
+//                texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 2),
+//                texelFetch(boneTransformTex, 4 * int(vBoneIndices.y) + 3));
+//        }
+//
+//        if (int(vBoneIndices.z) >= 0)
+//        {
+//            boneTransform += vBoneWeights.z * mat4(
+//                texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 0),
+//                texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 1),
+//                texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 2),
+//                texelFetch(boneTransformTex, 4 * int(vBoneIndices.z) + 3));
+//        }
+//
+//        if (int(vBoneIndices.w) >= 0)
+//        {
+//            boneTransform += vBoneWeights.w * mat4(
+//                texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 0),
+//                texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 1),
+//                texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 2),
+//                texelFetch(boneTransformTex, 4 * int(vBoneIndices.w) + 3));
+//        }
+//	}
+//	else
+//	{
+//		boneTransform = mat4(1.0);
+//	}
+//
+//	vec4 skinnedPos = boneTransform * vPosition;
+//	vec4 skinnedNorm = boneTransform * vNormal;
 
 	// END SKINNING
 

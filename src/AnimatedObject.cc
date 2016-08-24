@@ -62,6 +62,7 @@ namespace puddi
     void AnimatedObject::DisableAnimation()
     {
         animationActive = false;
+        resetBoneTransforms(skeleton);
     }
 
     void AnimatedObject::SetActiveAnimation(const std::string& animationName)
@@ -72,6 +73,11 @@ namespace puddi
     void AnimatedObject::SetAnimationTicksPerSecond(const std::string& animationName, float tps)
     {
         animations[animationName].SetTicksPerSecond(tps);
+    }
+
+    void AnimatedObject::SetAnimationProgress(float progress)
+    {
+        animationTicks = animations[activeAnimation.name].duration * progress;
     }
 
     // AnimatedObject PRIVATE
@@ -238,5 +244,12 @@ namespace puddi
         boneTransforms[b.index] = boneTransforms[b.index] * b.inverseBindPose; /** inverse(b.bindPose);*/
         for (auto it = b.children.begin(); it != b.children.end(); ++it)
             concatenateBindPoseInverses(*it);
+    }
+
+    void AnimatedObject::resetBoneTransforms(Bone& b)
+    {
+        boneTransforms[b.index] = b.bindPose;
+        for (auto it = b.children.begin(); it != b.children.end(); ++it)
+            resetBoneTransforms(*it);
     }
 }

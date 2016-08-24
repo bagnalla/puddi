@@ -201,7 +201,7 @@ namespace puddi
             // create and bind buffer
             glGenBuffers(1, &boneTransformBuffer);
             glBindBuffer(GL_TEXTURE_BUFFER, boneTransformBuffer);
-            glBufferData(GL_TEXTURE_BUFFER, pow(2.0f, 20.0f), nullptr, GL_DYNAMIC_DRAW);
+            glBufferData(GL_TEXTURE_BUFFER, pow(2.0f, 16.0f), nullptr, GL_DYNAMIC_DRAW);
 
             // create and bind texture
             glGenTextures(1, &boneTransformTexture);
@@ -294,9 +294,9 @@ namespace puddi
         {
             glBindBuffer(GL_TEXTURE_BUFFER, boneTransformBuffer);
             glActiveTexture(GL_TEXTURE0 + TEXTURE_BONE_TRANSFORM);
-            glBindTexture(GL_TEXTURE_BUFFER, boneTransformTexture);
+            //glBindTexture(GL_TEXTURE_BUFFER, boneTransformTexture);
             glBufferSubData(GL_TEXTURE_BUFFER, 0, boneTransforms.size() * sizeof(mat4), &boneTransforms[0]);
-            //glBufferData(GL_TEXTURE_BUFFER, boneTransforms.size() * sizeof(mat4), &boneTransforms[0], GL_STATIC_DRAW);
+            //glBufferData(GL_TEXTURE_BUFFER, boneTransforms.size() * sizeof(mat4), &boneTransforms[0], GL_DYNAMIC_DRAW);
         }
     }
 }

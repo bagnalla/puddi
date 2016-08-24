@@ -35,6 +35,8 @@ namespace puddi
 
         void SetAnimationTicksPerSecond(const std::string& animationName, float tps);
 
+        void SetAnimationProgress(float progress); // %
+
     private:
         bool animationActive;
         float animationTicks;
@@ -48,6 +50,7 @@ namespace puddi
         void computeBoneTransformsHelper(Bone& b);
         void computeBoneTransforms(Bone& b);
         void concatenateBindPoseInverses(Bone& b);
+        void resetBoneTransforms(Bone& b); // reset all bone data to bind pose
     };
 }
 
