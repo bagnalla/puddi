@@ -1,21 +1,7 @@
-/*************************************************************************************
-
-Program:            CS 4250 Final Project
-
-Author:             Alexander Bagnall
-Email:              ab667712@ohio.edu
-
-Description:        Implementation file for the Util class.
-
-Date:               December 9, 2015
-
-*************************************************************************************/
-
-#include "Util.h"
-#include <glm/gtx/color_space.hpp>
 #include <fstream>
 #include <iostream>
-#include <string>
+#include <glm/gtx/color_space.hpp>
+#include "Util.h"
 
 using namespace std;
 

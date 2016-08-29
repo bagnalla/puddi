@@ -1,12 +1,10 @@
-#include "VertexMesh.h"
-#include "DrawableObject.h"
-#include "Shader.h"
-#include "Texture.h"
-#include "RenderGraph.h"
-#include "Puddi.h"
-#include "Shadow.h"
 #include <algorithm>
 #include <iostream>
+#include "DrawableObject.h"
+#include "Puddi.h"
+#include "RenderGraph.h"
+#include "Shader.h"
+#include "Shadow.h"
 
 namespace puddi
 {

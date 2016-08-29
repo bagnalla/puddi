@@ -1,11 +1,7 @@
 #define _CRT_SECURE_NO_DEPRECATE
-//#include "Angel.h"
-//#include <cmath>
-#include "Util.h"
+
 #include <iostream>
-#include <GL/glew.h>
-//#include <glm/glm.hpp>
-//#include <GL/gl.h>
+#include "Util.h"
 
 namespace puddi {
 

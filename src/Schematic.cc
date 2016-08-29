@@ -1,17 +1,11 @@
-#include "Schematic.h"
-#include "Skeleton.h"
-#include "Shader.h"
-#include "VertexMesh.h"
-#include "Material.h"
-#include "Texture.h"
-#include "Util.h"
-#include <glm/vec4.hpp>
-#include <assimp/scene.h>
+#include <iostream>
 #include <assimp/cimport.h>
 #include <assimp/postprocess.h>
-#include <unordered_map>
-#include <iostream>
-#include <set>
+#include "Schematic.h"
+#include "Shader.h"
+#include "Skeleton.h"
+#include "Texture.h"
+#include "Util.h"
 
 using namespace std;
 

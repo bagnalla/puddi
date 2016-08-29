@@ -1,12 +1,12 @@
 #ifndef SCHEMATIC_H
 #define SCHEMATIC_H
 
-#include "Material.h"
-#include "VertexMesh.h"
+#include <string>
+#include <vector>
 #include <GL/glew.h>
 #include <glm/mat4x4.hpp>
-#include <vector>
-#include <string>
+#include "Material.h"
+#include "VertexMesh.h"
 
 namespace puddi
 {

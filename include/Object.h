@@ -12,12 +12,13 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include "Material.h"
-#include "UpdateGraph.h"
-#include "ModelGraph.h"
-#include <vector>
 #include <functional>
+#include <vector>
 #include "GlmHeaders.h"
+#include "Material.h"
+#include "ModelGraph.h"
+#include "UpdateGraph.h"
+
 
 namespace puddi
 {
@@ -40,6 +41,7 @@ namespace puddi
         IGNORE_PARENT_ROTATIONZ = 1 << 3,
         IGNORE_PARENT_SCALE = 1 << 4
     };
+
     inline IgnoreParentModel operator|(IgnoreParentModel a, IgnoreParentModel b)
     {
         return static_cast<IgnoreParentModel>(static_cast<int>(a) | static_cast<int>(b));
@@ -59,7 +61,7 @@ namespace puddi
 
         virtual void Update();
 
-        int UpdateModel();
+        int UpdateModel() { return updateModel(); }
 
         void MoveToPoint(const glm::vec4 p, float moveAmount, std::function<void()> callback = nullptr);
 

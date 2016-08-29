@@ -1,15 +1,15 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <sstream>
-#include <iomanip>
 #include <algorithm>
-#include <vector>
+#include <iomanip>
 #include <set>
-#include <GL/glew.h>
-#include "GlmHeaders.h"
+#include <sstream>
+#include <vector>
 #include <assimp/scene.h>
+#include <GL/glew.h>
 #include <SDL2/SDL.h>
+#include "GlmHeaders.h"
 
 const GLdouble DegreesToRadians = M_PI / 180.0;
 

@@ -1,7 +1,7 @@
-#include "Sphere.h"
 #include "Geometry.h"
-#include "Util.h"
 #include "Shader.h"
+#include "Sphere.h"
+#include "Util.h"
 
 namespace puddi
 {

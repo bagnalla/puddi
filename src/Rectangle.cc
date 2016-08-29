@@ -1,21 +1,7 @@
-/*************************************************************************************
-
-Program:            CS 4250 Final Project
-
-Author:             Alexander Bagnall
-Email:              ab667712@ohio.edu
-
-Description:        Implementation file for the Rectangle class.
-
-Date:               December 9, 2015
-
-*************************************************************************************/
-
-#include "Rectangle.h"
 #include "Geometry.h"
-#include "Util.h"
+#include "Rectangle.h"
 #include "Shader.h"
-#include "VertexMesh.h"
+#include "Util.h"
 
 namespace puddi
 {

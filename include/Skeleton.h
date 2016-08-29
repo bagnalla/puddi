@@ -2,11 +2,11 @@
 #define SKELETON_H
 
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
+#include <glm/gtc/quaternion.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/matrix.hpp>
-#include <glm/gtc/quaternion.hpp>
 
 namespace puddi
 {

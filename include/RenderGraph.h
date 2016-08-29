@@ -1,11 +1,11 @@
 #ifndef RENDERGRAPH_H
 #define RENDERGRAPH_H
 
-#include "RenderNode.h"
-#include "Material.h"
 #include <GL/glew.h>
-#include <vector>
 #include <unordered_map>
+#include <vector>
+#include "Material.h"
+#include "RenderNode.h"
 
 namespace puddi
 {

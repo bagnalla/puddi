@@ -1,13 +1,13 @@
 #ifndef VERTEXMESH_H
 #define VERTEXMESH_H
 
-//#include "Shader.h"
+#include <string>
+#include <unordered_map>
+#include <GL/glew.h>
 //#include <glm/vec2.hpp>
 //#include <glm/vec4.hpp>
 #include "Material.h"
-#include <GL/glew.h>
-#include <string>
-#include <unordered_map>
+//#include "Shader.h"
 
 namespace puddi
 {

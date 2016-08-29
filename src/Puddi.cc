@@ -1,24 +1,21 @@
+#include <iostream>
+#include "Camera.h"
+#include "Cube.h"
+#include "EnvironmentMap.h"
+#include "Font.h"
+#include "FpsTracker.h"
+#include "LightSource.h"
 #include "Puddi.h"
 #include "RenderGraph.h"
 #include "Rectangle.h"
-#include "Cube.h"
-#include "Sphere.h"
-#include "Skybox.h"
-#include "LightSource.h"
-#include "Texture.h"
-#include "Shadow.h"
-#include "EnvironmentMap.h"
 #include "Schematic.h"
-#include "Skeleton.h"
 #include "Shader.h"
+#include "Shadow.h"
+#include "Skeleton.h"
+#include "Skybox.h"
+#include "Sphere.h"
+#include "Texture.h"
 #include "Util.h"
-#include "FpsTracker.h"
-#include "Font.h"
-#include "Object.h"
-#include "DrawableObject.h"
-#include "Camera.h"
-//#include <SDL2/SDL_ttf.h>
-#include <iostream>
 
 using namespace std;
 

@@ -1,12 +1,11 @@
+#include <algorithm>
+#include <iostream>
 #include "ModelGraph.h"
 #include "Object.h"
-#include <algorithm>
 
 #ifdef _OPENMP
 #include <omp.h>
 #endif
-
-#include <iostream>
 
 namespace puddi
 {

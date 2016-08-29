@@ -1,11 +1,10 @@
-#include "Font.h"
-#include "Rectangle.h"
-#include "Texture.h"
-#include "Geometry.h"
-#include "Util.h"
-#include "Shader.h"
-#include "DrawableObject.h"
 #include <iostream>
+#include "Font.h"
+#include "Geometry.h"
+#include "Rectangle.h"
+#include "Shader.h"
+#include "Texture.h"
+#include "Util.h"
 
 using namespace std;
 

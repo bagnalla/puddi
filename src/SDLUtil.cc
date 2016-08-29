@@ -1,5 +1,4 @@
 #include "SDLUtil.h"
-#include <iostream>
 
 namespace puddi
 {

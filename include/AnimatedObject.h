@@ -1,9 +1,9 @@
 #ifndef ANIMATEDOBJECT_H
 #define ANIMATEDOBJECT_H
 
+#include <unordered_map>
 #include "DrawableObject.h"
 #include "Skeleton.h"
-#include <unordered_map>
 
 namespace puddi
 {

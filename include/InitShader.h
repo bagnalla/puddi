@@ -10,6 +10,8 @@
 #ifndef INITSHADER_H
 #define INITSHADER_H
 
+#include <GL/glew.h>
+
 namespace puddi
 {
     char* readShaderSource(const char* shaderFile);

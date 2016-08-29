@@ -1,11 +1,11 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <GL/glew.h>
-#include <SDL2/SDL_image.h>
-#include <glm/vec3.hpp>
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
+#include <GL/glew.h>
+#include <glm/vec3.hpp>
+#include <SDL2/SDL_image.h>
 
 namespace puddi
 {

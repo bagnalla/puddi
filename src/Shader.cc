@@ -1,10 +1,8 @@
-#include "Shader.h"
+#include <iostream>
 #include "InitShader.h"
 #include "Material.h"
+#include "Shader.h"
 #include "Shadow.h"
-#include <iostream>
-#include <string>
-#include <climits>
 
 namespace puddi
 {

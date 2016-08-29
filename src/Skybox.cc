@@ -1,7 +1,7 @@
-#include "Skybox.h"
 #include "Geometry.h"
-#include "Util.h"
 #include "Shader.h"
+#include "Skybox.h"
+#include "Util.h"
 
 namespace puddi
 {

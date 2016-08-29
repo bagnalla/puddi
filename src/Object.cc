@@ -1,10 +1,8 @@
-#include "Object.h"
-#include "Material.h"
-#include "Shader.h"
-#include "Puddi.h"
-#include "Util.h"
-#include <limits.h>
 #include <iostream>
+#include "Object.h"
+#include "Puddi.h"
+#include "Shader.h"
+#include "Util.h"
 
 namespace puddi
 {
@@ -67,10 +65,10 @@ namespace puddi
             (*it)->Update();*/
     }
 
-    int Object::UpdateModel()
-    {
-        return updateModel();
-    }
+//    int Object::UpdateModel()
+//    {
+//        return updateModel();
+//    }
 
     void Object::MoveToPoint(const glm::vec4 point, float moveAmount, std::function<void()> callback)
     {
@@ -159,7 +157,8 @@ namespace puddi
     }
     void Object::RotateX(float x)
     {
-        theta.x = Util::WrapAngle(theta.x + x);
+        //theta.x = Util::WrapAngle(theta.x + x);
+        theta.x += x;
         changedFlags |= ROTATIONX_CHANGED;
     }
 
@@ -175,7 +174,8 @@ namespace puddi
     }
     void Object::RotateY(float y)
     {
-        theta.y = Util::WrapAngle(theta.y + y);
+        //theta.y = Util::WrapAngle(theta.y + y);
+        theta.y += y;
         changedFlags |= ROTATIONY_CHANGED;
     }
 
@@ -191,7 +191,8 @@ namespace puddi
     }
     void Object::RotateZ(float z)
     {
-        theta.z = Util::WrapAngle(theta.z + z);
+        //theta.z = Util::WrapAngle(theta.z + z);
+        theta.z += z;
         changedFlags |= ROTATIONZ_CHANGED;
     }
 

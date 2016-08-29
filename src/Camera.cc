@@ -1,9 +1,8 @@
 #include "Camera.h"
-#include "Util.h"
+#include "FpsTracker.h"
 #include "Puddi.h"
 #include "Shader.h"
-#include "FpsTracker.h"
-#include "RenderGraph.h"
+#include "Util.h"
 
 namespace puddi
 {

@@ -1,21 +1,6 @@
-/*************************************************************************************
-
-Program:            CS 4250 Final Project
-
-Author:             Alexander Bagnall
-Email:              ab667712@ohio.edu
-
-Description:        Implementation file for the LightSource class.
-
-Date:               December 9, 2015
-
-*************************************************************************************/
-
 #include "LightSource.h"
 #include "Puddi.h"
 #include "Shader.h"
-#include "RenderGraph.h"
-#include <cstring>
 
 namespace puddi
 {

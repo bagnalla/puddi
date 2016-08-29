@@ -1,8 +1,7 @@
-#include "EnvironmentMap.h"
 #include "DrawableObject.h"
-#include "Shader.h"
+#include "EnvironmentMap.h"
 #include "Puddi.h"
-#include "RenderGraph.h"
+#include "Shader.h"
 #include "Shadow.h"
 
 namespace puddi

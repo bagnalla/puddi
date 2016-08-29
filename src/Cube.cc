@@ -1,9 +1,7 @@
 #include "Cube.h"
 #include "Geometry.h"
-#include "Util.h"
 #include "Shader.h"
-#include "VertexMesh.h"
-#include "Material.h"
+#include "Util.h"
 
 namespace puddi
 {

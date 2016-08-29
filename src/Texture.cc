@@ -1,11 +1,9 @@
-#include "Texture.h"
-#include "SDLUtil.h"
+#include <iostream>
 #include <SDL2/SDL_image.h>
 //#include <SDL2/SDL_ttf.h>
 //#include <SDL2_gfx/SDL2_rotozoom.h>
-#include <iostream>
-#include <string>
-#include <cstdio>
+#include "SDLUtil.h"
+#include "Texture.h"
 
 namespace puddi
 {

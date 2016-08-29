@@ -3,11 +3,11 @@
 
 #define SHADOW_MAP_SIZE_DEFAULT SHADOW_RESOLUTION_MEDIUM
 
+#include <vector>
 #include <GL/glew.h>
+#include <glm/mat4x4.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
-#include <glm/mat4x4.hpp>
-#include <vector>
 
 namespace puddi
 {

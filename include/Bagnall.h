@@ -17,9 +17,9 @@
 //#include <glm/gtx/transform.hpp>
 //#include <glm/gtx/fast_trigonometry.hpp> // for wrapAngle
 //#include <glm/gtc/type_ptr.hpp>
-#include "GlmHeaders.h"
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
+#include "GlmHeaders.h"
 
 const GLfloat DegreesToRadians = M_PI / 180.0;
 

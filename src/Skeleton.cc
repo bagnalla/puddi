@@ -1,14 +1,9 @@
-#include "Skeleton.h"
+#include <iostream>
+#include <assimp/cimport.h>
+#include <assimp/postprocess.h>
 #include "AnimatedObject.h"
 #include "Shader.h"
 #include "Util.h"
-#include <glm/vec4.hpp>
-#include <glm/mat4x4.hpp>
-#include <assimp/scene.h>
-#include <assimp/cimport.h>
-#include <assimp/postprocess.h>
-#include <unordered_map>
-#include <iostream>
 
 using namespace std;
 using namespace glm;

@@ -1,9 +1,9 @@
-#include "HeightMapTerrain.h"
-#include "VertexMesh.h"
-#include "TerrainVertexMesh.h"
-#include "Shader.h"
-#include <SDL2/SDL_image.h>
 #include <iostream>
+#include <SDL2/SDL_image.h>
+#include "HeightMapTerrain.h"
+#include "Shader.h"
+#include "TerrainVertexMesh.h"
+#include "VertexMesh.h"
 
 namespace puddi
 {

@@ -1,9 +1,6 @@
-#include "AnimatedObject.h"
-#include "Skeleton.h"
-#include "FpsTracker.h"
 #include <functional>
-
-#include <iostream>
+#include "AnimatedObject.h"
+#include "FpsTracker.h"
 
 using namespace std;
 

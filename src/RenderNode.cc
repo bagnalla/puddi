@@ -1,9 +1,7 @@
+#include <iostream>
 #include "RenderNode.h"
 #include "Shader.h"
 #include "VertexMesh.h"
-#include "TerrainVertexMesh.h"
-#include "Texture.h"
-#include <iostream>
 
 namespace puddi
 {

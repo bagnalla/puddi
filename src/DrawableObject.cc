@@ -1,13 +1,10 @@
 #include "DrawableObject.h"
-#include "Shader.h"
-#include "Material.h"
-#include "RenderGraph.h"
 #include "Puddi.h"
-#include "Shadow.h"
-#include "VertexMesh.h"
-#include "TerrainVertexMesh.h"
+#include "RenderGraph.h"
 #include "Schematic.h"
-#include "Texture.h"
+#include "Shader.h"
+#include "Shadow.h"
+#include "TerrainVertexMesh.h"
 
 namespace puddi
 {

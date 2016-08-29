@@ -1,12 +1,9 @@
-#include "UpdateGraph.h"
 #include "Object.h"
-#include <algorithm>
+#include "UpdateGraph.h"
 
 #ifdef _OPENMP
     #include <omp.h>
 #endif
-
-#include <iostream>
 
 namespace puddi
 {

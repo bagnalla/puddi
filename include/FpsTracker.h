@@ -7,7 +7,7 @@
  * as to be independent of the application framerate.
  */
 
- #ifndef FPSTRACKER_H
+#ifndef FPSTRACKER_H
 #define FPSTRACKER_H
 
 namespace puddi

@@ -11,8 +11,8 @@
 #ifndef FONT_H
 #define FONT_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace puddi
 {

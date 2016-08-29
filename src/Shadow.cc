@@ -1,11 +1,10 @@
-#include "Shadow.h"
+#include <algorithm>
+#include <iostream>
 #include "DrawableObject.h"
-#include "Shader.h"
 #include "Puddi.h"
 #include "RenderGraph.h"
-#include <iostream>
-#include <algorithm>
-#include "Cube.h"
+#include "Shadow.h"
+#include "Shader.h"
 
 namespace puddi
 {

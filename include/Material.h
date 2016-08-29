@@ -11,8 +11,8 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-#include <vector>
 #include <string>
+#include <vector>
 #include "GlmHeaders.h"
 
 namespace puddi

@@ -12,10 +12,10 @@
 #define GLUT_DISABLE_ATEXIT_HACK
 #define GLM_FORCE_RADIANS
 
-#include "GlmHeaders.h"
+#include <string>
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
-#include <string>
+#include "GlmHeaders.h"
 
 namespace puddi
 {

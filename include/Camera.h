@@ -1,8 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "Object.h"
 #include <SDL2/SDL.h>
+#include "Object.h"
 
 namespace puddi
 {

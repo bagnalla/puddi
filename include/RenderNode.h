@@ -1,10 +1,10 @@
 #ifndef RENDERNODE_H
 #define RENDERNODE_H
 
-#include "Material.h"
-#include <glm/vec4.hpp>
-#include <GL/glew.h>
 #include <unordered_map>
+#include <GL/glew.h>
+#include <glm/vec4.hpp>
+#include "Material.h"
 
 namespace puddi
 {
