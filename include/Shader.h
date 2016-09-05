@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <vector>
 #include <GL/glew.h>
+#include <SDL2/SDL_video.h>
 #include "GlmHeaders.h"
 
 namespace puddi
@@ -46,6 +47,7 @@ namespace puddi
         extern std::vector<uint> VertexIndices;
 
         void Init();
+        void InitOrtho(SDL_Window *window);
 
         void SetProgram(std::string programName);
 
@@ -74,6 +76,12 @@ namespace puddi
 
         // either depth texture or depth cubemap
         void BindShadowMap(GLuint shadowMap, ShadowMode mode);
+
+        // switch between perspective and ortho projections (world and HUD)
+        // when the shader program changes it resets to perspective
+        void SetOrtho(bool o);
+
+        void SetOrthoLightSource (const mat4& orthoLight);
     };
 }
 

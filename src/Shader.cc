@@ -19,6 +19,10 @@ namespace puddi
             mat4 camera;
             vec4 cameraPosition;
             mat4 projection;
+            mat4 orthoProjection;
+            mat4 orthoCamera;
+            mat4 orthoLightSource;
+            vec4 orthoCameraPosition;
             mat4 lightSource;
             mat4 lightProjection;
             ShadowMode shadowMode;
@@ -737,7 +741,7 @@ namespace puddi
 
         void Init()
         {
-            shaderVersion = atof(reinterpret_cast<char const*>(glGetString(GL_SHADING_LANGUAGE_VERSION)));
+            shaderVersion = static_cast<float>(atof(reinterpret_cast<char const*>(glGetString(GL_SHADING_LANGUAGE_VERSION))));
 
             // set up vertex buffer
             if (Vertices.size())
@@ -794,14 +798,19 @@ namespace puddi
             // TERRAIN TEXTURE BUMP PROGRAM
             initTerrainTextureBumpProgram();
 
-            /*if (VertexIndices.size())
-            {
-                glGenBuffers(1, &elementBuffer);
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
-                glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*VertexIndices.size(), &VertexIndices[0], GL_STATIC_DRAW);
-            }*/
-
             glUseProgram(nameToProgramMap["emissive_color"]);
+        }
+
+        void InitOrtho(SDL_Window *window)
+        {
+            // create ortho projection
+            int w, h;
+            SDL_GetWindowSize(window, &w, &h);
+            float aspect = w / h;
+//            orthoProjection = ortho(aspect * 1.0f, aspect * -1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
+            orthoProjection = ortho(1.0f, -1.0f, -1.0f, 1.0f, -10.0f, 10.0f);
+            orthoCamera = lookAt(vec3(0.0f, 0.0f, -1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+            orthoCameraPosition = vec4(0.0f, 0.0f, -1.0f, 1.0f);
         }
 
         void SetProgram(std::string programName)
@@ -1020,6 +1029,24 @@ namespace puddi
             }
 
             SetProgram(programName.c_str());
+        }
+
+        void SetOrtho(bool o)
+        {
+            GLuint projLoc = programToUniformMap[currentProgram]["projection"];
+            GLuint camLoc = programToUniformMap[currentProgram]["camera"];
+            GLuint camPosLoc = programToUniformMap[currentProgram]["cameraPosition"];
+            GLuint lightLoc = programToUniformMap[currentProgram]["lightSource"];
+
+            glUniformMatrix4fv(projLoc, 1, GL_FALSE, value_ptr(o ? orthoProjection : projection));
+            glUniformMatrix4fv(camLoc, 1, GL_FALSE, value_ptr(o ? orthoCamera : camera));
+            glUniform4fv(camPosLoc, 1, value_ptr(o ? orthoCameraPosition : cameraPosition));
+            glUniformMatrix4fv(lightLoc, 1, GL_FALSE, value_ptr(o ? orthoLightSource : lightSource));
+        }
+
+        void SetOrthoLightSource (const mat4& orthoLight)
+        {
+            orthoLightSource = orthoLight;
         }
     }
 }

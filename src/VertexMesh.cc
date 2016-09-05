@@ -64,7 +64,7 @@ namespace puddi
 
     void VertexMesh::Draw() const
     {
-        owner->SendTransformToGPU();
+        owner->PreDraw();
 
         if (cubeMap != 0)
             Shader::SetReflectiveCubeMap(reflectiveCubeMap);

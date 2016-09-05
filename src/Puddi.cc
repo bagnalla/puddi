@@ -269,6 +269,7 @@ namespace puddi
             SDL_GetWindowSize(window, &w, &h);
             ProjectionMatrix = perspective(static_cast<float>(M_PI) / 4.0f, w / static_cast<float>(h), 1.0f, ViewDistance);
             Shader::SetProjection(ProjectionMatrix);
+            Shader::InitOrtho(window);
 
             glViewport(0, 0, w, h);
         }

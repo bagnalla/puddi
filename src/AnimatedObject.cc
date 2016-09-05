@@ -45,10 +45,10 @@ namespace puddi
         }
     }
 
-    void AnimatedObject::SendTransformToGPU()
+    void AnimatedObject::PreDraw()
     {
         Skeleton::SendBoneTransformsToGPU(boneTransforms);
-        DrawableObject::SendTransformToGPU();
+        DrawableObject::PreDraw();
     }
 
     void AnimatedObject::EnableAnimation()
