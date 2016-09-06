@@ -806,11 +806,17 @@ namespace puddi
             // create ortho projection
             int w, h;
             SDL_GetWindowSize(window, &w, &h);
-            float aspect = w / h;
-//            orthoProjection = ortho(aspect * 1.0f, aspect * -1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
-            orthoProjection = ortho(1.0f, -1.0f, -1.0f, 1.0f, -10.0f, 10.0f);
+            float aspect = w / static_cast<float>(h);
+            orthoProjection = ortho(aspect * 1.0f, aspect * -1.0f, -1.0f, 1.0f, -10.0f, 10.0f);
+            //orthoProjection = ortho(1.0f, -1.0f, -1.0f, 1.0f, -10.0f, 10.0f);
             orthoCamera = lookAt(vec3(0.0f, 0.0f, -1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
             orthoCameraPosition = vec4(0.0f, 0.0f, -1.0f, 1.0f);
+        }
+
+        void UpdateVertexPositions(size_t offset, const std::vector<vec4>& vertices)
+        {
+            glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+            glBufferSubData(GL_ARRAY_BUFFER, offset * sizeof(vec4), sizeof(vec4)*vertices.size(), &vertices[0]);
         }
 
         void SetProgram(std::string programName)

@@ -34,6 +34,17 @@ namespace puddi
         TEXTURE_BONE_TRANSFORM
     };
 
+    struct VertexData
+    {
+        std::vector<vec4> vertices;
+        std::vector<vec4> normals;
+        std::vector<vec4> tangents;
+        std::vector<vec4> binormals;
+        std::vector<vec2> textureCoordinates;
+        std::vector<vec4> boneIndices;
+        std::vector<vec4> boneWeights;
+    };
+
     namespace Shader
     {
         extern std::vector<vec4> Vertices;
@@ -48,6 +59,7 @@ namespace puddi
 
         void Init();
         void InitOrtho(SDL_Window *window);
+        void UpdateVertexPositions(size_t offset, const std::vector<vec4>& vertices);
 
         void SetProgram(std::string programName);
 
