@@ -167,10 +167,9 @@ namespace puddi
                 exit(1);
             }
 
-            if (SDL_SetRelativeMouseMode(SDL_TRUE) == -1)
-                std::cerr << "unable to set relative mouse mode.\n";
-
             // default render graph
+            renderGraphs.push_back(new RenderGraph());
+            // font render graph
             renderGraphs.push_back(new RenderGraph());
 
             Rectangle::Init();
@@ -355,6 +354,12 @@ namespace puddi
         void SetShadowIgnoreObject(DrawableObject *o)
         {
             shadowIgnoreObject = o;
+        }
+
+        int SetRelativeMouseMode(int m)
+        {
+            if (SDL_SetRelativeMouseMode(SDL_TRUE) == -1)
+                std::cerr << "unable to set relative mouse mode.\n";
         }
     }
 }

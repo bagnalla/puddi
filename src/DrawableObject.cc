@@ -221,6 +221,8 @@ namespace puddi
     void DrawableObject::SetIsHUDElement(bool b)
     {
         isHUDElement = true;
+        for (auto it = children.begin(); it != children.end(); ++it)
+            static_cast<DrawableObject*>(*it)->SetIsHUDElement(b);
     }
 
     void DrawableObject::DisableShadowCasting()

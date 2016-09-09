@@ -1039,15 +1039,19 @@ namespace puddi
 
         void SetOrtho(bool o)
         {
-            GLuint projLoc = programToUniformMap[currentProgram]["projection"];
-            GLuint camLoc = programToUniformMap[currentProgram]["camera"];
-            GLuint camPosLoc = programToUniformMap[currentProgram]["cameraPosition"];
-            GLuint lightLoc = programToUniformMap[currentProgram]["lightSource"];
+            GLuint projLoc = getUniformFromCurrentProgram("projection");
+            GLuint camLoc = getUniformFromCurrentProgram("camera");
+            GLuint camPosLoc = getUniformFromCurrentProgram("cameraPosition");
+            GLuint lightLoc = getUniformFromCurrentProgram("lightSource");
 
-            glUniformMatrix4fv(projLoc, 1, GL_FALSE, value_ptr(o ? orthoProjection : projection));
-            glUniformMatrix4fv(camLoc, 1, GL_FALSE, value_ptr(o ? orthoCamera : camera));
-            glUniform4fv(camPosLoc, 1, value_ptr(o ? orthoCameraPosition : cameraPosition));
-            glUniformMatrix4fv(lightLoc, 1, GL_FALSE, value_ptr(o ? orthoLightSource : lightSource));
+            if (projLoc != UINT_MAX)
+                glUniformMatrix4fv(projLoc, 1, GL_FALSE, value_ptr(o ? orthoProjection : projection));
+            if (camLoc != UINT_MAX)
+                glUniformMatrix4fv(camLoc, 1, GL_FALSE, value_ptr(o ? orthoCamera : camera));
+            if (camPosLoc != UINT_MAX)
+                glUniform4fv(camPosLoc, 1, value_ptr(o ? orthoCameraPosition : cameraPosition));
+            if (lightLoc != UINT_MAX)
+                glUniformMatrix4fv(lightLoc, 1, GL_FALSE, value_ptr(o ? orthoLightSource : lightSource));
         }
 
         void SetOrthoLightSource (const mat4& orthoLight)
