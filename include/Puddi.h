@@ -74,7 +74,9 @@ namespace puddi
         void SetShadowLightPosition(const glm::vec3 &pos);
         void SetShadowIgnoreObject(DrawableObject *o);
 
-        int SetRelativeMouseMode(int m);
+        void SetRelativeMouseMode(int m);
+
+        void SetClearColor(const vec4 &col);
     }
 }
 

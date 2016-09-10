@@ -356,10 +356,15 @@ namespace puddi
             shadowIgnoreObject = o;
         }
 
-        int SetRelativeMouseMode(int m)
+        void SetRelativeMouseMode(int m)
         {
             if (SDL_SetRelativeMouseMode(SDL_TRUE) == -1)
                 std::cerr << "unable to set relative mouse mode.\n";
+        }
+
+        void SetClearColor(const vec4 &col)
+        {
+            glClearColor(col.x, col.y, col.z, col.w);
         }
     }
 }
