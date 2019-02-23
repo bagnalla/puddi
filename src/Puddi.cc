@@ -5,6 +5,7 @@
 #include "Font.h"
 #include "FpsTracker.h"
 #include "LightSource.h"
+#include "Line.h"
 #include "Puddi.h"
 #include "RenderGraph.h"
 #include "Rectangle.h"
@@ -173,6 +174,7 @@ namespace puddi
       // default render graph
       renderGraphs.push_back(new RenderGraph());
 
+      Line::Init();
       Rectangle::Init();
       Cube::Init();
       Sphere::Init();
