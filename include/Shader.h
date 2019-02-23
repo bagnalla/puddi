@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <vector>
 #include <GL/glew.h>
+#include <SDL2/SDL_video.h>
 #include "GlmHeaders.h"
 
 namespace puddi
@@ -33,6 +34,17 @@ namespace puddi
         TEXTURE_BONE_TRANSFORM
     };
 
+    struct VertexData
+    {
+        std::vector<vec4> vertices;
+        std::vector<vec4> normals;
+        std::vector<vec4> tangents;
+        std::vector<vec4> binormals;
+        std::vector<vec2> textureCoordinates;
+        std::vector<vec4> boneIndices;
+        std::vector<vec4> boneWeights;
+    };
+
     namespace Shader
     {
         extern std::vector<vec4> Vertices;
@@ -46,6 +58,8 @@ namespace puddi
         extern std::vector<uint> VertexIndices;
 
         void Init();
+        void InitOrtho(SDL_Window *window);
+        void UpdateVertexPositions(size_t offset, const std::vector<vec4>& vertices);
 
         void SetProgram(std::string programName);
 
@@ -74,6 +88,12 @@ namespace puddi
 
         // either depth texture or depth cubemap
         void BindShadowMap(GLuint shadowMap, ShadowMode mode);
+
+        // switch between perspective and ortho projections (world and HUD)
+        // when the shader program changes it resets to perspective
+        void SetOrtho(bool o);
+
+        void SetOrthoLightSource (const mat4& orthoLight);
     };
 }
 
