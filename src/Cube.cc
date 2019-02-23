@@ -9,7 +9,7 @@ namespace puddi
 
     void Cube::Init()
     {
-      createPrototypeVertices();
+        createPrototypeVertices();
     }
 
     Cube::Cube(Object *par) : DrawableObject(par, VertexMesh::GetVertexMeshPrototypeByName("cube")) {}

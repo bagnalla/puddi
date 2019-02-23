@@ -4,8 +4,6 @@
  * @brief Convenience header for including commonly used GLM headers.
  */
 
-#ifndef GLM_HEADERS_H
-#define GLM_HEADERS_H
 #define GLM_FORCE_RADIANS
 
 #ifdef _WIN32
@@ -25,5 +23,3 @@
 //#include <glm/gtx/fast_trigonometry.hpp> // for wrapAngle, not there on linux
 
 using namespace glm;
-
-#endif // GLM_HEADERS_H
