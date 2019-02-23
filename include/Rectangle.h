@@ -9,13 +9,9 @@ namespace puddi
     {
     public:
         static void Init();
-
         Rectangle(Object *par);
 
-        //void Draw() const;
-
     private:
-
         static void createPrototypeVertices();
     };
 }

@@ -11,92 +11,97 @@
 
 namespace puddi
 {
-    struct RenderNode;
-    class DrawableObject;
+  struct RenderNode;
+  class DrawableObject;
 
-    class VertexMesh
-    {
-    public:
-        // need public default constructor to use it as non-dynamic memory struct
-        VertexMesh();
+  enum VertexMode { V_POINTS, V_LINES, V_LINE_STRIP, V_LINE_LOOP,
+		    V_TRIANGLES, V_TRIANGLE_STRIP, V_TRIANGLE_FAN };
 
-        VertexMesh(DrawableObject *o, const Material& mat, int iOffset, int iCount, bool tStrip);
+  class VertexMesh
+  {
+  public:
+    // need public default constructor to use it as non-dynamic memory struct
+    VertexMesh();
 
-        virtual ~VertexMesh();
+    VertexMesh(DrawableObject *o, const Material& mat, int iOffset,
+	       int iCount, VertexMode vmode);
 
-        static void AddVertexMeshPrototype(const std::string &name, const Material& mat, int iOffset, int iCount, bool tStrip);
+    virtual ~VertexMesh();
 
-        static VertexMesh GetVertexMeshPrototypeByName(const std::string &name);
+    static void AddVertexMeshPrototype(const std::string &name,
+				       const Material& mat, int iOffset,
+				       int iCount, VertexMode vmode);
 
-        virtual void Draw() const;
+    static VertexMesh GetVertexMeshPrototypeByName(const std::string &name);
 
-        virtual void UpdateRenderNode();
+    virtual void Draw() const;
 
-        void EnableRender();
+    virtual void UpdateRenderNode();
 
-        void DisableRender();
+    void EnableRender();
 
-        void Cull();
+    void DisableRender();
 
-        void UnCull();
+    void Cull();
 
-        DrawableObject* GetOwner() const;
-        void SetOwner(DrawableObject *o);
+    void UnCull();
 
-        Material GetMaterial() const;
-        void SetMaterial(const Material& mat);
+    DrawableObject* GetOwner() const;
+    void SetOwner(DrawableObject *o);
 
-        GLuint GetTexture() const;
-        void SetTexture(GLuint tex);
+    Material GetMaterial() const;
+    void SetMaterial(const Material& mat);
 
-        GLuint GetBumpMap() const;
-        void SetBumpMap(GLuint b);
+    GLuint GetTexture() const;
+    void SetTexture(GLuint tex);
 
-        GLuint GetCubeMap() const;
-        void SetCubeMap(GLuint cMap);
+    GLuint GetBumpMap() const;
+    void SetBumpMap(GLuint b);
 
-        bool GetReflectiveCubeMap() const;
-        void SetReflectiveCubeMap(bool b);
+    GLuint GetCubeMap() const;
+    void SetCubeMap(GLuint cMap);
 
-        bool GetBumpMapEnabled() const;
-        void SetBumpMapEnabled(bool b);
+    bool GetReflectiveCubeMap() const;
+    void SetReflectiveCubeMap(bool b);
 
-        bool GetEmissive() const;
-        void SetEmissive(bool b);
+    bool GetBumpMapEnabled() const;
+    void SetBumpMapEnabled(bool b);
 
-        vec4 GetEmissionColor() const;
-        void SetEmissionColor(const vec4& eColor);
+    bool GetEmissive() const;
+    void SetEmissive(bool b);
 
-        bool GetRenderEnabled() const;
-        void SetRenderEnabled(bool b);
+    vec4 GetEmissionColor() const;
+    void SetEmissionColor(const vec4& eColor);
 
-        size_t GetRenderGraphIndex() const;
-        void SetRenderGraphIndex(size_t i);
+    bool GetRenderEnabled() const;
+    void SetRenderEnabled(bool b);
 
-    private:
-        static std::unordered_map<std::string, VertexMesh> vertexMeshPrototypeMap;
+    size_t GetRenderGraphIndex() const;
+    void SetRenderGraphIndex(size_t i);
 
-        DrawableObject *owner;
-        Material material;
-        GLuint texture;
-        GLuint cubeMap;
-        bool reflectiveCubeMap;
-        bool bumpMapEnabled;
-        GLuint bumpmap;
-        bool emissive;
-        vec4 emissionColor;
-        RenderNode *renderNode;
-        bool renderEnabled;
+  private:
+    static std::unordered_map<std::string, VertexMesh> vertexMeshPrototypeMap;
 
-        bool triangleStrip;
+    DrawableObject *owner;
+    Material material;
+    GLuint texture;
+    GLuint cubeMap;
+    bool reflectiveCubeMap;
+    bool bumpMapEnabled;
+    GLuint bumpmap;
+    bool emissive;
+    vec4 emissionColor;
+    RenderNode *renderNode;
+    bool renderEnabled;
+    VertexMode vmode;
 
-        void init();
+    void init();
 
-    protected:
-        uint indexOffset;
-        uint indexCount;
-        size_t renderGraphIndex;
-    };
+  protected:
+    uint indexOffset;
+    uint indexCount;
+    size_t renderGraphIndex;
+  };
 }
 
 #endif

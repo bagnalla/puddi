@@ -13,19 +13,19 @@
 
 namespace puddi
 {
-    class Cube : public DrawableObject
-    {
-    public:
-        static void Init();
+  class Cube : public DrawableObject
+  {
+  public:
+    static void Init();
+    Cube(Object *par);
 
-        Cube(Object *par);
+    bool ContainsPoint(const vec4& p) const;
+    static std::vector<glm::vec4> GetCubeVertices();
 
-        bool ContainsPoint(const vec4& p) const;
-
-    private:
-
-        static void createPrototypeVertices();
-    };
+  private:
+    static std::vector<glm::vec4> cube_vertices;
+    static void createPrototypeVertices();
+  };
 }
 
 #endif

@@ -5,19 +5,20 @@
 
 namespace puddi
 {
-    class Sphere : public DrawableObject
-    {
-    public:
-        static void Init();
+  class Sphere : public DrawableObject
+  {
+  public:
+    static void Init();
+    Sphere(Object *par);
 
-        Sphere(Object *par);
+    static std::vector<glm::vec4> GetSphereVertices();
+    static std::vector<glm::vec4> GetSphereNormals();
 
-        //void Draw() const;
-
-    private:
-
-        static void createPrototypeVertices();
-    };
+  private:
+    static std::vector<glm::vec4> sphere_vertices;
+    static std::vector<glm::vec4> sphere_normals;
+    static void createPrototypeVertices();
+  };
 }
 
 #endif

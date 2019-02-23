@@ -8,234 +8,244 @@
 
 namespace puddi
 {
-    // PUBLIC
+  // PUBLIC
 
-    VertexMesh::VertexMesh()
+  VertexMesh::VertexMesh()
+  {
+    init();
+  }
+
+  VertexMesh::VertexMesh(DrawableObject *o, const Material& mat,
+			 int iOffset, int iCount, VertexMode vmode)
+  {
+    this->init();
+
+    this->owner = o;
+    this->material = mat;
+    this->indexOffset = iOffset;
+    this->indexCount = iCount;
+    this->vmode = vmode;
+  }
+
+  VertexMesh::~VertexMesh()
+  {
+    //std::cout << "in VertexMesh destructor\n";
+    if (renderNode != NULL)
     {
-        init();
-    }
-
-    VertexMesh::VertexMesh(DrawableObject *o, const Material& mat, int iOffset, int iCount, bool tStrip)
-    {
-        init();
-
-        owner = o;
-        material = mat;
-        indexOffset = iOffset;
-        indexCount = iCount;
-        triangleStrip = tStrip;
-    }
-
-    VertexMesh::~VertexMesh()
-    {
-        //std::cout << "in VertexMesh destructor\n";
-        if (renderNode != NULL)
-        {
-            auto it = std::find(renderNode->meshes.begin(), renderNode->meshes.end(), this);
-            if (it != renderNode->meshes.end())
-                renderNode->meshes.erase(std::find(renderNode->meshes.begin(), renderNode->meshes.end(), this));
-            else
-                std::cerr << "in VerteshMesh destructor: attempted to remove self from rendernode that didnt know about me. this should never happen\n";
-        }
-
-        Shadow::RemoveFromDepthRenderList(this);
-    }
-
-    void VertexMesh::AddVertexMeshPrototype(const std::string &name, const Material& mat, int iOffset, int iCount, bool tStrip)
-    {
-        auto it = vertexMeshPrototypeMap.find(name);
-        if (it == vertexMeshPrototypeMap.end())
-            vertexMeshPrototypeMap.emplace(name, VertexMesh(NULL, mat, iOffset, iCount, tStrip));
-        else
-            std::cerr << "vertex mesh already exists with name: " << name << std::endl;
+      auto it = std::find(renderNode->meshes.begin(),
+			  renderNode->meshes.end(), this);
+      if (it != renderNode->meshes.end())
+	renderNode->meshes.erase(std::find(renderNode->meshes.begin(),
+					   renderNode->meshes.end(), this));
+      else
+	std::cerr << "in VerteshMesh destructor: attempted to remove self from rendernode that didnt know about me. this should never happen\n";
     }
 
-    VertexMesh VertexMesh::GetVertexMeshPrototypeByName(const std::string &name)
+    Shadow::RemoveFromDepthRenderList(this);
+  }
+
+  void VertexMesh::AddVertexMeshPrototype(const std::string &name,
+					  const Material& mat, int iOffset,
+					  int iCount, VertexMode vmode)
+  {
+    auto it = vertexMeshPrototypeMap.find(name);
+    if (it == vertexMeshPrototypeMap.end())
+      vertexMeshPrototypeMap.emplace(name, VertexMesh(NULL, mat, iOffset,
+						      iCount, vmode));
+    else
+      std::cerr << "vertex mesh already exists with name: " <<
+	name << std::endl;
+  }
+
+  VertexMesh VertexMesh::GetVertexMeshPrototypeByName(const std::string &name)
+  {
+    auto it = vertexMeshPrototypeMap.find(name);
+    if (it != vertexMeshPrototypeMap.end())
+      return vertexMeshPrototypeMap[name];
+    else
     {
-        auto it = vertexMeshPrototypeMap.find(name);
-        if (it != vertexMeshPrototypeMap.end())
-            return vertexMeshPrototypeMap[name];
-        else
-        {
-            std::cerr << "vertex mesh doesn't exist with name: " << name << std::endl;
-            return VertexMesh(NULL, Material::None(), 0, 0, 0);
-        }
+      std::cerr << "vertex mesh doesn't exist with name: " <<
+	name << std::endl;
+      return VertexMesh(NULL, Material::None(), 0, 0, V_POINTS);
+    }
+  }
+
+  void VertexMesh::Draw() const
+  {
+    this->owner->SendTransformToGPU();
+
+    if (this->cubeMap != 0)
+      Shader::SetReflectiveCubeMap(this->reflectiveCubeMap);
+
+    glDrawElements(this->vmode, this->indexCount, GL_UNSIGNED_INT,
+		   reinterpret_cast<void*>(this->indexOffset * sizeof(uint)));
+  }
+
+  void VertexMesh::UpdateRenderNode()
+  {
+    if (renderNode != NULL)
+    {
+      auto it = std::find(renderNode->meshes.begin(),
+			  renderNode->meshes.end(), this);
+      if (it != renderNode->meshes.end())
+	renderNode->meshes.erase(std::find(renderNode->meshes.begin(),
+					   renderNode->meshes.end(), this));
+      else
+	std::cerr << "in VerteshMesh::UpdateRenderNode(): attempted to remove self from rendernode that didnt know about me. this should never happen\n";
     }
 
-    void VertexMesh::Draw() const
-    {
-        owner->SendTransformToGPU();
+    renderNode = engine::GetRenderGraph(renderGraphIndex)->AddVertexMesh(this);
 
-        if (cubeMap != 0)
-            Shader::SetReflectiveCubeMap(reflectiveCubeMap);
+    Shadow::AddToDepthRenderList(this);
+  }
 
-        // hacky way of doing triangle strip instead of triangles when the bool is set
-        // because GL_TRIANGLES is 4 and GL_TRIANGLE_STRIP is 5
-        //glDrawArrays(GL_TRIANGLES + triangleStrip, globalVertexOffset, vertexCount);
-        glDrawElements(GL_TRIANGLES + triangleStrip, indexCount, GL_UNSIGNED_INT, reinterpret_cast<void*>(indexOffset * sizeof(uint)));
-    }
+  void VertexMesh::EnableRender()
+  {
+    renderEnabled = true;
+  }
 
-    void VertexMesh::UpdateRenderNode()
-    {
-        if (renderNode != NULL)
-        {
-            auto it = std::find(renderNode->meshes.begin(), renderNode->meshes.end(), this);
-            if (it != renderNode->meshes.end())
-                renderNode->meshes.erase(std::find(renderNode->meshes.begin(), renderNode->meshes.end(), this));
-            else
-                std::cerr << "in VerteshMesh::UpdateRenderNode(): attempted to remove self from rendernode that didnt know about me. this should never happen\n";
-        }
+  void VertexMesh::DisableRender()
+  {
+    renderEnabled = false;
+  }
 
-        renderNode = engine::GetRenderGraph(renderGraphIndex)->AddVertexMesh(this);
+  void VertexMesh::Cull()
+  {
+    if (renderNode != NULL)
+      renderNode->meshes.erase(std::find(renderNode->meshes.begin(),
+					 renderNode->meshes.end(), this));
+    renderNode = NULL;
 
-        Shadow::AddToDepthRenderList(this);
-    }
+    Shadow::RemoveFromDepthRenderList(this);
+  }
 
-    void VertexMesh::EnableRender()
-    {
-        renderEnabled = true;
-    }
+  void VertexMesh::UnCull()
+  {
+    Shadow::AddToDepthRenderList(this);
+    UpdateRenderNode();
+  }
 
-    void VertexMesh::DisableRender()
-    {
-        renderEnabled = false;
-    }
+  DrawableObject* VertexMesh::GetOwner() const
+  {
+    return owner;
+  }
+  void VertexMesh::SetOwner(DrawableObject *o)
+  {
+    owner = o;
+  }
 
-    void VertexMesh::Cull()
-    {
-        if (renderNode != NULL)
-            renderNode->meshes.erase(std::find(renderNode->meshes.begin(), renderNode->meshes.end(), this));
-        renderNode = NULL;
+  Material VertexMesh::GetMaterial() const
+  {
+    return material;
+  }
+  void VertexMesh::SetMaterial(const Material& mat)
+  {
+    material = mat;
+  }
 
-        Shadow::RemoveFromDepthRenderList(this);
-    }
+  GLuint VertexMesh::GetTexture() const
+  {
+    return texture;
+  }
+  void VertexMesh::SetTexture(GLuint tex)
+  {
+    texture = tex;
+  }
 
-    void VertexMesh::UnCull()
-    {
-        Shadow::AddToDepthRenderList(this);
-        UpdateRenderNode();
-    }
+  GLuint VertexMesh::GetBumpMap() const
+  {
+    return bumpmap;
+  }
+  void VertexMesh::SetBumpMap(GLuint b)
+  {
+    bumpmap = b;
+  }
 
-    DrawableObject* VertexMesh::GetOwner() const
-    {
-        return owner;
-    }
-    void VertexMesh::SetOwner(DrawableObject *o)
-    {
-        owner = o;
-    }
+  GLuint VertexMesh::GetCubeMap() const
+  {
+    return cubeMap;
+  }
+  void VertexMesh::SetCubeMap(GLuint cMap)
+  {
+    cubeMap = cMap;
+  }
 
-    Material VertexMesh::GetMaterial() const
-    {
-        return material;
-    }
-    void VertexMesh::SetMaterial(const Material& mat)
-    {
-        material = mat;
-    }
+  bool VertexMesh::GetReflectiveCubeMap() const
+  {
+    return reflectiveCubeMap;
+  }
+  void VertexMesh::SetReflectiveCubeMap(bool b)
+  {
+    reflectiveCubeMap = b;
+  }
 
-    GLuint VertexMesh::GetTexture() const
-    {
-        return texture;
-    }
-    void VertexMesh::SetTexture(GLuint tex)
-    {
-        texture = tex;
-    }
+  bool VertexMesh::GetBumpMapEnabled() const
+  {
+    return bumpMapEnabled;
+  }
+  void VertexMesh::SetBumpMapEnabled(bool b)
+  {
+    bumpMapEnabled = b;
+  }
 
-    GLuint VertexMesh::GetBumpMap() const
-    {
-        return bumpmap;
-    }
-    void VertexMesh::SetBumpMap(GLuint b)
-    {
-        bumpmap = b;
-    }
+  bool VertexMesh::GetEmissive() const
+  {
+    return emissive;
+  }
+  void VertexMesh::SetEmissive(bool b)
+  {
+    emissive = b;
+  }
 
-    GLuint VertexMesh::GetCubeMap() const
-    {
-        return cubeMap;
-    }
-    void VertexMesh::SetCubeMap(GLuint cMap)
-    {
-        cubeMap = cMap;
-    }
+  vec4 VertexMesh::GetEmissionColor() const
+  {
+    return emissionColor;
+  }
+  void VertexMesh::SetEmissionColor(const vec4& eColor)
+  {
+    emissionColor = eColor;
+  }
 
-    bool VertexMesh::GetReflectiveCubeMap() const
-    {
-        return reflectiveCubeMap;
-    }
-    void VertexMesh::SetReflectiveCubeMap(bool b)
-    {
-        reflectiveCubeMap = b;
-    }
+  bool VertexMesh::GetRenderEnabled() const
+  {
+    return renderEnabled;
+  }
+  void VertexMesh::SetRenderEnabled(bool b)
+  {
+    renderEnabled = b;
+  }
 
-    bool VertexMesh::GetBumpMapEnabled() const
-    {
-        return bumpMapEnabled;
-    }
-    void VertexMesh::SetBumpMapEnabled(bool b)
-    {
-        bumpMapEnabled = b;
-    }
+  size_t VertexMesh::GetRenderGraphIndex() const
+  {
+    return renderGraphIndex;
+  }
+  void VertexMesh::SetRenderGraphIndex(size_t i)
+  {
+    renderGraphIndex = i;
+  }
 
-    bool VertexMesh::GetEmissive() const
-    {
-        return emissive;
-    }
-    void VertexMesh::SetEmissive(bool b)
-    {
-        emissive = b;
-    }
+  // PRIVATE
 
-    vec4 VertexMesh::GetEmissionColor() const
-    {
-        return emissionColor;
-    }
-    void VertexMesh::SetEmissionColor(const vec4& eColor)
-    {
-        emissionColor = eColor;
-    }
+  std::unordered_map<std::string, VertexMesh>
+  VertexMesh::vertexMeshPrototypeMap;
 
-    bool VertexMesh::GetRenderEnabled() const
-    {
-        return renderEnabled;
-    }
-    void VertexMesh::SetRenderEnabled(bool b)
-    {
-        renderEnabled = b;
-    }
+  void VertexMesh::init()
+  {
+    owner = NULL;
+    material = Material::None();
+    texture = 0;
+    bumpmap = 0;
+    cubeMap = 0;
+    reflectiveCubeMap = false;
+    bumpMapEnabled = true;
+    emissive = false;
+    emissionColor = vec4();
+    renderNode = NULL;
+    renderEnabled = true;
+    renderGraphIndex = 0;
 
-    size_t VertexMesh::GetRenderGraphIndex() const
-    {
-        return renderGraphIndex;
-    }
-    void VertexMesh::SetRenderGraphIndex(size_t i)
-    {
-        renderGraphIndex = i;
-    }
-
-    // PRIVATE
-
-    std::unordered_map<std::string, VertexMesh> VertexMesh::vertexMeshPrototypeMap;
-
-    void VertexMesh::init()
-    {
-        owner = NULL;
-        material = Material::None();
-        texture = 0;
-        bumpmap = 0;
-        cubeMap = 0;
-        reflectiveCubeMap = false;
-        bumpMapEnabled = true;
-        emissive = false;
-        emissionColor = vec4();
-        renderNode = NULL;
-        renderEnabled = true;
-        renderGraphIndex = 0;
-
-        indexOffset = 0;
-        indexCount = 0;
-        triangleStrip = false;
-    }
+    indexOffset = 0;
+    indexCount = 0;
+    this->vmode = V_POINTS;
+  }
 }
