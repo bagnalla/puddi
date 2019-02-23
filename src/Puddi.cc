@@ -167,9 +167,10 @@ namespace puddi
                 exit(1);
             }
 
+            if (SDL_SetRelativeMouseMode(SDL_TRUE) == -1)
+                std::cerr << "unable to set relative mouse mode.\n";
+
             // default render graph
-            renderGraphs.push_back(new RenderGraph());
-            // font render graph
             renderGraphs.push_back(new RenderGraph());
 
             Rectangle::Init();
@@ -268,7 +269,6 @@ namespace puddi
             SDL_GetWindowSize(window, &w, &h);
             ProjectionMatrix = perspective(static_cast<float>(M_PI) / 4.0f, w / static_cast<float>(h), 1.0f, ViewDistance);
             Shader::SetProjection(ProjectionMatrix);
-            Shader::InitOrtho(window);
 
             glViewport(0, 0, w, h);
         }
@@ -354,17 +354,6 @@ namespace puddi
         void SetShadowIgnoreObject(DrawableObject *o)
         {
             shadowIgnoreObject = o;
-        }
-
-        void SetRelativeMouseMode(int m)
-        {
-            if (SDL_SetRelativeMouseMode(SDL_TRUE) == -1)
-                std::cerr << "unable to set relative mouse mode.\n";
-        }
-
-        void SetClearColor(const vec4 &col)
-        {
-            glClearColor(col.x, col.y, col.z, col.w);
         }
     }
 }

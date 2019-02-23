@@ -23,7 +23,6 @@ namespace puddi
     {
         void Init();
 
-        // only "myfont" font for now
         std::vector<DrawableObject*> CreateGlyphString(Object *rootObject, std::string font, std::string str, float scale = 1.0f);
     };
 }

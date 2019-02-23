@@ -26,7 +26,7 @@ namespace puddi
         AnimatedObject(Object *par, SchematicNode *schematic, Bone skel, const std::vector<ObjectAnimation>& anims);
 
         void Update();
-        void PreDraw();
+        void SendTransformToGPU();
 
         void EnableAnimation();
         void DisableAnimation();

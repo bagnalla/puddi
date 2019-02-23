@@ -56,19 +56,9 @@ namespace puddi
 //          (*it)->Draw();
 //  };
 
-    void DrawableObject::PreDraw()
+    void DrawableObject::SendTransformToGPU()
     {
         Shader::SetModel(finalModel);
-        if (isHUDElement) {
-            Shader::SetOrtho(true);
-        }
-    }
-
-    void DrawableObject::PostDraw()
-    {
-        if (isHUDElement) {
-            Shader::SetOrtho(false);
-        }
     }
 
     void DrawableObject::AddVertexMesh(VertexMesh *vertexMesh)
@@ -218,13 +208,6 @@ namespace puddi
             static_cast<DrawableObject*>(*it)->SetReflectiveCubeMap(b);
     }
 
-    void DrawableObject::SetIsHUDElement(bool b)
-    {
-        isHUDElement = true;
-        for (auto it = children.begin(); it != children.end(); ++it)
-            static_cast<DrawableObject*>(*it)->SetIsHUDElement(b);
-    }
-
     void DrawableObject::DisableShadowCasting()
     {
         for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)
@@ -250,7 +233,6 @@ namespace puddi
     void DrawableObject::init()
     {
         renderEnabled = true;
-        isHUDElement = false;
         updateRenderNodes();
     }
 

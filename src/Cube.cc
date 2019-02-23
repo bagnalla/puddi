@@ -42,12 +42,12 @@ namespace puddi
         std::vector<vec2> texCoords = Geometry::CreateCubeTextureCoordinates();
         std::vector<vec4> empty = std::vector<vec4>(cube.size(), vec4(-1, -1, -1, -1));
 
-        size_t vertexOffset = Shader::Vertices.size();
-        size_t indexOffset = Shader::VertexIndices.size();
-        size_t indexCount = cube.size();
+        int vertexOffset = Shader::Vertices.size();
+        int indexOffset = Shader::VertexIndices.size();
+        int indexCount = cube.size();
 
         std::vector<uint> indices;
-        for (size_t i = 0; i < indexCount; ++i)
+        for (int i = 0; i < indexCount; ++i)
             indices.push_back(vertexOffset + i);
 
         Shader::Vertices.insert(Shader::Vertices.end(), cube.begin(), cube.end());

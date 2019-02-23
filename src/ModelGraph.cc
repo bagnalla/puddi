@@ -15,7 +15,7 @@ namespace puddi
     {
         parent = par;
         object = o;
-        parallel = true; // try making them all parallel
+        parallel = false;
 
         if (parent != NULL)
             parent->AddChild(this);
@@ -44,7 +44,7 @@ namespace puddi
                     //object->PassDownParentModel(child->object);
                     //child->Update();
                 //}, concurrency::static_partitioner());
-
+                
                 //__gnu_parallel::for_each(children.begin(), children.end(), [&](ModelNode *child)
                 //{
                     ////std::cout << "threads = " << omp_get_num_threads() << std::endl;

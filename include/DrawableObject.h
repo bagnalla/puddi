@@ -36,8 +36,7 @@ namespace puddi
 
         //virtual void Draw() const;
 
-        virtual void PreDraw();
-        virtual void PostDraw();
+        virtual void SendTransformToGPU();
 
         void AddVertexMesh(VertexMesh *vertexMesh);
 
@@ -71,15 +70,12 @@ namespace puddi
 
         void SetReflectiveCubeMap(bool b);
 
-        void SetIsHUDElement(bool b);
-
         void DisableShadowCasting();
 
         void SetRenderGraph(size_t index);
 
     private:
         bool renderEnabled;
-        bool isHUDElement;
 
     protected:
         std::vector<VertexMesh*> vertexMeshes;
