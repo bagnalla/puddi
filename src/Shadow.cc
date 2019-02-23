@@ -22,9 +22,9 @@ namespace puddi
 
             std::vector<VertexMesh*> depthRenderList;
 
-            void configureDepthAndCubeMapBuffers()
-            {
-            }
+            // void configureDepthAndCubeMapBuffers()
+            // {
+            // }
 
             void renderDepthRenderList()
             {

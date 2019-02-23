@@ -84,7 +84,7 @@ namespace puddi
                     return nullptr;
 
                 // if there are children, recursively search them for a bone
-                for (int i = 0; i < root->mNumChildren; ++i)
+                for (size_t i = 0; i < root->mNumChildren; ++i)
                 {
                     auto skeleton = findSkeleton(root->mChildren[i], boneNames);
                     if (skeleton != nullptr)
@@ -114,7 +114,7 @@ namespace puddi
                     //bone.inverseBindPose = inverse(bone.bindPose) * inverse(parent->bindPose);
                 }
 
-                for (int i = 0; i < aiRoot->mNumChildren; ++i)
+                for (size_t i = 0; i < aiRoot->mNumChildren; ++i)
                     bone.children.push_back(buildSkeleton(aiRoot->mChildren[i], index, &bone));
 
                 return bone;
@@ -167,10 +167,12 @@ namespace puddi
             void loadAnimations(const aiScene *scene, const string& skeletonName)
             {
                 vector<ObjectAnimation> animations;
-                for (int i = 0; i < scene->mNumAnimations; ++i)
+                for (size_t i = 0; i < scene->mNumAnimations; ++i)
                 {
                     auto anim = scene->mAnimations[i];
-                    animations.push_back(ObjectAnimation(anim->mName.C_Str(), anim->mDuration, anim->mTicksPerSecond));
+                    animations.push_back(ObjectAnimation(anim->mName.C_Str(),
+							 anim->mDuration,
+							 anim->mTicksPerSecond));
                 }
                 animationMap.emplace(skeletonName, animations);
             }

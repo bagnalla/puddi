@@ -133,7 +133,7 @@ namespace puddi
         }
         else
         {
-            if (nearestKeyIndex == keys.size() - 1)
+            if (nearestKeyIndex == static_cast<int>(keys.size()) - 1)
                 result = key.second;
             else
             {
@@ -177,7 +177,7 @@ namespace puddi
         }
         else
         {
-            if (nearestKeyIndex == keys.size() - 1)
+            if (nearestKeyIndex == static_cast<int>(keys.size()) - 1)
                 result = key.second;
             else
             {
