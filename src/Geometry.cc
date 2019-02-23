@@ -564,6 +564,18 @@ namespace puddi
             return v;
         }
 
+        std::vector<vec4> CreateRectangleTriangles()
+        {
+            std::vector<vec4> v;
+            v.push_back(vec4(0.0, 0.0, 0.0, 1.0));
+            v.push_back(vec4(0.0, 1.0, 0.0, 1.0));
+            v.push_back(vec4(1.0, 0.0, 0.0, 1.0));
+            v.push_back(vec4(1.0, 0.0, 0.0, 1.0));
+            v.push_back(vec4(0.0, 1.0, 0.0, 1.0));
+            v.push_back(vec4(1.0, 1.0, 0.0, 1.0));
+            return v;
+        }
+
         std::vector<vec4> CreateRectangleGeometry()
         {
             std::vector<vec4> v;

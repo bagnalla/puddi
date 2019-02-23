@@ -104,6 +104,8 @@ namespace puddi
         **********************************************************************/
         std::vector<vec4> CreateRectangle(float size);
 
+        std::vector<vec4> CreateRectangleTriangles();
+
         /**********************************************************************
         Function:       CreateRectangleGeometry
         Purpose:        Generate the vertices for a rectangle to be used for
