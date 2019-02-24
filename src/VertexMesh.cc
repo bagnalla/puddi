@@ -30,8 +30,7 @@ namespace puddi
   VertexMesh::~VertexMesh()
   {
     //std::cout << "in VertexMesh destructor\n";
-    if (renderNode != NULL)
-    {
+    if (renderNode != NULL) {
       auto it = std::find(renderNode->meshes.begin(),
 			  renderNode->meshes.end(), this);
       if (it != renderNode->meshes.end())
@@ -63,11 +62,11 @@ namespace puddi
     if (it != vertexMeshPrototypeMap.end())
       return vertexMeshPrototypeMap[name];
     else
-    {
-      std::cerr << "vertex mesh doesn't exist with name: " <<
-	name << std::endl;
-      return VertexMesh(NULL, Material::None(), 0, 0, V_POINTS);
-    }
+      {
+	std::cerr << "vertex mesh doesn't exist with name: " <<
+	  name << std::endl;
+	return VertexMesh(NULL, Material::None(), 0, 0, V_POINTS);
+      }
   }
 
   void VertexMesh::Draw() const
@@ -83,8 +82,7 @@ namespace puddi
 
   void VertexMesh::UpdateRenderNode()
   {
-    if (renderNode != NULL)
-    {
+    if (renderNode != NULL) {
       auto it = std::find(renderNode->meshes.begin(),
 			  renderNode->meshes.end(), this);
       if (it != renderNode->meshes.end())
@@ -94,7 +92,8 @@ namespace puddi
 	std::cerr << "in VerteshMesh::UpdateRenderNode(): attempted to remove self from rendernode that didnt know about me. this should never happen\n";
     }
 
-    renderNode = engine::GetRenderGraph(renderGraphIndex)->AddVertexMesh(this);
+    // renderNode = engine::GetRenderGraph(renderGraphIndex)->AddVertexMesh(this);
+    renderNode = this->scene->GetRenderGraph()->AddVertexMesh(this);
 
     Shadow::AddToDepthRenderList(this);
   }
@@ -215,13 +214,21 @@ namespace puddi
     renderEnabled = b;
   }
 
-  size_t VertexMesh::GetRenderGraphIndex() const
+  // size_t VertexMesh::GetRenderGraphIndex() const
+  // {
+  //   return renderGraphIndex;
+  // }
+  // void VertexMesh::SetRenderGraphIndex(size_t i)
+  // {
+  //   renderGraphIndex = i;
+  // }
+  Scene* VertexMesh::GetScene() const
   {
-    return renderGraphIndex;
+    return this->scene;
   }
-  void VertexMesh::SetRenderGraphIndex(size_t i)
+  void VertexMesh::SetScene(Scene *scene)
   {
-    renderGraphIndex = i;
+    this->scene = scene;
   }
 
   // PRIVATE
@@ -231,7 +238,7 @@ namespace puddi
 
   void VertexMesh::init()
   {
-    owner = NULL;
+    owner = nullptr;
     material = Material::None();
     texture = 0;
     bumpmap = 0;
@@ -240,10 +247,9 @@ namespace puddi
     bumpMapEnabled = true;
     emissive = false;
     emissionColor = vec4();
-    renderNode = NULL;
+    renderNode = nullptr;
     renderEnabled = true;
-    renderGraphIndex = 0;
-
+    this->scene = nullptr;
     indexOffset = 0;
     indexCount = 0;
     this->vmode = V_POINTS;

@@ -9,6 +9,7 @@
 #include "Puddi.h"
 #include "RenderGraph.h"
 #include "Rectangle.h"
+#include "Scene.h"
 #include "Schematic.h"
 #include "Shader.h"
 #include "Shadow.h"
@@ -31,10 +32,13 @@ namespace puddi
       SDL_GLContext glcontext;
 
       Object* rootObject = new Object(nullptr);
-      UpdateNode* rootUpdateNode;
-      ModelNode* rootModelNode;
+      // UpdateNode* rootUpdateNode;
+      // ModelNode* rootModelNode;
 
-      vector<RenderGraph*> renderGraphs;
+      Scene *world_scene;
+      Camera *world_camera;
+
+      vector<Scene*> scenes;
 
       std::vector<init_function> postInitFunctions;
       std::vector<update_function> updateFunctions;
@@ -50,10 +54,12 @@ namespace puddi
 
 	SDL_SetWindowTitle(window, Util::ToString(FpsTracker::GetFps()).c_str());
 
-	rootModelNode->Update();
+	// rootModelNode->Update();
 
-	rootUpdateNode->Update();
+	// rootUpdateNode->Update();
 	//std::cout << rootModelNode->children.size() << std::endl;
+
+	UpdateAll();
 
 	return 0;
       }
@@ -61,17 +67,19 @@ namespace puddi
       void preDraw()
       {
 	if (Shadow::GetMode() == SHADOW_MODE_UNI)
-	  Shadow::RenderShadowOrthoMap(shadowLightPosition);
+	  Shadow::RenderShadowOrthoMap(world_scene, shadowLightPosition);
 	else if (Shadow::GetMode() == SHADOW_MODE_OMNI)
-	  Shadow::RenderShadowCubeMap(shadowLightPosition, shadowIgnoreObject);
+	  Shadow::RenderShadowCubeMap(world_scene, shadowLightPosition,
+				      shadowIgnoreObject);
       }
 
       void draw()
       {
-	UpdateProjectionMatrixAndViewport();
+	// UpdateProjectionMatricesAndViewport();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// Render all scenes
 	RenderAll();
 
 	// call additional draw functions
@@ -117,14 +125,6 @@ namespace puddi
     // PUBLIC
 
     float WorldSize;
-    float ViewDistance;
-    float FOV = static_cast<float>(M_PI / 4.0f);
-
-    mat4 ProjectionMatrix;
-    mat4 CameraMatrix;
-    vec4 CameraPosition;
-
-    Camera* MainCamera;
 
     std::string WindowTitleMessage = "";
 
@@ -150,9 +150,10 @@ namespace puddi
       SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
       SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
-      window = SDL_CreateWindow(
-				"Puddi", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480,
-				SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+      window =
+	SDL_CreateWindow("Puddi", SDL_WINDOWPOS_CENTERED,
+			 SDL_WINDOWPOS_CENTERED, 640, 480,
+			 SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
       // Create an OpenGL context associated with the window.
       glcontext = SDL_GL_CreateContext(window);
@@ -161,7 +162,8 @@ namespace puddi
       glEnable(GL_MULTISAMPLE);
 
       //SDL_GL_MakeCurrent(window, glcontext);
-      glewExperimental = GL_TRUE; // needed to use glTexBuffer on OpenGL 3.0 (for buffer texture)
+      // Needed for glTexBuffer on OpenGL 3.0 (for buffer texture)
+      glewExperimental = GL_TRUE;
       if (glewInit() != GLEW_OK)
       {
 	std::cerr << "GLEW failed to load.\n";
@@ -171,8 +173,10 @@ namespace puddi
       if (SDL_SetRelativeMouseMode(SDL_TRUE) == -1)
 	std::cerr << "unable to set relative mouse mode.\n";
 
-      // default render graph
-      renderGraphs.push_back(new RenderGraph());
+      // Main world scene
+      world_scene = new Scene(PROJ_PERSPECTIVE, true);
+      world_scene->SetDepth(worldSize * 1.6f);
+      scenes.push_back(world_scene);
 
       Line::Init();
       Rectangle::Init();
@@ -185,13 +189,6 @@ namespace puddi
       Schematic::Init();
       Skeleton::Init();
       Font::Init();
-
-      rootUpdateNode = rootObject->GetUpdateNode();
-      //rootUpdateNode->parallel = true;
-
-      rootModelNode = rootObject->GetModelNode();
-
-      MainCamera = new Camera(rootObject);
 
       glEnable(GL_DEPTH_TEST);
 
@@ -207,16 +204,17 @@ namespace puddi
 	glPrimitiveRestartIndex(UINT_MAX);
       }
 
-      ViewDistance = WorldSize * 1.6f;
+      // ViewDistance = WorldSize * 1.6f;
 
       // set default clear color
       glClearColor(0.5, 0.5, 1.0, 1.0);
 
       // initialize projection matrix
-      UpdateProjectionMatrixAndViewport();
+      UpdateProjectionMatricesAndViewport();
 
       // SET SHADOW NEAR AND FAR PLANES
-      Shadow::SetZRange(2.0f, ViewDistance);
+      // Shadow::SetZRange(2.0f, ViewDistance);
+      Shadow::SetZRange(2.0f, WorldSize * 1.6f);
 
       // enable seamless cube maps
       glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
@@ -265,48 +263,52 @@ namespace puddi
 	draw();
       }
     }
-    void UpdateProjectionMatrixAndViewport()
+
+    void UpdateProjectionMatricesAndViewport()
     {
       int w, h;
       SDL_GetWindowSize(window, &w, &h);
-      ProjectionMatrix = perspective(static_cast<float>(M_PI) / 4.0f, w / static_cast<float>(h), 1.0f, ViewDistance);
-      Shader::SetProjection(ProjectionMatrix);
+      // ProjectionMatrix = perspective(static_cast<float>(M_PI) / 4.0f,
+      // 				     w / static_cast<float>(h), 1.0f,
+      // 				     ViewDistance);
+      // Shader::SetProjection(ProjectionMatrix);
+      for (auto it = scenes.begin(); it != scenes.end(); ++it) {
+	(*it)->ViewportChange(w, h);
+      }
 
       glViewport(0, 0, w, h);
     }
 
-    Object* GetRootObject()
+    Scene* GetScene(size_t index)
     {
-      return rootObject;
-    }
-
-    RenderGraph* GetDefaultRenderGraph()
-    {
-      return renderGraphs[0];
-    }
-
-    RenderGraph* GetRenderGraph(size_t index)
-    {
-      if (index >= renderGraphs.size())
+      if (index >= scenes.size())
 	return nullptr;
-      return renderGraphs[index];
+      return scenes[index];
     }
 
-    size_t AddRenderGraph()
+    size_t AddScene(ProjectionType pType, bool cam_object)
     {
-      renderGraphs.push_back(new RenderGraph());
-      return renderGraphs.size() - 1;
+      scenes.push_back(new Scene(pType, cam_object));
+      return scenes.size() - 1;
+    }
+
+    void UpdateAll()
+    {
+      for (auto it = scenes.begin(); it != scenes.end(); ++it)
+    	(*it)->Update();
     }
 
     void RenderAll()
     {
-      for (auto it = renderGraphs.begin(); it != renderGraphs.end(); ++it)
-	(*it)->Render();
+      for (auto it = scenes.begin(); it != scenes.end(); ++it)
+    	(*it)->Draw();
     }
 
-    void ForceModelUpdate()
+    void ForceModelUpdates()
     {
-      rootModelNode->Update();
+      for (auto it = scenes.begin(); it != scenes.end(); ++it) {
+	(*it)->ForceModelUpdate();
+      }
     }
 
     void ToggleFullScreen()
@@ -341,9 +343,10 @@ namespace puddi
       // initial call to these so that the shadow map binding will
       // work when you enable shadows
       if (mode == SHADOW_MODE_UNI)
-	Shadow::RenderShadowOrthoMap(vec3(1.0f, 0.0f, 0.0f));
+	Shadow::RenderShadowOrthoMap(world_scene, vec3(1.0f, 0.0f, 0.0f));
       else
-	Shadow::RenderShadowCubeMap(vec3(1.0f, 0.0f, 0.0f), shadowIgnoreObject);
+	Shadow::RenderShadowCubeMap(world_scene, vec3(1.0f, 0.0f, 0.0f),
+				    shadowIgnoreObject);
 
       Shadow::SetMode(mode);
     }
@@ -361,6 +364,16 @@ namespace puddi
     void SetLineWidth(float w)
     {
       glLineWidth(w);
+    }
+
+    Scene* GetWorldScene()
+    {
+      return world_scene;
+    }
+
+    Camera* GetWorldCamera()
+    {
+      return world_camera;
     }
   }
 }

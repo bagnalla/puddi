@@ -16,8 +16,8 @@ namespace puddi
             GLuint currentProgram;
             std::string currentProgramName;
 
-            mat4 camera;
-            vec4 cameraPosition;
+            mat4 view;
+            vec4 eyePosition;
             mat4 projection;
             mat4 lightSource;
             mat4 lightProjection;
@@ -67,7 +67,7 @@ namespace puddi
                 // get uniform locations
                 std::unordered_map<std::string, GLuint> uniformMap;
                 uniformMap.emplace("model", getUniform(program, "model"));
-                uniformMap.emplace("camera", getUniform(program, "camera"));
+                uniformMap.emplace("view", getUniform(program, "view"));
                 uniformMap.emplace("projection", getUniform(program, "projection"));
                 uniformMap.emplace("emissionColor", getUniform(program, "emissionColor"));
 
@@ -100,7 +100,7 @@ namespace puddi
                 // get uniform locations
                 std::unordered_map<std::string, GLuint> uniformMap;
                 uniformMap.emplace("model", getUniform(program, "model"));
-                uniformMap.emplace("camera", getUniform(program, "camera"));
+                uniformMap.emplace("view", getUniform(program, "view"));
                 uniformMap.emplace("projection", getUniform(program, "projection"));
                 uniformMap.emplace("tex", getUniform(program, "tex"));
 
@@ -137,9 +137,9 @@ namespace puddi
                 // get uniform locations
                 std::unordered_map<std::string, GLuint> uniformMap;
                 uniformMap.emplace("model", getUniform(program, "model"));
-                uniformMap.emplace("camera", getUniform(program, "camera"));
+                uniformMap.emplace("view", getUniform(program, "view"));
                 uniformMap.emplace("projection", getUniform(program, "projection"));
-                uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
+                uniformMap.emplace("eyePosition", getUniform(program, "eyePosition"));
                 uniformMap.emplace("cubeMap", getUniform(program, "cubeMap"));
                 uniformMap.emplace("reflectiveCubeMap", getUniform(program, "reflective"));
 
@@ -174,7 +174,7 @@ namespace puddi
                 // get uniform locations
                 std::unordered_map<std::string, GLuint> uniformMap;
                 uniformMap.emplace("model", getUniform(program, "model"));
-                uniformMap.emplace("camera", getUniform(program, "camera"));
+                uniformMap.emplace("view", getUniform(program, "view"));
                 uniformMap.emplace("projection", getUniform(program, "projection"));
 
                 // copy uniform map to program uniform map
@@ -210,10 +210,10 @@ namespace puddi
                 // get uniform locations
                 std::unordered_map<std::string, GLuint> uniformMap;
                 uniformMap.emplace("model", getUniform(program, "model"));
-                uniformMap.emplace("camera", getUniform(program, "camera"));
+                uniformMap.emplace("view", getUniform(program, "view"));
                 uniformMap.emplace("projection", getUniform(program, "projection"));
                 uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
-                uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
+                uniformMap.emplace("eyePosition", getUniform(program, "eyePosition"));
                 uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
                 uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
                 uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
@@ -290,10 +290,10 @@ namespace puddi
                 // get uniform locations
                 std::unordered_map<std::string, GLuint> uniformMap;
                 uniformMap.emplace("model", getUniform(program, "model"));
-                uniformMap.emplace("camera", getUniform(program, "camera"));
+                uniformMap.emplace("view", getUniform(program, "view"));
                 uniformMap.emplace("projection", getUniform(program, "projection"));
                 uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
-                uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
+                uniformMap.emplace("eyePosition", getUniform(program, "eyePosition"));
                 uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
                 uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
                 uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
@@ -366,10 +366,10 @@ namespace puddi
                 // get uniform locations
                 std::unordered_map<std::string, GLuint> uniformMap;
                 uniformMap.emplace("model", getUniform(program, "model"));
-                uniformMap.emplace("camera", getUniform(program, "camera"));
+                uniformMap.emplace("view", getUniform(program, "view"));
                 uniformMap.emplace("projection", getUniform(program, "projection"));
                 uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
-                uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
+                uniformMap.emplace("eyePosition", getUniform(program, "eyePosition"));
                 uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
                 uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
                 uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
@@ -451,10 +451,10 @@ namespace puddi
                 // get uniform locations
                 std::unordered_map<std::string, GLuint> uniformMap;
                 uniformMap.emplace("model", getUniform(program, "model"));
-                uniformMap.emplace("camera", getUniform(program, "camera"));
+                uniformMap.emplace("view", getUniform(program, "view"));
                 uniformMap.emplace("projection", getUniform(program, "projection"));
                 uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
-                uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
+                uniformMap.emplace("eyePosition", getUniform(program, "eyePosition"));
                 uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
                 uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
                 uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
@@ -518,10 +518,10 @@ namespace puddi
                 // get uniform locations
                 std::unordered_map<std::string, GLuint> uniformMap;
                 uniformMap.emplace("model", getUniform(program, "model"));
-                uniformMap.emplace("camera", getUniform(program, "camera"));
+                uniformMap.emplace("view", getUniform(program, "view"));
                 uniformMap.emplace("projection", getUniform(program, "projection"));
                 uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
-                uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
+                uniformMap.emplace("eyePosition", getUniform(program, "eyePosition"));
                 uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
                 uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
                 uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
@@ -591,10 +591,10 @@ namespace puddi
                 // get uniform locations
                 std::unordered_map<std::string, GLuint> uniformMap;
                 uniformMap.emplace("model", getUniform(program, "model"));
-                uniformMap.emplace("camera", getUniform(program, "camera"));
+                uniformMap.emplace("view", getUniform(program, "view"));
                 uniformMap.emplace("projection", getUniform(program, "projection"));
                 uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
-                uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
+                uniformMap.emplace("eyePosition", getUniform(program, "eyePosition"));
                 uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
                 uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
                 uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
@@ -670,10 +670,10 @@ namespace puddi
                 // get uniform locations
                 std::unordered_map<std::string, GLuint> uniformMap;
                 uniformMap.emplace("model", getUniform(program, "model"));
-                uniformMap.emplace("camera", getUniform(program, "camera"));
+                uniformMap.emplace("view", getUniform(program, "view"));
                 uniformMap.emplace("projection", getUniform(program, "projection"));
                 uniformMap.emplace("lightSource", getUniform(program, "lightSource"));
-                uniformMap.emplace("cameraPosition", getUniform(program, "cameraPosition"));
+                uniformMap.emplace("eyePosition", getUniform(program, "eyePosition"));
                 uniformMap.emplace("materialAmbient", getUniform(program, "materialAmbient"));
                 uniformMap.emplace("materialDiffuse", getUniform(program, "materialDiffuse"));
                 uniformMap.emplace("materialSpecular", getUniform(program, "materialSpecular"));
@@ -816,16 +816,16 @@ namespace puddi
                 glUseProgram(currentProgram);
                 glBindVertexArray(programToVaoMap[currentProgram]);
 
-                SetCamera(camera);
+                SetView(view);
                 SetProjection(projection);
 
                 GLuint loc = getUniformFromCurrentProgram("lightSource");
                 if (loc != UINT_MAX)
                     glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(lightSource));
 
-                loc = getUniformFromCurrentProgram("cameraPosition");
+                loc = getUniformFromCurrentProgram("eyePosition");
                 if (loc != UINT_MAX)
-                    glUniform4fv(loc, 1, value_ptr(cameraPosition));
+                    glUniform4fv(loc, 1, value_ptr(eyePosition));
 
                 loc = getUniformFromCurrentProgram("lightProjection");
                 if (loc != UINT_MAX)
@@ -891,13 +891,13 @@ namespace puddi
                 glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(lSource));
         }
 
-        void SetCameraPosition(const vec4& camPos)
+        void SetEyePosition(const vec4& eyePos)
         {
-            cameraPosition = camPos;
+            eyePosition = eyePos;
             //GLuint loc = getUniformFromCurrentProgram("cameraPosition");
             //if (loc != -1)
-            GLuint loc = programToUniformMap[currentProgram]["cameraPosition"];
-                glUniform4fv(loc, 1, value_ptr(camPos));
+            GLuint loc = programToUniformMap[currentProgram]["eyePosition"];
+                glUniform4fv(loc, 1, value_ptr(eyePos));
         }
 
         void SetModel(const mat4& model)
@@ -908,14 +908,14 @@ namespace puddi
                 glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(model));
         }
 
-        void SetCamera(const mat4& cam)
+        void SetView(const mat4& v)
         {
-            camera = cam;
+            view = v;
 
             //GLuint loc = getUniformFromCurrentProgram("camera");
             //if (loc != -1)
-            GLuint loc = programToUniformMap[currentProgram]["camera"];
-                glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(cam));
+            GLuint loc = programToUniformMap[currentProgram]["view"];
+                glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(v));
         }
 
         void SetProjection(const mat4& proj)

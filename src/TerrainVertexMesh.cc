@@ -1,5 +1,6 @@
 #include "Puddi.h"
 #include "RenderGraph.h"
+#include "Scene.h"
 #include "Shader.h"
 #include "Shadow.h"
 #include "TerrainVertexMesh.h"
@@ -9,8 +10,8 @@ namespace puddi
 {
   // PUBLIC
 
-  TerrainVertexMesh::TerrainVertexMesh(const Material& mat, int iOffset,
-				       int iCount)
+  TerrainVertexMesh::TerrainVertexMesh(const Material& mat,
+				       int iOffset, int iCount)
     : VertexMesh(nullptr, mat, iOffset, iCount, V_TRIANGLE_STRIP)
   {
     texture1 = texture2 = texture3 = texture4 = 0;
@@ -20,7 +21,9 @@ namespace puddi
 
   TerrainVertexMesh::~TerrainVertexMesh()
   {
-    engine::GetRenderGraph(renderGraphIndex)->RemoveTerrainVertexMesh(this);
+    if (this->scene) {
+      this->scene->GetRenderGraph()->RemoveTerrainVertexMesh(this);
+    }
   }
 
   void TerrainVertexMesh::DrawWithoutBumpMap() const
@@ -75,7 +78,9 @@ namespace puddi
 
   void TerrainVertexMesh::UpdateRenderNode()
   {
-    engine::GetRenderGraph(renderGraphIndex)->AddTerrainVertexMesh(this);
+    if (this->scene) {
+      this->scene->GetRenderGraph()->AddTerrainVertexMesh(this);
+    }
     Shadow::AddToDepthRenderList(this);
   }
 

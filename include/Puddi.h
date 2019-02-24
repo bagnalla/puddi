@@ -23,8 +23,10 @@ namespace puddi
   class Camera;
   class Object;
   class DrawableObject;
+  class Scene;
   enum ShadowMode : int;
   enum ShadowResolution : int;
+  enum ProjectionType : int;
 
   namespace engine
   {
@@ -33,32 +35,22 @@ namespace puddi
     typedef void (*init_function)(void);
 
     extern float WorldSize;
-    extern float ViewDistance;
-    extern float FOV;
-
-    extern mat4 ProjectionMatrix;
-    extern mat4 CameraMatrix;
-    extern vec4 CameraPosition;
-
-    extern Camera *MainCamera;
-
     extern std::string WindowTitleMessage;
+    // extern std::vector<Scene*> scenes;
+
+    void UpdateAll();
+    void RenderAll();
 
     int Init(float worldSize);
 
     int Run();
 
-    void UpdateProjectionMatrixAndViewport();
+    void UpdateProjectionMatricesAndViewport();
 
-    Object* GetRootObject();
+    Scene* GetScene(size_t index);
+    size_t AddScene();
 
-    RenderGraph* GetDefaultRenderGraph();
-    RenderGraph* GetRenderGraph(size_t index);
-    size_t AddRenderGraph();
-
-    void RenderAll();
-
-    void ForceModelUpdate();
+    void ForceModelUpdates();
 
     // only enables full screen atm
     void ToggleFullScreen();
@@ -75,6 +67,9 @@ namespace puddi
     void SetShadowIgnoreObject(DrawableObject *o);
 
     void SetLineWidth(float w);
+
+    Scene* GetWorldScene();
+    Camera* GetWorldCamera();
   }
 }
 

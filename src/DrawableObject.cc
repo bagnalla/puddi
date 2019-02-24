@@ -1,6 +1,7 @@
 #include "DrawableObject.h"
 #include "Puddi.h"
 #include "RenderGraph.h"
+#include "Scene.h"
 #include "Schematic.h"
 #include "Shader.h"
 #include "Shadow.h"
@@ -216,16 +217,16 @@ namespace puddi
             static_cast<DrawableObject*>(*it)->DisableShadowCasting();
     };
 
-    void DrawableObject::SetRenderGraph(size_t index)
+    void DrawableObject::SetScene(Scene *scene)
     {
         for (auto it = vertexMeshes.begin(); it != vertexMeshes.end(); ++it)
         {
             auto vMesh = *it;
-            vMesh->SetRenderGraphIndex(index);
+            vMesh->SetScene(scene);
             vMesh->UpdateRenderNode();
         }
         for (auto it = children.begin(); it != children.end(); ++it)
-            static_cast<DrawableObject*>(*it)->SetRenderGraph(index);
+            static_cast<DrawableObject*>(*it)->SetScene(scene);
     }
 
     // PRIVATE

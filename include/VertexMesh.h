@@ -4,15 +4,13 @@
 #include <string>
 #include <unordered_map>
 #include <GL/glew.h>
-//#include <glm/vec2.hpp>
-//#include <glm/vec4.hpp>
 #include "Material.h"
-//#include "Shader.h"
 
 namespace puddi
 {
   struct RenderNode;
   class DrawableObject;
+  class Scene;
 
   enum VertexMode { V_POINTS, V_LINES, V_LINE_STRIP, V_LINE_LOOP,
 		    V_TRIANGLES, V_TRIANGLE_STRIP, V_TRIANGLE_FAN };
@@ -23,8 +21,8 @@ namespace puddi
     // need public default constructor to use it as non-dynamic memory struct
     VertexMesh();
 
-    VertexMesh(DrawableObject *o, const Material& mat, int iOffset,
-	       int iCount, VertexMode vmode);
+    VertexMesh(DrawableObject *o, const Material& mat,
+	       int iOffset, int iCount, VertexMode vmode);
 
     virtual ~VertexMesh();
 
@@ -76,8 +74,10 @@ namespace puddi
     bool GetRenderEnabled() const;
     void SetRenderEnabled(bool b);
 
-    size_t GetRenderGraphIndex() const;
-    void SetRenderGraphIndex(size_t i);
+    /* size_t GetRenderGraphIndex() const; */
+    /* void SetRenderGraphIndex(size_t i); */
+    Scene* GetScene() const;
+    void SetScene(Scene *scene);
 
   private:
     static std::unordered_map<std::string, VertexMesh> vertexMeshPrototypeMap;
@@ -100,7 +100,8 @@ namespace puddi
   protected:
     uint indexOffset;
     uint indexCount;
-    size_t renderGraphIndex;
+    /* size_t renderGraphIndex; */
+    Scene *scene;
   };
 }
 

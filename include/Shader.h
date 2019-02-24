@@ -9,6 +9,8 @@
 #include <GL/glew.h>
 #include "GlmHeaders.h"
 
+// TODO: Change camera position to eye position
+
 namespace puddi
 {
     struct Material;
@@ -55,9 +57,9 @@ namespace puddi
         void SetMaterialShininess(float materialShininess);
         void SetMaterial(const Material& material);
         void SetLightSource(const mat4& lightSource);
-        void SetCameraPosition(const vec4& cameraPosition);
+        void SetEyePosition(const vec4& eyePosition);
         void SetModel(const mat4& model);
-        void SetCamera(const mat4& camera);
+        void SetView(const mat4& view);
         void SetProjection(const mat4& projection);
         void SetLightProjection(const mat4& lightProj);
         void SetEmissionColor(const vec4& emissionColor);

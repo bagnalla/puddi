@@ -9,6 +9,6 @@ add_library(puddi STATIC
 	EnvironmentMap.cc  Material.cc          SDLUtil.cc      UpdateGraph.cc
 	Font.cc            ModelGraph.cc        Shader.cc       Util.cc
 	FpsTracker.cc      Object.cc            Shadow.cc       VertexMesh.cc
-        Line.cc
+        Line.cc            Scene.cc
 )
 

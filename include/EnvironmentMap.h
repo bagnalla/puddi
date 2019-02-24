@@ -17,16 +17,19 @@
 
 namespace puddi
 {
-    class DrawableObject;
+  class DrawableObject;
+  class Scene;
 
-    namespace EnvironmentMap
-    {
-        void Init();
+  namespace EnvironmentMap
+  {
+    void Init();
 
-        GLuint GenerateCubeMap();
+    GLuint GenerateCubeMap();
 
-        void Render(GLuint targetCubeMap, const glm::vec3& sourcePos, DrawableObject* source, float zNear, float zFar);
-    }
+    void Render(Scene *scene, GLuint targetCubeMap,
+		const glm::vec3& sourcePos, DrawableObject* source,
+		float zNear, float zFar);
+  }
 }
 
 #endif

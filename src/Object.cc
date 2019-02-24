@@ -8,7 +8,8 @@ namespace puddi
 {
     // PUBLIC
 
-    Object::Object(Object *parent) : Object(parent, false, false) { baseTransform = mat4(); }
+    // Object::Object(Object *parent) : Object(parent, false, false) { baseTransform = mat4(); }
+    Object::Object(Object *parent) : Object(parent, false, false) {}
 
     Object::Object(Object *parent, bool childrenUpdateInParallel, bool childrenModelUpdateInParallel)
     {
