@@ -271,11 +271,17 @@ namespace puddi
 	depthRenderList.push_back(o);
     }
 
-    void RemoveFromDepthRenderList(VertexMesh *o)
+    void RemoveFromDepthRenderList(int mesh_id)
     {
-      auto it = std::find(depthRenderList.begin(), depthRenderList.end(), o);
-      if (it != depthRenderList.end())
-	depthRenderList.erase(it);
+      // auto it = std::find(depthRenderList.begin(), depthRenderList.end(), o);
+      // if (it != depthRenderList.end())
+      // 	depthRenderList.erase(it);
+      for (size_t i = 0; i < depthRenderList.size(); ++i) {
+	if (depthRenderList[i]->GetId() == mesh_id) {
+	  depthRenderList.erase(depthRenderList.begin() + i);
+	  return;
+	}
+      }
     }
 
     ShadowMode GetMode()

@@ -10,7 +10,6 @@ namespace puddi
 {
   struct RenderNode;
   class DrawableObject;
-  class Scene;
 
   enum VertexMode { V_POINTS, V_LINES, V_LINE_STRIP, V_LINE_LOOP,
 		    V_TRIANGLES, V_TRIANGLE_STRIP, V_TRIANGLE_FAN };
@@ -34,7 +33,7 @@ namespace puddi
 
     virtual void Draw() const;
 
-    virtual void UpdateRenderNode();
+    /* virtual void UpdateRenderNode(); */
 
     void EnableRender();
 
@@ -46,6 +45,8 @@ namespace puddi
 
     DrawableObject* GetOwner() const;
     void SetOwner(DrawableObject *o);
+
+    int GetId() const;
 
     Material GetMaterial() const;
     void SetMaterial(const Material& mat);
@@ -76,8 +77,6 @@ namespace puddi
 
     /* size_t GetRenderGraphIndex() const; */
     /* void SetRenderGraphIndex(size_t i); */
-    Scene* GetScene() const;
-    void SetScene(Scene *scene);
 
   private:
     static std::unordered_map<std::string, VertexMesh> vertexMeshPrototypeMap;
@@ -98,10 +97,10 @@ namespace puddi
     void init();
 
   protected:
+    int id;
     uint indexOffset;
     uint indexCount;
     /* size_t renderGraphIndex; */
-    Scene *scene;
   };
 }
 

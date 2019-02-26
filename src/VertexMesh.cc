@@ -8,6 +8,8 @@
 
 namespace puddi
 {
+  static int id_counter = 0;
+
   // PUBLIC
 
   VertexMesh::VertexMesh()
@@ -18,8 +20,8 @@ namespace puddi
   VertexMesh::VertexMesh(DrawableObject *o, const Material& mat,
 			 int iOffset, int iCount, VertexMode vmode)
   {
+    this->id = id_counter++;
     this->init();
-
     this->owner = o;
     this->material = mat;
     this->indexOffset = iOffset;
@@ -30,17 +32,19 @@ namespace puddi
   VertexMesh::~VertexMesh()
   {
     //std::cout << "in VertexMesh destructor\n";
-    if (renderNode != NULL) {
-      auto it = std::find(renderNode->meshes.begin(),
-			  renderNode->meshes.end(), this);
-      if (it != renderNode->meshes.end())
-	renderNode->meshes.erase(std::find(renderNode->meshes.begin(),
-					   renderNode->meshes.end(), this));
-      else
-	std::cerr << "in VerteshMesh destructor: attempted to remove self from rendernode that didnt know about me. this should never happen\n";
-    }
+    // if (renderNode != NULL) {
+    //   auto it = std::find(renderNode->meshes.begin(),
+    // 			  renderNode->meshes.end(), this);
+    //   if (it != renderNode->meshes.end())
+    // 	renderNode->meshes.erase(std::find(renderNode->meshes.begin(),
+    // 					   renderNode->meshes.end(), this));
+    //   else
+    // 	std::cerr << "in VerteshMesh destructor: attempted to remove self from rendernode that didnt know about me. this should never happen\n";
+    // }
 
-    Shadow::RemoveFromDepthRenderList(this);
+    // Shadow::RemoveFromDepthRenderList(this);
+
+    engine::VertexMeshDeleted(this->id);
   }
 
   void VertexMesh::AddVertexMeshPrototype(const std::string &name,
@@ -49,8 +53,9 @@ namespace puddi
   {
     auto it = vertexMeshPrototypeMap.find(name);
     if (it == vertexMeshPrototypeMap.end())
-      vertexMeshPrototypeMap.emplace(name, VertexMesh(NULL, mat, iOffset,
-						      iCount, vmode));
+      vertexMeshPrototypeMap.emplace(name,
+				     VertexMesh(NULL, mat, iOffset,
+						iCount, vmode));
     else
       std::cerr << "vertex mesh already exists with name: " <<
 	name << std::endl;
@@ -71,6 +76,7 @@ namespace puddi
 
   void VertexMesh::Draw() const
   {
+    // std::cout << "vmesh drawing" << std::endl;
     this->owner->SendTransformToGPU();
 
     if (this->cubeMap != 0)
@@ -80,23 +86,23 @@ namespace puddi
 		   reinterpret_cast<void*>(this->indexOffset * sizeof(uint)));
   }
 
-  void VertexMesh::UpdateRenderNode()
-  {
-    if (renderNode != NULL) {
-      auto it = std::find(renderNode->meshes.begin(),
-			  renderNode->meshes.end(), this);
-      if (it != renderNode->meshes.end())
-	renderNode->meshes.erase(std::find(renderNode->meshes.begin(),
-					   renderNode->meshes.end(), this));
-      else
-	std::cerr << "in VerteshMesh::UpdateRenderNode(): attempted to remove self from rendernode that didnt know about me. this should never happen\n";
-    }
+  // void VertexMesh::UpdateRenderNode()
+  // {
+  //   if (renderNode != NULL) {
+  //     auto it = std::find(renderNode->meshes.begin(),
+  // 			  renderNode->meshes.end(), this);
+  //     if (it != renderNode->meshes.end())
+  // 	renderNode->meshes.erase(std::find(renderNode->meshes.begin(),
+  // 					   renderNode->meshes.end(), this));
+  //     else
+  // 	std::cerr << "in VerteshMesh::UpdateRenderNode(): attempted to remove self from rendernode that didnt know about me. this should never happen\n";
+  //   }
 
-    // renderNode = engine::GetRenderGraph(renderGraphIndex)->AddVertexMesh(this);
-    renderNode = this->scene->GetRenderGraph()->AddVertexMesh(this);
+  //   // renderNode = engine::GetRenderGraph(renderGraphIndex)->AddVertexMesh(this);
+  //   renderNode = this->scene->GetRenderGraph()->AddVertexMesh(this);
 
-    Shadow::AddToDepthRenderList(this);
-  }
+  //   Shadow::AddToDepthRenderList(this);
+  // }
 
   void VertexMesh::EnableRender()
   {
@@ -115,13 +121,14 @@ namespace puddi
 					 renderNode->meshes.end(), this));
     renderNode = NULL;
 
-    Shadow::RemoveFromDepthRenderList(this);
+    Shadow::RemoveFromDepthRenderList(this->id);
   }
 
   void VertexMesh::UnCull()
   {
     Shadow::AddToDepthRenderList(this);
-    UpdateRenderNode();
+    engine::VertexMeshChanged(this->id);
+    // UpdateRenderNode();
   }
 
   DrawableObject* VertexMesh::GetOwner() const
@@ -131,6 +138,11 @@ namespace puddi
   void VertexMesh::SetOwner(DrawableObject *o)
   {
     owner = o;
+  }
+
+  int VertexMesh::GetId() const
+  {
+    return this->id;
   }
 
   Material VertexMesh::GetMaterial() const
@@ -222,14 +234,14 @@ namespace puddi
   // {
   //   renderGraphIndex = i;
   // }
-  Scene* VertexMesh::GetScene() const
-  {
-    return this->scene;
-  }
-  void VertexMesh::SetScene(Scene *scene)
-  {
-    this->scene = scene;
-  }
+  // Scene* VertexMesh::GetScene() const
+  // {
+  //   return this->scene;
+  // }
+  // void VertexMesh::SetScene(Scene *scene)
+  // {
+  //   this->scene = scene;
+  // }
 
   // PRIVATE
 
@@ -249,7 +261,6 @@ namespace puddi
     emissionColor = vec4();
     renderNode = nullptr;
     renderEnabled = true;
-    this->scene = nullptr;
     indexOffset = 0;
     indexCount = 0;
     this->vmode = V_POINTS;

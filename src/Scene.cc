@@ -1,7 +1,10 @@
+#include <iostream>
 #include "Camera.h"
+#include "DrawableObject.h"
 #include "RenderGraph.h"
 #include "Scene.h"
 #include "Shader.h"
+#include "VertexMesh.h"
 
 using namespace std;
 
@@ -52,6 +55,16 @@ namespace puddi
     this->camera = cam;
   }
 
+  void Scene::SetDepth(float d)
+  {
+    this->depth = d;
+  }
+
+  void Scene::ForceModelUpdate()
+  {
+    this->root->GetModelNode()->Update();
+  }
+
   // void Scene::AddChildScene(Scene *child)
   // {
   //   this->child_scenes.push_back(child);
@@ -92,19 +105,24 @@ namespace puddi
     return this->render_graph;
   }
 
-  Object* Scene::NewObject()
+  Object* Scene::GetRootObject() const
   {
-    return new Object(root);
+    return root;
   }
 
   void Scene::ViewportChange(int w, int h)
   {
+    std::cout << "Scene::ViewportChange" << std::endl;
+    std::cout << "w: " << w << ", h: " << h << ", depth: " <<
+      this->depth << std::endl;
     if (this->proj_type == PROJ_PERSPECTIVE) {
+      std::cout << "setting perspective projection" << std::endl;
       this->projection = perspective(static_cast<float>(M_PI) / 4.0f,
 				     w / static_cast<float>(h), 1.0f,
 				     this->depth);
     }
     else {
+      std::cout << "setting ortho projection" << std::endl;
       float aspect = w / h;
       this->projection = ortho(aspect, -aspect, -1.0f, 1.0f, -1.0f, 1.0f);
     }
@@ -126,6 +144,23 @@ namespace puddi
     // Not sure that this is right.
     return this->UnprojectPoint(p).z < 0;
   }
+
+  // void Scene::AddObject(Object *o)
+  // {
+  //   this->root->AddChild(o);
+  //   // auto drawable = dynamic_cast<DrawableObject*>(o);
+  //   // if (drawable) {
+  //   //   auto meshes = drawable->GetVertexMeshes();
+  //   //   for (auto it = meshes.begin(); it != meshes.end(); ++it) {
+  //   // 	this->render_graph->AddVertexMesh(*it);
+  //   //   }
+  //   // }
+  // }
+
+  void Scene::AddVertexMesh(VertexMesh *mesh)
+  {
+    this->render_graph->AddVertexMesh(mesh);
+  }
   
   void Scene::Update()
   {
@@ -141,8 +176,24 @@ namespace puddi
   
   void Scene::Draw() const
   {
+    // std::cout << "Scene::Draw()" << std::endl;
     Shader::SetProjection(this->projection);
     Shader::SetView(this->view);
     this->render_graph->Render();
+  }
+
+  void Scene::VertexMeshChanged(int mesh_id)
+  {
+    this->render_graph->VertexMeshChanged(mesh_id);
+  }
+
+  void Scene::VertexMeshDeleted(int mesh_id)
+  {
+    this->render_graph->RemoveVertexMesh(mesh_id);
+  }
+
+  void Scene::TerrainVertexMeshDeleted(int mesh_id)
+  {
+    this->render_graph->RemoveTerrainVertexMesh(mesh_id);
   }
 }

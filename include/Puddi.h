@@ -45,7 +45,7 @@ namespace puddi
 
     int Run();
 
-    void UpdateProjectionMatricesAndViewport();
+    void ViewportChange();
 
     Scene* GetScene(size_t index);
     size_t AddScene();
@@ -70,6 +70,11 @@ namespace puddi
 
     Scene* GetWorldScene();
     Camera* GetWorldCamera();
+
+    void VertexMeshChanged(int mesh_id);
+    void VertexMeshDeleted(int mesh_id);
+    // To be called in addition to the above for terrain meshes.
+    void TerrainVertexMeshDeleted(int mesh_id);
   }
 }
 

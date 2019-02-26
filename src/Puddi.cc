@@ -36,7 +36,6 @@ namespace puddi
       // ModelNode* rootModelNode;
 
       Scene *world_scene;
-      Camera *world_camera;
 
       vector<Scene*> scenes;
 
@@ -135,11 +134,11 @@ namespace puddi
       WorldSize = worldSize;
 
       if (int status = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) != 0)
-      {
-	std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
-	SDL_Quit();
-	return status;
-      }
+	{
+	  std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
+	  SDL_Quit();
+	  return status;
+	}
 
       //if (TTF_Init())
       //{
@@ -165,10 +164,10 @@ namespace puddi
       // Needed for glTexBuffer on OpenGL 3.0 (for buffer texture)
       glewExperimental = GL_TRUE;
       if (glewInit() != GLEW_OK)
-      {
-	std::cerr << "GLEW failed to load.\n";
-	exit(1);
-      }
+	{
+	  std::cerr << "GLEW failed to load.\n";
+	  exit(1);
+	}
 
       if (SDL_SetRelativeMouseMode(SDL_TRUE) == -1)
 	std::cerr << "unable to set relative mouse mode.\n";
@@ -199,10 +198,10 @@ namespace puddi
       //glBlendFunc(GL_ONE, GL_ONE);
 
       if (GLEW_VERSION_3_1)
-      {
-	glEnable(GL_PRIMITIVE_RESTART);
-	glPrimitiveRestartIndex(UINT_MAX);
-      }
+	{
+	  glEnable(GL_PRIMITIVE_RESTART);
+	  glPrimitiveRestartIndex(UINT_MAX);
+	}
 
       // ViewDistance = WorldSize * 1.6f;
 
@@ -210,7 +209,7 @@ namespace puddi
       glClearColor(0.5, 0.5, 1.0, 1.0);
 
       // initialize projection matrix
-      UpdateProjectionMatricesAndViewport();
+      ViewportChange();
 
       // SET SHADOW NEAR AND FAR PLANES
       // Shadow::SetZRange(2.0f, ViewDistance);
@@ -243,28 +242,28 @@ namespace puddi
       std::cerr << "Puddi: entering main loop\n";
 
       while (true)
-      {
-	if ((status_code = update()))
-	  return cleanup(status_code);
-
-	// call additional update functions
-	for (auto it = updateFunctions.begin(); it != updateFunctions.end(); ++it)
 	{
-	  if ((status_code = (*it)()))
+	  if ((status_code = update()))
 	    return cleanup(status_code);
+
+	  // call additional update functions
+	  for (auto it = updateFunctions.begin(); it != updateFunctions.end(); ++it)
+	    {
+	      if ((status_code = (*it)()))
+		return cleanup(status_code);
+	    }
+
+	  // call pre-draw functions
+	  for (auto it = preDrawFunctions.begin(); it != preDrawFunctions.end(); ++it)
+	    (*it)();
+
+	  preDraw();
+
+	  draw();
 	}
-
-	// call pre-draw functions
-	for (auto it = preDrawFunctions.begin(); it != preDrawFunctions.end(); ++it)
-	  (*it)();
-
-	preDraw();
-
-	draw();
-      }
     }
 
-    void UpdateProjectionMatricesAndViewport()
+    void ViewportChange()
     {
       int w, h;
       SDL_GetWindowSize(window, &w, &h);
@@ -373,7 +372,29 @@ namespace puddi
 
     Camera* GetWorldCamera()
     {
-      return world_camera;
+      return world_scene->GetCamera();
+    }
+
+    void VertexMeshChanged(int mesh_id)
+    {
+      for (auto it = scenes.begin(); it != scenes.end(); ++it) {
+        (*it)->VertexMeshChanged(mesh_id);
+      }
+    }
+
+    void VertexMeshDeleted(int mesh_id)
+    {
+      for (auto it = scenes.begin(); it != scenes.end(); ++it) {
+        (*it)->VertexMeshDeleted(mesh_id);
+      }
+      Shadow::RemoveFromDepthRenderList(mesh_id);
+    }
+
+    void TerrainVertexMeshDeleted(int mesh_id)
+    {
+      for (auto it = scenes.begin(); it != scenes.end(); ++it) {
+        (*it)->TerrainVertexMeshDeleted(mesh_id);
+      }
     }
   }
 }

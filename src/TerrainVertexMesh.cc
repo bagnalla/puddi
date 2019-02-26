@@ -1,6 +1,5 @@
 #include "Puddi.h"
 #include "RenderGraph.h"
-#include "Scene.h"
 #include "Shader.h"
 #include "Shadow.h"
 #include "TerrainVertexMesh.h"
@@ -21,9 +20,10 @@ namespace puddi
 
   TerrainVertexMesh::~TerrainVertexMesh()
   {
-    if (this->scene) {
-      this->scene->GetRenderGraph()->RemoveTerrainVertexMesh(this);
-    }
+    // if (this->scene) {
+    //   this->scene->GetRenderGraph()->RemoveTerrainVertexMesh(this);
+    // }
+    engine::TerrainVertexMeshDeleted(this->id);
   }
 
   void TerrainVertexMesh::DrawWithoutBumpMap() const
@@ -76,13 +76,13 @@ namespace puddi
     VertexMesh::Draw();
   }
 
-  void TerrainVertexMesh::UpdateRenderNode()
-  {
-    if (this->scene) {
-      this->scene->GetRenderGraph()->AddTerrainVertexMesh(this);
-    }
-    Shadow::AddToDepthRenderList(this);
-  }
+  // void TerrainVertexMesh::UpdateRenderNode()
+  // {
+  //   // if (this->scene) {
+  //   //   this->scene->GetRenderGraph()->AddTerrainVertexMesh(this);
+  //   // }
+  //   // Shadow::AddToDepthRenderList(this);
+  // }
 
   GLuint TerrainVertexMesh::GetTexture1() const
   {

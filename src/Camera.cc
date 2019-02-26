@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Camera.h"
 #include "FpsTracker.h"
 #include "Puddi.h"
@@ -172,6 +173,6 @@ namespace puddi
     this->scene->SetView(lookAt(vec3(position + zoomOffset),
 				vec3(lookPos), vec3(0.0f, 0.0f, 1.0f)));
     this->eye_position = position + zoomOffset;
-    // Shader::SetCameraPosition(engine::CameraPosition);
+    // std::cout << "Camera::updateView()" << std::endl;
   }
 }

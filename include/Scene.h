@@ -9,6 +9,7 @@ namespace puddi
   class Camera;
   class Object;
   class RenderGraph;
+  class VertexMesh;
 
   enum ProjectionType : int { PROJ_ORTHO, PROJ_PERSPECTIVE };
 
@@ -49,7 +50,10 @@ namespace puddi
     float GetDepth() const; // Only for ortho projection
     float GetFOV() const; // Only for perspective projection
     
-    Object* NewObject();
+    Object* GetRootObject() const;
+
+    /* void AddObject(Object *o); */
+    void AddVertexMesh(VertexMesh *mesh);
 
     void Update();
     void Draw() const;
@@ -66,6 +70,11 @@ namespace puddi
     // camera's position and orientation, and checking which partition
     // the provided point is in.
     bool IsBehindEye(const glm::vec4 &p);
+
+
+    void VertexMeshChanged(int mesh_id);
+    void VertexMeshDeleted(int mesh_id);
+    void TerrainVertexMeshDeleted(int mesh_id);
 
   private:
     int id;

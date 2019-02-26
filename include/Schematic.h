@@ -24,7 +24,9 @@ namespace puddi
 
         void Cleanup();
 
-        int LoadSchematic(const char *filepath, const std::string& name, const std::string& subdirectory = "");
+        int LoadSchematic(const char *filepath,
+			  const std::string& name,
+			  const std::string& subdirectory = "");
 
         SchematicNode* GetSchematicByName(const std::string& name);
     };

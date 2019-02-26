@@ -14,7 +14,10 @@ namespace puddi
     createPrototypeVertices();
   }
 
-  Sphere::Sphere(Object *par) : DrawableObject(par, VertexMesh::GetVertexMeshPrototypeByName("sphere")) {}
+  Sphere::Sphere(Object *par)
+    : DrawableObject(par,
+		     VertexMesh::GetVertexMeshPrototypeByName("sphere"))
+  {}
 
   //void Sphere::Draw() const
   //{

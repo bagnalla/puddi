@@ -17,7 +17,6 @@
 
 namespace puddi
 {
-  class Scene;
   class TerrainVertexMesh;
   class VertexMesh;
   struct SchematicNode;
@@ -38,8 +37,6 @@ namespace puddi
     //virtual void Draw() const;
 
     virtual void SendTransformToGPU();
-
-    void AddVertexMesh(VertexMesh *vertexMesh);
 
     void BuildFromSchematic(SchematicNode *schematic);
 
@@ -73,7 +70,11 @@ namespace puddi
 
     void DisableShadowCasting();
 
-    void SetScene(Scene *scene);
+    /* void SetScene(Scene *scene); */
+
+    void AddVertexMesh(VertexMesh *mesh);
+    std::vector<VertexMesh*> GetVertexMeshes() const;
+    void AddMeshesToScene(Scene *scene) const;
 
   private:
     bool renderEnabled;

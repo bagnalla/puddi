@@ -12,7 +12,8 @@ namespace puddi
     // PUBLIC
 
     TerrainVertexMesh CreateTerrainMeshFromFile(const char *fileName,
-						float texWidth, float texHeight,
+						float texWidth,
+						float texHeight,
 						float scaleZ)
     {
       SDL_Surface *surface = IMG_Load(fileName);
@@ -140,7 +141,9 @@ namespace puddi
       Shader::BoneIndices.insert(Shader::BoneIndices.end(), empty.begin(), empty.end());
       Shader::BoneWeights.insert(Shader::BoneWeights.end(), empty.begin(), empty.end());
 
-      TerrainVertexMesh mesh = TerrainVertexMesh(Material::Plastic(vec4(0.5f, 0.5f, 0.5f, 1.0f)), indexOffset, indices.size());
+      TerrainVertexMesh mesh =
+	TerrainVertexMesh(Material::Plastic(vec4(0.5f, 0.5f, 0.5f, 1.0f)),
+			  indexOffset, indices.size());
       mesh.SetGroundCoordZ(0.0f);
       mesh.SetScaleZ(scaleZ);
       mesh.SetMaxHeight(maxHeight);

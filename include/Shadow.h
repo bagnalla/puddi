@@ -41,7 +41,7 @@ namespace puddi
 
     void AddToDepthRenderList(VertexMesh *o);
 
-    void RemoveFromDepthRenderList(VertexMesh *o);
+    void RemoveFromDepthRenderList(int mesh_id);
 
     ShadowMode GetMode();
     void SetMode(ShadowMode mode);

@@ -250,7 +250,8 @@ namespace puddi
 	for (uint i = 0; i < node->mNumChildren; ++i)
 	{
 	  SchematicNode *childNode = buildSchematic(scene, node->mChildren[i],
-						    schematicName, subdirectory);
+						    schematicName,
+						    subdirectory);
 	  if (childNode != nullptr)
 	    schematicNode->children.push_back(childNode);
 	}

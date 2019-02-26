@@ -14,7 +14,10 @@ namespace puddi
 
     namespace HeightMapTerrain
     {
-        TerrainVertexMesh CreateTerrainMeshFromFile(const char *fileName, float texWidth, float texHeight, float scaleZ);
+        TerrainVertexMesh CreateTerrainMeshFromFile(const char *fileName,
+						    float texWidth,
+						    float texHeight,
+						    float scaleZ);
     };
 }
 

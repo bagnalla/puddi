@@ -81,7 +81,7 @@ namespace puddi
 	}
     }
 
-    vector<DrawableObject*> CreateGlyphString(Scene *scene, Object *rootObject,
+    vector<DrawableObject*> CreateGlyphString(Object *rootObject,
 					      std::string font,
 					      string str, float scale)
     {
@@ -134,7 +134,7 @@ namespace puddi
 	  glyph->SetPosition(posCursor);
 	  glyph->SetEmissive(true);
 	  // glyph->SetRenderGraph(1);
-	  glyph->SetScene(scene);
+	  // glyph->SetScene(scene);
 	  glyph->SetScaleX(charWidth);
 	  glyph->SetScaleY(scale);
 	  glyph->SetScaleZ(scale);

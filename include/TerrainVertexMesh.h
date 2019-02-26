@@ -8,8 +8,7 @@ namespace puddi
   class TerrainVertexMesh : public VertexMesh
   {
   public:
-    TerrainVertexMesh(const Material& mat,
-		      int iOffset, int iCount);
+    TerrainVertexMesh(const Material& mat, int iOffset, int iCount);
 
     ~TerrainVertexMesh();
 
@@ -17,7 +16,7 @@ namespace puddi
 
     void DrawWithBumpMap() const;
 
-    void UpdateRenderNode();
+    /* void UpdateRenderNode(); */
 
     GLuint GetTexture1() const;
     GLuint GetTexture2() const;
