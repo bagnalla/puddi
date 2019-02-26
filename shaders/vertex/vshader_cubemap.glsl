@@ -26,7 +26,7 @@ void main()
 	N = normalize((model * vNormal).xyz);
 
 	// compute eye direction
-	E = (viewPosition - vPositionWorld).xyz;
+	E = (eyePosition - vPositionWorld).xyz;
 
 	if (lightSource[3].w == 0.0)
 		L = lightSource[3].xyz;
