@@ -13,10 +13,10 @@ varying vec3 shadowCoordDepth;
 varying float height;
 
 uniform mat4 model;
-uniform mat4 camera;
+uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 lightSource;
-uniform vec4 cameraPosition;
+uniform vec4 eyePosition;
 uniform int shadowMode;
 uniform mat4 lightProjection;
 uniform float groundCoordZ;
@@ -34,7 +34,7 @@ void main()
 	N = (model * vNormal).xyz;
 
 	// compute eye direction
-	E = (cameraPosition - vPositionWorld).xyz;
+	E = (eyePosition - vPositionWorld).xyz;
 
 	if (lightSource[3].w == 0.0)
 		L = lightSource[3].xyz;
@@ -55,5 +55,5 @@ void main()
 	height = (vPosition.z - groundCoordZ) / (terrainMaxHeight * terrainScaleZ);
 
 	// compute gl_Position
-	gl_Position = projection * camera * vPositionWorld;
+	gl_Position = projection * view * vPositionWorld;
 }

@@ -16,10 +16,10 @@ varying mat4 inverseTBN;
 varying vec3 shadowCoordDepth;
 
 uniform mat4 model;
-uniform mat4 camera;
+uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 lightSource;
-uniform vec4 cameraPosition;
+uniform vec4 eyePosition;
 uniform int shadowMode;
 uniform mat4 lightProjection;
 uniform samplerBuffer boneTransformTex;
@@ -103,7 +103,7 @@ void main()
 	N = (model * skinnedNorm).xyz;
 
 	// compute eye direction
-	E = (cameraPosition - vPositionWorld).xyz;
+	E = (eyePosition - vPositionWorld).xyz;
 
 	if (lightSource[3].w == 0.0)
 		L = lightSource[3].xyz;
@@ -122,5 +122,5 @@ void main()
 	fTextureCoord = vec2((vTextureCoordinate.x), (vTextureCoordinate.y));
 
 	// compute gl_Position
-	gl_Position = projection * camera * vPositionWorld;
+	gl_Position = projection * view * vPositionWorld;
 }

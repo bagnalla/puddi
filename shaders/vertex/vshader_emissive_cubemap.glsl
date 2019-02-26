@@ -4,9 +4,9 @@ attribute vec4 vNormal;
 varying vec3 cubeMapCoord;
 
 uniform mat4 model;
-uniform mat4 camera;
+uniform mat4 view;
 uniform mat4 projection;
-uniform vec4 cameraPosition;
+uniform vec4 eyePosition;
 uniform bool reflective;
 
 void main()
@@ -17,7 +17,7 @@ void main()
 	// reflective
 	if (reflective)
 	{
-		vec3 v = normalize((vPositionWorld - cameraPosition).xyz);
+		vec3 v = normalize((vPositionWorld - eyePosition).xyz);
 		vec3 N = normalize((model * vNormal).xyz);
 		//vec3 temp = 2.0 * dot(v, N) * N;
 		//cubeMapCoord = vec3(v.x - temp.x, v.y - temp.y, x.z - temp.z);
@@ -31,5 +31,5 @@ void main()
 	}
 	
 	// compute gl_Position
-	gl_Position = projection * camera * vPositionWorld;
+	gl_Position = projection * view * vPositionWorld;
 }
