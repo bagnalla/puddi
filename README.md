@@ -15,6 +15,6 @@ To build Debug:
 
 To build Release:
 * mkdir Release
-* cd Relase
+* cd Release
 * cmake -D CMAKE_BUILD_TYPE=Release ..
 * make
